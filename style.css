@@ -1,0 +1,78 @@
+/* OpenAI-inspired greyscale theme for OpenAlex documentation */
+
+/* Dark mode - primary theme */
+:root[data-color-scheme="dark"] {
+  --background-sidebar: #0D0D0D;
+  --background-content: #171717;
+  --text-primary: #ECECEC;
+  --text-secondary: #A3A3A3;
+  --border-color: #2D2D2D;
+}
+
+/* Light mode */
+:root[data-color-scheme="light"] {
+  --background-sidebar: #F5F5F5;
+  --background-content: #FFFFFF;
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --border-color: #E5E5E5;
+}
+
+/* Sidebar/Navigation styling */
+#navbar,
+nav[aria-label="Main navigation"],
+aside {
+  background: var(--background-sidebar, #0D0D0D);
+}
+
+/* Main content area */
+main,
+article {
+  background: var(--background-content, #171717);
+}
+
+/* Links - subtle underline on hover */
+a:not([class*="button"]):not([class*="card"]) {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+a:not([class*="button"]):not([class*="card"]):hover {
+  border-bottom-color: currentColor;
+}
+
+/* Reduce saturation on accent elements for greyscale feel */
+[data-color-scheme="dark"] .text-primary,
+[data-color-scheme="dark"] [class*="primary"] {
+  filter: saturate(0.7);
+}
+
+/* Footer styling */
+footer {
+  background: var(--background-sidebar, #0D0D0D);
+  border-top: 1px solid var(--border-color, #2D2D2D);
+}
+
+/* Card styling - subtle borders */
+[class*="card"],
+[class*="Card"] {
+  border: 1px solid var(--border-color, #2D2D2D);
+  background: var(--background-content, #171717);
+}
+
+/* Code blocks - always dark */
+pre,
+code {
+  background: #0D0D0D !important;
+}
+
+/* Softer headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary, #ECECEC);
+}
+
+/* Muted secondary text */
+p, li {
+  color: var(--text-secondary, #A3A3A3);
+}

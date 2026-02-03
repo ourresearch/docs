@@ -1,97 +1,105 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: Overview
 ---
 
-## Setting up
+[**OpenAlex**](https://openalex.org) is a fully open catalog of the global research system. It's named after the [ancient Library of Alexandria](https://en.wikipedia.org/wiki/Library_of_Alexandria) and made by the nonprofit [OurResearch](https://ourresearch.org/).
 
-Get your documentation site up and running in minutes.
+This is the **technical documentation for OpenAlex**, including the [**OpenAlex API**](/api-reference/overview) and the [**data snapshot**](/download/overview). Here, you can learn how to set up your code to access OpenAlex's data. If you want to explore the data as a human, you may be more interested in [**OpenAlex Web**](https://help.openalex.org).
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+## Data
 
-## Make it yours
+The OpenAlex dataset describes scholarly [_entities_](/api-reference/overview) and how those entities are connected to each other. Types of entities include [works](/api-reference/entities/works), [authors](/api-reference/entities/authors), [sources](/api-reference/entities/sources), [institutions](/api-reference/entities/institutions), [topics](/api-reference/entities/topics), [publishers](/api-reference/entities/publishers), and [funders](/api-reference/entities/funders).
 
-Design a docs site that looks great and empowers your users.
+Together, these make a huge web (or more technically, heterogeneous directed [graph](https://en.wikipedia.org/wiki/Graph_theory)) of hundreds of millions of entities and billions of connections between them all.
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={4}>
+  <Card title="Works" icon="file-lines" href="/api-reference/entities/works">
+    Papers, articles, books
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Authors" icon="user" href="/api-reference/entities/authors">
+    Researchers and their profiles
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Sources" icon="book" href="/api-reference/entities/sources">
+    Journals, repositories, conferences
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Institutions" icon="building-columns" href="/api-reference/entities/institutions">
+    Universities and research orgs
   </Card>
-</Columns>
+  <Card title="Topics" icon="lightbulb" href="/api-reference/entities/topics">
+    Research areas and fields
+  </Card>
+  <Card title="Publishers" icon="building" href="/api-reference/entities/publishers">
+    Publishing organizations
+  </Card>
+  <Card title="Funders" icon="hand-holding-dollar" href="/api-reference/entities/funders">
+    Research funding bodies
+  </Card>
+  <Card title="Awards" icon="trophy" href="/api-reference/entities/awards">
+    Grants and awards
+  </Card>
+</CardGroup>
 
-## Create beautiful pages
+You can access this data through four service types:
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Get" icon="magnifying-glass" href="/guides/get-single-entity">
+    Retrieve a single entity by ID
+    ```
+    GET /works/W2741809807
+    ```
+  </Card>
+  <Card title="List" icon="list" href="/guides/list-entities">
+    Query and filter lists of entities
+    ```
+    GET /works?filter=publication_year:2024
+    ```
+  </Card>
+  <Card title="Discover" icon="sparkles" href="/guides/discover-similar">
+    Find semantically similar works
+    ```
+    GET /works?similar_to=W2741809807
+    ```
+  </Card>
+  <Card title="Download" icon="download" href="/guides/download-data">
+    Download the complete dataset
+    ```bash
+    openalex-cli download works
+    ```
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+Learn more at our general help center article: [About the data](https://help.openalex.org/hc/en-us/articles/24397285563671-About-the-data)
 
-## Need inspiration?
+## Access
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+We offer a fast, modern REST API to get OpenAlex data programmatically. It's free but requires an API key (also free). Get yours at [openalex.org/settings/api](https://openalex.org/settings/api). With your free key, you get 100,000 credits per day. [Learn more](/api-reference/overview)
+
+Different API operations consume different amounts of credits. See [rate limits and authentication](/api-reference/rate-limits) for details.
+
+There is also a complete database snapshot available to download. [Learn more about the data snapshot here.](/download/overview)
+
+The API has a limit of 100,000 credits per day, and the snapshot is updated monthly. If you need a higher limit, or more frequent updates, please look into [**OpenAlex Premium**](https://openalex.org/pricing).
+
+The web interface for OpenAlex, built directly on top of the API, is the quickest and easiest way to [get started with OpenAlex](https://help.openalex.org/getting-started).
+
+## Why OpenAlex?
+
+OpenAlex offers an open replacement for industry-standard scientific knowledge bases like Elsevier's Scopus and Clarivate's Web of Science. [Compared to](https://openalex.org/about#comparison) these paywalled services, OpenAlex offers significant advantages in terms of inclusivity, affordability, and availability.
+
+OpenAlex is:
+
+- **Big** — We have about twice the coverage of the other services, and have significantly better coverage of non-English works and works from the Global South.
+- **Easy** — Our service is fast, modern, and well-documented.
+- **Open** — Our complete dataset is free under the CC0 license, which allows for transparency and reuse.
+
+Many people and organizations have already found great value using OpenAlex. Have a look at the [Testimonials](https://openalex.org/testimonials) to hear what they've said!
+
+## Contact
+
+For tech support and bug reports, please visit our [help page](https://openalex.org/help). You can also join the [OpenAlex user group](https://groups.google.com/g/openalex-users), and follow us on [Twitter (@OpenAlex_org)](https://twitter.com/openalex_org) and [Mastodon](https://mastodon.social/@OpenAlex).
+
+## Citation
+
+If you use OpenAlex in research, please cite [this paper](https://arxiv.org/abs/2205.01833):
+
+> Priem, J., Piwowar, H., & Orr, R. (2022). _OpenAlex: A fully-open index of scholarly works, authors, venues, institutions, and concepts_. ArXiv. https://arxiv.org/abs/2205.01833

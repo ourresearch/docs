@@ -1,68 +1,92 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "palm",
+  "name": "OpenAlex technical documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#10A37F",
+    "light": "#10A37F",
+    "dark": "#10A37F"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "background": {
+    "dark": "#0D0D0D",
+    "light": "#FAFAFA"
+  },
+  "styling": {
+    "codeblocks": "dark"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Docs",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "authentication"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Core Operations",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "guides/get-single-entity",
+              "guides/list-entities",
+              "guides/discover-similar",
+              "guides/download-data"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Working with Data",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "guides/filtering",
+              "guides/searching",
+              "guides/sorting",
+              "guides/paging",
+              "guides/select-fields"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/overview",
+              "api-reference/rate-limits"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Entities",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/entities/works",
+              "api-reference/entities/authors",
+              "api-reference/entities/sources",
+              "api-reference/entities/institutions",
+              "api-reference/entities/topics",
+              "api-reference/entities/publishers",
+              "api-reference/entities/funders",
+              "api-reference/entities/awards"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Download",
+        "groups": [
+          {
+            "group": "Data Snapshot",
+            "pages": [
+              "download/overview",
+              "download/snapshot-format",
+              "download/openalex-cli",
+              "download/load-to-database"
             ]
           }
         ]
@@ -71,14 +95,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "OpenAlex.org",
+          "href": "https://openalex.org",
+          "icon": "globe"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "GitHub",
+          "href": "https://github.com/ourresearch/openalex-api-spec",
+          "icon": "github"
         }
       ]
     }
@@ -90,33 +114,32 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Help",
+        "href": "https://openalex.org/help"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get API Key",
+      "href": "https://openalex.org/settings/api"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/openalex_org",
+      "github": "https://github.com/ourresearch"
     }
   }
 }
