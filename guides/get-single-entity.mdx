@@ -1,0 +1,110 @@
+---
+title: "Get a single entity"
+description: "Retrieve a single entity using its ID"
+---
+
+The simplest way to get data from OpenAlex is to request a single entity by its ID:
+
+```
+GET https://api.openalex.org/<entity_type>/<entity_id>
+```
+
+For example, to get a work:
+
+```bash
+curl "https://api.openalex.org/works/W2741809807"
+```
+
+This returns a complete [Work object](/api-reference/entities/works) with everything OpenAlex knows about that work.
+
+<Tip>
+You can batch up to 50 single-entity requests into one API call using [OR syntax in filters](/guides/filtering#or-operator). This is much faster than making 50 separate requests.
+</Tip>
+
+## The OpenAlex ID
+
+Every entity in OpenAlex has a unique ID that looks like this:
+
+```
+https://openalex.org/W2741809807
+```
+
+The ID has two parts:
+- **Base**: Always `https://openalex.org/`
+- **Key**: A letter followed by numbers (e.g., `W2741809807`)
+
+The first letter indicates the entity type:
+
+| Letter | Entity Type |
+|--------|-------------|
+| W | Work |
+| A | Author |
+| S | Source |
+| I | Institution |
+| T | Topic |
+| P | Publisher |
+| F | Funder |
+
+IDs are case-insensitive, so `W2741809807` and `w2741809807` are equivalent.
+
+<Note>
+OpenAlex IDs are backwards-compatible with Microsoft Academic Graph (MAG) IDs. To convert, just remove the letter prefix: `W2741809807` becomes MAG ID `2741809807`.
+</Note>
+
+## Merged entities
+
+Sometimes we discover that two entities represent the same real-world thing (e.g., two author records for the same person). When we merge them, the old ID redirects to the new one:
+
+```bash
+curl -i "https://api.openalex.org/authors/A5092938886"
+# HTTP/1.1 301 MOVED PERMANENTLY
+# Location: https://api.openalex.org/authors/A5006060960
+```
+
+Most HTTP clients follow redirects automatically, so you'll get the merged entity's data without noticing. If you see redirects in your logs, you can update your stored IDs to skip the redirect next time.
+
+## Using external IDs
+
+You don't need the OpenAlex ID—you can use any ID we support. Just pass it as the identifier:
+
+**Using a DOI:**
+```
+https://api.openalex.org/works/https://doi.org/10.7717/peerj.4375
+```
+
+**Using an ORCID:**
+```
+https://api.openalex.org/authors/https://orcid.org/0000-0003-1613-5981
+```
+
+**Using a ROR:**
+```
+https://api.openalex.org/institutions/https://ror.org/02y3ad647
+```
+
+For convenience, you can also use a shorter URN-style format:
+
+```
+https://api.openalex.org/institutions/ror:02y3ad647
+https://api.openalex.org/authors/orcid:0000-0003-1613-5981
+```
+
+### Supported external IDs by entity type
+
+| Entity | Canonical ID | Other supported IDs |
+|--------|--------------|---------------------|
+| Works | DOI | MAG ID, PMID, PMCID |
+| Authors | ORCID | MAG ID, Scopus ID |
+| Sources | ISSN-L | ISSN, MAG ID |
+| Institutions | ROR | MAG ID, Wikidata ID |
+| Topics | Wikidata ID | — |
+| Publishers | Wikidata ID | — |
+| Funders | — | Crossref Funder ID, Wikidata ID |
+
+<Info>
+To get a single entity, you need an unambiguous identifier like an ORCID or DOI. If you have an ambiguous identifier (like an author's name), use [search](/guides/searching) instead.
+</Info>
+
+## Dehydrated entities
+
+When entities are embedded inside other entities (like authors inside a work), they're often returned in a "dehydrated" form with only essential fields. This keeps response sizes manageable. The full entity can always be retrieved using its ID.

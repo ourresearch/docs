@@ -1,0 +1,107 @@
+---
+title: "List entities"
+description: "Get lists of entities with filtering, searching, and sorting"
+---
+
+To get a list of entities, make a GET request to the entity endpoint:
+
+```
+GET https://api.openalex.org/<entity_type>
+```
+
+For example, to get a list of works:
+
+```bash
+curl "https://api.openalex.org/works"
+```
+
+This returns a response with metadata and a list of results:
+
+```json
+{
+  "meta": {
+    "count": 268459381,
+    "db_response_time_ms": 81,
+    "page": 1,
+    "per_page": 25
+  },
+  "results": [
+    // list of Work objects
+  ],
+  "group_by": []
+}
+```
+
+## Response structure
+
+| Field | Description |
+|-------|-------------|
+| `meta.count` | Total number of entities matching your query |
+| `meta.page` | Current page number |
+| `meta.per_page` | Number of results per page (default: 25, max: 200) |
+| `results` | Array of entity objects |
+| `group_by` | Aggregation results (empty unless you use `group_by`) |
+
+## Query parameters
+
+List queries become powerful when you add parameters:
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| `filter` | Narrow results by attributes | `filter=type:article` |
+| `search` | Full-text search | `search=machine learning` |
+| `sort` | Order results | `sort=cited_by_count:desc` |
+| `page` | Pagination | `page=2` |
+| `per_page` | Results per page | `per_page=100` |
+| `select` | Choose which fields to return | `select=id,title` |
+| `group_by` | Aggregate by a field | `group_by=publication_year` |
+
+### Example: Recent high-impact articles about climate
+
+```
+https://api.openalex.org/works?filter=type:article,publication_year:2024,cited_by_count:>100&search=climate change&sort=cited_by_count:desc&per_page=50
+```
+
+Learn more about each feature:
+- [Filtering](/guides/filtering) - Narrow results by attributes
+- [Searching](/guides/searching) - Full-text search
+- [Sorting](/guides/sorting) - Order results
+- [Paging](/guides/paging) - Navigate through large result sets
+- [Selecting fields](/guides/select-fields) - Choose which fields to return
+
+## Entity endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/works` | Scholarly documents (papers, books, datasets) |
+| `/authors` | People who create works |
+| `/sources` | Where works are published (journals, repositories) |
+| `/institutions` | Universities and research organizations |
+| `/topics` | Research topics and fields |
+| `/publishers` | Publishing organizations |
+| `/funders` | Organizations that fund research |
+| `/awards` | Specific grants and awards |
+
+## Grouping results
+
+Use `group_by` to aggregate results by a field:
+
+```
+https://api.openalex.org/works?filter=authorships.institutions.id:I27837315&group_by=publication_year
+```
+
+This returns counts of works by year for a given institution:
+
+```json
+{
+  "group_by": [
+    { "key": "2024", "count": 12543 },
+    { "key": "2023", "count": 45231 },
+    { "key": "2022", "count": 43892 }
+  ]
+}
+```
+
+<Tip>
+Grouping is useful for building charts and understanding distributions in your data.
+</Tip>
