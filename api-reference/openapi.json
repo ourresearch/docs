@@ -1,216 +1,2121 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+    "title": "OpenAlex API",
+    "description": "The OpenAlex API provides access to a comprehensive catalog of scholarly works, authors, sources, institutions, topics, keywords, publishers, and funders. OpenAlex indexes over 250 million scholarly works.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "OpenAlex Support",
+      "email": "support@openalex.org",
+      "url": "https://openalex.org"
     },
-    "version": "1.0.0"
+    "license": {
+      "name": "CC0",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.openalex.org",
+      "description": "OpenAlex Production API"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKey": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Works",
+      "description": "Scholarly documents like journal articles, books, datasets, and theses"
+    },
+    {
+      "name": "Authors",
+      "description": "People who create scholarly works"
+    },
+    {
+      "name": "Sources",
+      "description": "Journals, repositories, and other venues where works are hosted"
+    },
+    {
+      "name": "Institutions",
+      "description": "Universities, research organizations, and other affiliations"
+    },
+    {
+      "name": "Topics",
+      "description": "Research topics automatically assigned to works"
+    },
+    {
+      "name": "Keywords",
+      "description": "Short phrases identified from works' topics"
+    },
+    {
+      "name": "Publishers",
+      "description": "Companies and organizations that publish scholarly works"
+    },
+    {
+      "name": "Funders",
+      "description": "Organizations that fund research"
+    },
+    {
+      "name": "Autocomplete",
+      "description": "Fast typeahead search for any entity type"
     }
   ],
   "paths": {
-    "/plants": {
+    "/works": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "operationId": "listWorks",
+        "summary": "List works",
+        "description": "Get a list of scholarly works with optional filtering, searching, sorting, and pagination. Works include journal articles, books, datasets, theses, and more.",
+        "tags": ["Works"],
         "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "$ref": "#/components/schemas/WorksListResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "403": {"$ref": "#/components/responses/Forbidden"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/works/{id}": {
+      "get": {
+        "operationId": "getWork",
+        "summary": "Get a single work",
+        "description": "Retrieve a single work by its OpenAlex ID or external ID (DOI, PMID, PMCID, MAG ID). External IDs can be passed as full URLs or URN format (e.g., `doi:10.1234/example` or `pmid:12345678`).",
+        "tags": ["Works"],
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
+            "description": "OpenAlex ID (e.g., W2741809807) or external ID (DOI, PMID, PMCID, MAG)",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
+            },
+            "examples": {
+              "openalex": {
+                "value": "W2741809807",
+                "summary": "OpenAlex ID"
+              },
+              "doi": {
+                "value": "https://doi.org/10.7717/peerj.4375",
+                "summary": "DOI URL"
+              },
+              "pmid": {
+                "value": "pmid:29456894",
+                "summary": "PubMed ID (URN format)"
+              }
             }
-          }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Work"
                 }
               }
             }
-          }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+    },
+    "/works/{id}/ngrams": {
+      "get": {
+        "operationId": "getWorkNgrams",
+        "summary": "Get N-grams for a work",
+        "description": "Retrieve word and phrase frequency data (N-grams) for a specific work. Only available for works with full text.",
+        "tags": ["Works"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID of the work",
+            "schema": {
+              "type": "string"
             }
-          }
-        },
+          },
+          {"$ref": "#/components/parameters/api_key"}
+        ],
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NgramsResponse"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/authors": {
+      "get": {
+        "operationId": "listAuthors",
+        "summary": "List authors",
+        "description": "Get a list of authors with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Authors"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/authors/{id}": {
+      "get": {
+        "operationId": "getAuthor",
+        "summary": "Get a single author",
+        "description": "Retrieve a single author by OpenAlex ID or ORCID.",
+        "tags": ["Authors"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., A5023888391) or ORCID",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "openalex": {
+                "value": "A5023888391",
+                "summary": "OpenAlex ID"
+              },
+              "orcid": {
+                "value": "https://orcid.org/0000-0001-6187-6610",
+                "summary": "ORCID URL"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/sources": {
+      "get": {
+        "operationId": "listSources",
+        "summary": "List sources",
+        "description": "Get a list of sources (journals, repositories, conferences) with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Sources"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourcesListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/sources/{id}": {
+      "get": {
+        "operationId": "getSource",
+        "summary": "Get a single source",
+        "description": "Retrieve a single source by OpenAlex ID or ISSN.",
+        "tags": ["Sources"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., S1983995261) or ISSN",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "openalex": {
+                "value": "S1983995261",
+                "summary": "OpenAlex ID"
+              },
+              "issn": {
+                "value": "issn:2167-8359",
+                "summary": "ISSN (URN format)"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Source"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/institutions": {
+      "get": {
+        "operationId": "listInstitutions",
+        "summary": "List institutions",
+        "description": "Get a list of institutions with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Institutions"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/institutions/{id}": {
+      "get": {
+        "operationId": "getInstitution",
+        "summary": "Get a single institution",
+        "description": "Retrieve a single institution by OpenAlex ID or ROR.",
+        "tags": ["Institutions"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., I27837315) or ROR",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "openalex": {
+                "value": "I27837315",
+                "summary": "OpenAlex ID"
+              },
+              "ror": {
+                "value": "https://ror.org/0161xgx34",
+                "summary": "ROR URL"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Institution"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/topics": {
+      "get": {
+        "operationId": "listTopics",
+        "summary": "List topics",
+        "description": "Get a list of topics with optional filtering, searching, sorting, and pagination. Topics are research areas automatically assigned to works.",
+        "tags": ["Topics"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/topics/{id}": {
+      "get": {
+        "operationId": "getTopic",
+        "summary": "Get a single topic",
+        "description": "Retrieve a single topic by OpenAlex ID.",
+        "tags": ["Topics"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., T12419)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Topic"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/keywords": {
+      "get": {
+        "operationId": "listKeywords",
+        "summary": "List keywords",
+        "description": "Get a list of keywords with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Keywords"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/keywords/{id}": {
+      "get": {
+        "operationId": "getKeyword",
+        "summary": "Get a single keyword",
+        "description": "Retrieve a single keyword by OpenAlex ID.",
+        "tags": ["Keywords"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., K12345)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Keyword"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/publishers": {
+      "get": {
+        "operationId": "listPublishers",
+        "summary": "List publishers",
+        "description": "Get a list of publishers with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Publishers"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishersListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/publishers/{id}": {
+      "get": {
+        "operationId": "getPublisher",
+        "summary": "Get a single publisher",
+        "description": "Retrieve a single publisher by OpenAlex ID.",
+        "tags": ["Publishers"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., P4310319965)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publisher"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/funders": {
+      "get": {
+        "operationId": "listFunders",
+        "summary": "List funders",
+        "description": "Get a list of funders with optional filtering, searching, sorting, and pagination.",
+        "tags": ["Funders"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FundersListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/funders/{id}": {
+      "get": {
+        "operationId": "getFunder",
+        "summary": "Get a single funder",
+        "description": "Retrieve a single funder by OpenAlex ID or Crossref Funder ID.",
+        "tags": ["Funders"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., F4320306076) or Crossref Funder ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Funder"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/autocomplete/{entity_type}": {
+      "get": {
+        "operationId": "autocomplete",
+        "summary": "Autocomplete search",
+        "description": "Fast typeahead search returning up to 10 results. Use for search-as-you-type interfaces.",
+        "tags": ["Autocomplete"],
+        "parameters": [
+          {
+            "name": "entity_type",
+            "in": "path",
+            "required": true,
+            "description": "Type of entity to search",
+            "schema": {
+              "type": "string",
+              "enum": ["works", "authors", "sources", "institutions", "topics", "keywords", "publishers", "funders"]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "description": "Search query string",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutocompleteResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/text/topics": {
+      "get": {
+        "operationId": "classifyText",
+        "summary": "Classify text (Aboutness)",
+        "description": "Classify arbitrary text to find relevant OpenAlex topics. Costs 1,000 credits per request.",
+        "tags": ["Topics"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Title text to classify",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "abstract",
+            "in": "query",
+            "description": "Abstract text to classify",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextClassificationResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/rate-limit": {
+      "get": {
+        "operationId": "getRateLimit",
+        "summary": "Check rate limit status",
+        "description": "Check your current rate limit status including credits used and remaining.",
+        "tags": ["Rate Limits"],
+        "parameters": [
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateLimitResponse"
+                }
+              }
+            }
+          },
+          "429": {"$ref": "#/components/responses/RateLimited"}
         }
       }
     }
   },
   "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "api_key",
+        "description": "Your OpenAlex API key. Get a free key at https://openalex.org/settings/api"
+      }
+    },
+    "parameters": {
+      "filter": {
+        "name": "filter",
+        "in": "query",
+        "description": "Filter results using field:value syntax. Multiple filters can be combined with commas (AND) or pipes (OR). Example: `filter=publication_year:2023,type:article`",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "search": {
+        "name": "search",
+        "in": "query",
+        "description": "Full-text search across titles, abstracts, and other text fields. Example: `search=machine learning`",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "sort": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sort results by a field. Prefix with `-` for descending order. Example: `sort=cited_by_count` or `sort=-publication_date`",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "per_page": {
+        "name": "per_page",
+        "in": "query",
+        "description": "Number of results per page (1-200, default 25)",
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "default": 25
+        }
+      },
+      "page": {
+        "name": "page",
+        "in": "query",
+        "description": "Page number for pagination. Use cursor for deep pagination beyond 10,000 results.",
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "cursor": {
+        "name": "cursor",
+        "in": "query",
+        "description": "Cursor for deep pagination. Use `cursor=*` to start, then use the `next_cursor` from the response.",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "sample": {
+        "name": "sample",
+        "in": "query",
+        "description": "Return a random sample of N results (max 10,000). Cannot be used with sort or page.",
+        "schema": {
+          "type": "integer",
+          "maximum": 10000
+        }
+      },
+      "select": {
+        "name": "select",
+        "in": "query",
+        "description": "Comma-separated list of fields to return. Reduces response size. Example: `select=id,display_name,cited_by_count`",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "group_by": {
+        "name": "group_by",
+        "in": "query",
+        "description": "Group results by a field and return counts. Example: `group_by=publication_year`",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "api_key": {
+        "name": "api_key",
+        "in": "query",
+        "description": "Your OpenAlex API key (required). Get a free key at https://openalex.org/settings/api",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request - invalid parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+      "Forbidden": {
+        "description": "Forbidden - invalid ID format",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
             }
           }
-        ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+      "NotFound": {
+        "description": "Entity not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate limit exceeded",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
           }
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error type"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "description": "Metadata about the query results",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Total number of results matching the query"
+          },
+          "db_response_time_ms": {
+            "type": "integer",
+            "description": "Database response time in milliseconds"
+          },
+          "page": {
+            "type": "integer",
+            "description": "Current page number"
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of results per page"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for the next page (when using cursor pagination)"
+          },
+          "groups_count": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Number of groups when using group_by"
+          }
+        }
+      },
+      "GroupByResult": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "The group key value"
+          },
+          "key_display_name": {
+            "type": "string",
+            "description": "Human-readable name for the key"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of results in this group"
+          }
+        }
+      },
+      "Work": {
+        "type": "object",
+        "description": "A scholarly document (article, book, dataset, thesis, etc.)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "OpenAlex ID for this work",
+            "example": "https://openalex.org/W2741809807"
+          },
+          "doi": {
+            "type": "string",
+            "nullable": true,
+            "description": "DOI for this work",
+            "example": "https://doi.org/10.7717/peerj.4375"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "Title of the work"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Same as title"
+          },
+          "publication_year": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Year published"
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Date published (ISO 8601)"
+          },
+          "type": {
+            "type": "string",
+            "description": "Work type (article, book, dataset, etc.)"
+          },
+          "language": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISO 639-1 language code"
+          },
+          "cited_by_count": {
+            "type": "integer",
+            "description": "Number of citations to this work"
+          },
+          "is_retracted": {
+            "type": "boolean",
+            "description": "Whether this work has been retracted"
+          },
+          "is_paratext": {
+            "type": "boolean",
+            "description": "Whether this is paratext (front matter, etc.)"
+          },
+          "primary_location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Location"
+            }
+          },
+          "best_oa_location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "open_access": {
+            "$ref": "#/components/schemas/OpenAccess"
+          },
+          "authorships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Authorship"
+            },
+            "description": "List of authors and their affiliations (limited to first 100)"
+          },
+          "ids": {
+            "type": "object",
+            "description": "External identifiers",
+            "properties": {
+              "openalex": {"type": "string"},
+              "doi": {"type": "string"},
+              "mag": {"type": "integer"},
+              "pmid": {"type": "string"},
+              "pmcid": {"type": "string"}
+            }
+          },
+          "biblio": {
+            "type": "object",
+            "description": "Bibliographic information",
+            "properties": {
+              "volume": {"type": "string", "nullable": true},
+              "issue": {"type": "string", "nullable": true},
+              "first_page": {"type": "string", "nullable": true},
+              "last_page": {"type": "string", "nullable": true}
+            }
+          },
+          "abstract_inverted_index": {
+            "type": "object",
+            "nullable": true,
+            "description": "Abstract as inverted index (word positions)"
+          },
+          "referenced_works": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "OpenAlex IDs of works cited by this work"
+          },
+          "referenced_works_count": {
+            "type": "integer",
+            "description": "Number of references"
+          },
+          "related_works": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "OpenAlex IDs of related works"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkTopic"
+            },
+            "description": "Top topics for this work (up to 3)"
+          },
+          "primary_topic": {
+            "$ref": "#/components/schemas/WorkTopic"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkKeyword"
+            }
+          },
+          "funders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DehydratedFunder"
+            }
+          },
+          "awards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Award"
+            }
+          },
+          "fwci": {
+            "type": "number",
+            "nullable": true,
+            "description": "Field-Weighted Citation Impact"
+          },
+          "citation_normalized_percentile": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "value": {"type": "number"},
+              "is_in_top_1_percent": {"type": "boolean"},
+              "is_in_top_10_percent": {"type": "boolean"}
+            }
+          },
+          "cited_by_percentile_year": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "min": {"type": "integer"},
+              "max": {"type": "integer"}
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "sustainable_development_goals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"},
+                "score": {"type": "number"}
+              }
+            }
+          },
+          "mesh": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "descriptor_ui": {"type": "string"},
+                "descriptor_name": {"type": "string"},
+                "qualifier_ui": {"type": "string"},
+                "qualifier_name": {"type": "string"},
+                "is_major_topic": {"type": "boolean"}
+              }
+            }
+          },
+          "indexed_in": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Sources this work is indexed in (crossref, pubmed, doaj, arxiv)"
+          },
+          "has_content": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "pdf": {"type": "boolean"},
+              "grobid_xml": {"type": "boolean"}
+            }
+          },
+          "content_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL for downloading full-text content"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date",
+            "description": "When this record was created in OpenAlex"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this record was last updated"
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "description": "Where a work is hosted",
+        "properties": {
+          "is_oa": {
+            "type": "boolean",
+            "description": "Whether this location provides open access"
+          },
+          "landing_page_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL to the landing page"
+          },
+          "pdf_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Direct URL to PDF"
+          },
+          "source": {
+            "$ref": "#/components/schemas/DehydratedSource"
+          },
+          "license": {
+            "type": "string",
+            "nullable": true,
+            "description": "License (e.g., cc-by)"
+          },
+          "license_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true,
+            "enum": ["publishedVersion", "acceptedVersion", "submittedVersion"],
+            "description": "Version of the work at this location"
+          },
+          "is_accepted": {
+            "type": "boolean"
+          },
+          "is_published": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OpenAccess": {
+        "type": "object",
+        "description": "Open access information",
+        "properties": {
+          "is_oa": {
+            "type": "boolean",
+            "description": "Whether this work is open access"
+          },
+          "oa_status": {
+            "type": "string",
+            "enum": ["diamond", "gold", "hybrid", "bronze", "green", "closed"],
+            "description": "Open access status"
+          },
+          "oa_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Best open access URL"
+          },
+          "any_repository_has_fulltext": {
+            "type": "boolean",
+            "description": "Whether any repository has the full text"
+          }
+        }
+      },
+      "Authorship": {
+        "type": "object",
+        "description": "Author and their affiliation for a work",
+        "properties": {
+          "author_position": {
+            "type": "string",
+            "enum": ["first", "middle", "last"],
+            "description": "Position in author list"
+          },
+          "author": {
+            "$ref": "#/components/schemas/DehydratedAuthor"
+          },
+          "institutions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DehydratedInstitution"
+            }
+          },
+          "countries": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Country codes of affiliations"
+          },
+          "is_corresponding": {
+            "type": "boolean",
+            "description": "Whether this is the corresponding author"
+          },
+          "raw_author_name": {
+            "type": "string",
+            "description": "Author name as it appears in the work"
+          },
+          "raw_affiliation_strings": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      },
+      "WorkTopic": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "score": {"type": "number"},
+          "subfield": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "field": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "domain": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          }
+        }
+      },
+      "WorkKeyword": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "score": {"type": "number"}
+        }
+      },
+      "Award": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "funder_award_id": {"type": "string"},
+          "funder_id": {"type": "string"},
+          "funder_display_name": {"type": "string"},
+          "doi": {"type": "string", "nullable": true}
+        }
+      },
+      "Author": {
+        "type": "object",
+        "description": "A person who creates scholarly works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "OpenAlex ID",
+            "example": "https://openalex.org/A5023888391"
+          },
+          "orcid": {
+            "type": "string",
+            "nullable": true,
+            "description": "ORCID identifier"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Author's name"
+          },
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Alternative names"
+          },
+          "works_count": {
+            "type": "integer",
+            "description": "Number of works by this author"
+          },
+          "cited_by_count": {
+            "type": "integer",
+            "description": "Total citations to this author's works"
+          },
+          "summary_stats": {
+            "type": "object",
+            "properties": {
+              "2yr_mean_citedness": {"type": "number"},
+              "h_index": {"type": "integer"},
+              "i10_index": {"type": "integer"}
+            }
+          },
+          "affiliations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "institution": {"$ref": "#/components/schemas/DehydratedInstitution"},
+                "years": {
+                  "type": "array",
+                  "items": {"type": "integer"}
+                }
+              }
+            }
+          },
+          "last_known_institutions": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/DehydratedInstitution"}
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"},
+                "count": {"type": "integer"}
+              }
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "orcid": {"type": "string"},
+              "scopus": {"type": "string"}
+            }
+          },
+          "works_api_url": {
+            "type": "string",
+            "description": "API URL to get this author's works"
+          },
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Source": {
+        "type": "object",
+        "description": "A journal, repository, or other venue for scholarly works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "OpenAlex ID",
+            "example": "https://openalex.org/S1983995261"
+          },
+          "issn_l": {
+            "type": "string",
+            "nullable": true,
+            "description": "Linking ISSN"
+          },
+          "issn": {
+            "type": "array",
+            "items": {"type": "string"},
+            "nullable": true,
+            "description": "All ISSNs"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Source name"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["journal", "repository", "conference", "ebook platform", "book series"],
+            "description": "Source type"
+          },
+          "host_organization": {
+            "type": "string",
+            "nullable": true,
+            "description": "OpenAlex ID of host organization"
+          },
+          "host_organization_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "host_organization_lineage": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "is_oa": {
+            "type": "boolean",
+            "description": "Whether this is an open access source"
+          },
+          "is_in_doaj": {
+            "type": "boolean",
+            "description": "Whether in Directory of Open Access Journals"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "summary_stats": {
+            "type": "object",
+            "properties": {
+              "2yr_mean_citedness": {"type": "number"},
+              "h_index": {"type": "integer"},
+              "i10_index": {"type": "integer"}
+            }
+          },
+          "apc_usd": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Article processing charge in USD"
+          },
+          "homepage_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "issn_l": {"type": "string"},
+              "issn": {"type": "array", "items": {"type": "string"}},
+              "mag": {"type": "integer"},
+              "wikidata": {"type": "string"},
+              "fatcat": {"type": "string"}
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Institution": {
+        "type": "object",
+        "description": "A university, research organization, or other affiliation",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/I27837315"
+          },
+          "ror": {
+            "type": "string",
+            "nullable": true,
+            "description": "ROR identifier"
+          },
+          "display_name": {"type": "string"},
+          "country_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISO 3166-1 alpha-2 country code"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["education", "healthcare", "company", "archive", "nonprofit", "government", "facility", "other"],
+            "description": "Institution type"
+          },
+          "homepage_url": {"type": "string", "nullable": true},
+          "image_url": {"type": "string", "nullable": true},
+          "image_thumbnail_url": {"type": "string", "nullable": true},
+          "display_name_acronyms": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "summary_stats": {
+            "type": "object",
+            "properties": {
+              "2yr_mean_citedness": {"type": "number"},
+              "h_index": {"type": "integer"},
+              "i10_index": {"type": "integer"}
+            }
+          },
+          "geo": {
+            "type": "object",
+            "properties": {
+              "city": {"type": "string"},
+              "geonames_city_id": {"type": "string"},
+              "region": {"type": "string"},
+              "country_code": {"type": "string"},
+              "country": {"type": "string"},
+              "latitude": {"type": "number"},
+              "longitude": {"type": "number"}
+            }
+          },
+          "lineage": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Parent institutions (OpenAlex IDs)"
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "ror": {"type": "string"},
+              "mag": {"type": "integer"},
+              "grid": {"type": "string"},
+              "wikipedia": {"type": "string"},
+              "wikidata": {"type": "string"}
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Topic": {
+        "type": "object",
+        "description": "A research topic automatically assigned to works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/T12419"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "keywords": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "subfield": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "field": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "domain": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikipedia": {"type": "string"}
+            }
+          },
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Keyword": {
+        "type": "object",
+        "description": "A keyword identified from works' topics",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Publisher": {
+        "type": "object",
+        "description": "An organization that publishes scholarly works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/P4310319965"
+          },
+          "display_name": {"type": "string"},
+          "alternate_titles": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "country_codes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "hierarchy_level": {
+            "type": "integer",
+            "description": "0 = parent, 1 = child"
+          },
+          "parent_publisher": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "lineage": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "sources_api_url": {"type": "string"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "ror": {"type": "string"},
+              "wikidata": {"type": "string"}
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Funder": {
+        "type": "object",
+        "description": "An organization that funds research",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/F4320306076"
+          },
+          "display_name": {"type": "string"},
+          "alternate_titles": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "country_code": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "homepage_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_thumbnail_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "grants_count": {"type": "integer"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "ror": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "crossref": {"type": "string"},
+              "doi": {"type": "string"}
+            }
+          },
+          "counts_by_year": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "year": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "cited_by_count": {"type": "integer"}
+              }
+            }
+          },
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "DehydratedAuthor": {
+        "type": "object",
+        "description": "Minimal author info (used in authorships)",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "orcid": {"type": "string", "nullable": true}
+        }
+      },
+      "DehydratedInstitution": {
+        "type": "object",
+        "description": "Minimal institution info",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "ror": {"type": "string", "nullable": true},
+          "country_code": {"type": "string", "nullable": true},
+          "type": {"type": "string"},
+          "lineage": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      },
+      "DehydratedSource": {
+        "type": "object",
+        "description": "Minimal source info",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "issn_l": {"type": "string", "nullable": true},
+          "issn": {
+            "type": "array",
+            "items": {"type": "string"},
+            "nullable": true
+          },
+          "is_oa": {"type": "boolean"},
+          "is_in_doaj": {"type": "boolean"},
+          "host_organization": {"type": "string", "nullable": true},
+          "host_organization_name": {"type": "string", "nullable": true},
+          "host_organization_lineage": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "type": {"type": "string"}
+        }
+      },
+      "DehydratedFunder": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "display_name": {"type": "string"},
+          "ror": {"type": "string", "nullable": true}
+        }
+      },
+      "WorksListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Work"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "AuthorsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Author"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "SourcesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Source"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "InstitutionsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Institution"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "TopicsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Topic"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "KeywordsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Keyword"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "PublishersListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Publisher"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "FundersListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Funder"}
+          },
+          "group_by": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "AutocompleteResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "count": {"type": "integer"},
+              "db_response_time_ms": {"type": "integer"}
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"},
+                "hint": {"type": "string", "nullable": true},
+                "cited_by_count": {"type": "integer"},
+                "works_count": {"type": "integer"},
+                "entity_type": {"type": "string"},
+                "external_id": {"type": "string", "nullable": true}
+              }
+            }
+          }
+        }
+      },
+      "NgramsResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "count": {"type": "integer"},
+              "openalexWork": {"type": "string"}
+            }
+          },
+          "ngrams": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ngram": {"type": "string"},
+                "ngram_count": {"type": "integer"},
+                "ngram_tokens": {"type": "integer"},
+                "term_frequency": {"type": "number"}
+              }
+            }
+          }
+        }
+      },
+      "TextClassificationResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "count": {"type": "integer"}
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/WorkTopic"}
+          }
+        }
+      },
+      "RateLimitResponse": {
+        "type": "object",
+        "properties": {
+          "api_key": {"type": "string"},
+          "rate_limit": {
+            "type": "object",
+            "properties": {
+              "credits_limit": {"type": "integer"},
+              "credits_used": {"type": "integer"},
+              "credits_remaining": {"type": "integer"},
+              "resets_at": {"type": "string", "format": "date-time"},
+              "resets_in_seconds": {"type": "integer"},
+              "credit_costs": {
+                "type": "object",
+                "properties": {
+                  "singleton": {"type": "integer"},
+                  "list": {"type": "integer"},
+                  "content": {"type": "integer"},
+                  "vector": {"type": "integer"},
+                  "text": {"type": "integer"}
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

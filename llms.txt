@@ -1,0 +1,130 @@
+# OpenAlex API - LLM Reference
+
+OpenAlex is an open catalog of the global research system with 270M+ works, 90M+ authors, and 100K+ sources.
+
+## Quick Start
+
+Base URL: https://api.openalex.org
+Auth: api_key parameter (free at openalex.org/settings/api)
+Rate limit: 100k credits/day with key
+
+## Entity Endpoints
+
+GET /works - Scholarly documents (articles, books, datasets, theses)
+GET /works/{id} - Single work by OpenAlex ID (W2741809807) or DOI
+GET /authors - Researcher profiles
+GET /authors/{id} - Single author by ID (A5023888391) or ORCID
+GET /sources - Journals, repositories, conferences
+GET /institutions - Universities, organizations
+GET /topics - Research topic classifications
+GET /keywords - Keywords from works
+GET /publishers - Publishing organizations
+GET /funders - Funding agencies
+GET /autocomplete/{entity} - Fast typeahead search
+
+## CRITICAL: Always Resolve Names to IDs
+
+WRONG: /works?filter=authorships.author.display_name:Einstein
+RIGHT:
+  1. /authors?search=Einstein → get id "A5012345678"
+  2. /works?filter=authorships.author.id:A5012345678
+
+Names are ambiguous. IDs are not.
+
+## Query Parameters
+
+api_key=YOUR_KEY - Required for rate limits
+filter= - Filter results (field:value)
+search= - Full-text search
+sort= - Sort field (e.g., cited_by_count:desc)
+per_page= - Results per page (max 200)
+page= - Page number
+cursor= - Deep pagination (use cursor=* to start)
+sample= - Random sample (max 10000)
+select= - Limit fields returned
+group_by= - Aggregate by field
+
+## Filter Syntax
+
+Single: ?filter=publication_year:2024
+AND: ?filter=publication_year:2024,is_oa:true
+OR: ?filter=type:article|book|dataset (max 50 values)
+NOT: ?filter=type:!paratext
+Range: ?filter=publication_year:2020-2024
+Comparison: ?filter=cited_by_count:>100
+
+## Common Work Filters
+
+authorships.author.id - Filter by author
+authorships.institutions.id - Filter by institution
+primary_location.source.id - Filter by journal/source
+topics.id - Filter by topic
+publication_year - Year (integer)
+cited_by_count - Citation count
+is_oa - Open access (true/false)
+type - article, book, dataset, etc.
+has_fulltext - Has searchable text
+
+## Example Queries
+
+# Get highly cited 2024 articles
+/works?filter=publication_year:2024,type:article,cited_by_count:>50&sort=cited_by_count:desc&per_page=100
+
+# Get open access works from an institution
+/works?filter=authorships.institutions.id:I27837315,is_oa:true&per_page=200
+
+# Bulk DOI lookup (up to 50)
+/works?filter=doi:10.1234/a|10.1234/b|10.1234/c&per_page=50
+
+# Random sample with seed
+/works?sample=100&seed=42
+
+# Count works by topic
+/works?filter=publication_year:2024&group_by=topics.id
+
+## Credit Costs
+
+Singleton (/works/W123): 0 (free)
+List (/works?filter=...): 1
+PDF download: 100
+Semantic search (/find/works): 1000
+
+## Limits
+
+OR values per filter: 50
+per_page max: 200
+sample max: 10,000
+Basic paging: 10,000 results (use cursor for more)
+
+## Deprecated - Do Not Use
+
+- /concepts → Use /topics
+- /text endpoint → Removed
+- host_venue field → Use primary_location
+- grants field → Use funders and awards
+
+## External ID Formats
+
+DOI: /works/https://doi.org/10.1234/example or /works/doi:10.1234/example
+PMID: /works/pmid:29456894
+ORCID: /authors/https://orcid.org/0000-0001-6187-6610
+ROR: /institutions/https://ror.org/0161xgx34
+ISSN: /sources/issn:2167-8359
+
+## Response Format
+
+{
+  "meta": {
+    "count": 286750097,
+    "page": 1,
+    "per_page": 25
+  },
+  "results": [...],
+  "group_by": []
+}
+
+## Links
+
+Docs: https://docs.openalex.org
+API Key: https://openalex.org/settings/api
+OpenAPI Spec: https://docs.openalex.org/api-reference/openapi.json

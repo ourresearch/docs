@@ -18,6 +18,12 @@
     "codeblocks": "dark"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "openapi": "api-reference/openapi.json",
+    "playground": {
+      "display": "interactive"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -56,6 +62,97 @@
             "pages": [
               "api-reference/introduction",
               "api-reference/errors"
+            ]
+          },
+          {
+            "group": "Works",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /works",
+              "GET /works/{id}",
+              "GET /works/{id}/ngrams"
+            ]
+          },
+          {
+            "group": "Authors",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /authors",
+              "GET /authors/{id}"
+            ]
+          },
+          {
+            "group": "Sources",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /sources",
+              "GET /sources/{id}"
+            ]
+          },
+          {
+            "group": "Institutions",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /institutions",
+              "GET /institutions/{id}"
+            ]
+          },
+          {
+            "group": "Topics",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /topics",
+              "GET /topics/{id}",
+              "GET /text/topics"
+            ]
+          },
+          {
+            "group": "Keywords",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /keywords",
+              "GET /keywords/{id}"
+            ]
+          },
+          {
+            "group": "Publishers",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /publishers",
+              "GET /publishers/{id}"
+            ]
+          },
+          {
+            "group": "Funders",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /funders",
+              "GET /funders/{id}"
+            ]
+          },
+          {
+            "group": "Autocomplete",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /autocomplete/{entity_type}"
+            ]
+          },
+          {
+            "group": "Rate Limits",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /rate-limit"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Data Downloads",
+        "groups": [
+          {
+            "group": "Data Downloads",
+            "pages": [
+              "download/overview"
             ]
           }
         ]

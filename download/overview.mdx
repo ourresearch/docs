@@ -1,0 +1,88 @@
+---
+title: "Data Downloads"
+description: "Download OpenAlex data for local analysis"
+---
+
+# Data Downloads
+
+OpenAlex offers multiple ways to access data beyond the REST API. Choose the approach that best fits your use case.
+
+## When to use the API vs. downloads
+
+<CardGroup cols={2}>
+  <Card title="Use the REST API" icon="cloud">
+    - Quick lookups and searches
+    - Building applications
+    - Real-time data needs
+    - Most use cases
+  </Card>
+  <Card title="Use data downloads" icon="download">
+    - Large-scale analysis
+    - Machine learning training
+    - Building local search indexes
+    - Offline access requirements
+  </Card>
+</CardGroup>
+
+## Download options
+
+### OpenAlex Snapshot
+
+The complete OpenAlex database as JSON Lines files, updated monthly. Each file contains one entity type (works, authors, sources, institutions, topics, publishers, funders).
+
+**Best for:** Full database replication, data warehousing, comprehensive analysis
+
+**Size:** ~500GB compressed
+
+[Learn more about the snapshot format](/download/snapshot-format)
+
+### OpenAlex CLI
+
+A command-line tool for downloading filtered subsets of OpenAlex data.
+
+```bash
+pip install openalex-cli
+openalex download --filter "publication_year:2024" --output ./data
+```
+
+**Best for:** Downloading specific subsets without the full snapshot
+
+[OpenAlex CLI documentation](https://github.com/ourresearch/openalex-cli)
+
+### Full-text PDFs
+
+Download PDFs and TEI XML for works with available content. Requires an API key and consumes 100 credits per file.
+
+**Best for:** Text mining, content analysis, building corpora
+
+[Content download documentation](/guides/content-downloads)
+
+## Decision tree
+
+```
+Do you need the complete database?
+├── Yes → Download the snapshot
+└── No → Do you need a filtered subset?
+    ├── Yes → Use OpenAlex CLI
+    └── No → Use the REST API
+```
+
+## Getting started
+
+1. **For the snapshot:** Follow the [download instructions](/download/download-to-machine) to get the data to your machine
+2. **For the CLI:** Install with `pip install openalex-cli` and run `openalex --help`
+3. **For PDFs:** Use the [content download API](/guides/content-downloads) with your API key
+
+<Warning>
+Working with the full snapshot is challenging. The dataset is large (500GB+ compressed) and complex. If you're unsure, start with the REST API—it can answer most questions with much less setup.
+</Warning>
+
+## Loading data
+
+Once downloaded, you can load OpenAlex data into:
+
+- **Data warehouses** (BigQuery, Snowflake, Databricks) — Load JSON directly, query with native JSON functions
+- **Relational databases** (PostgreSQL, MySQL) — Flatten to normalized schema
+- **Search engines** (Elasticsearch, OpenSearch) — Index for full-text search
+
+[Data warehouse setup](/download/data-warehouse) | [Relational database setup](/download/relational-database)
