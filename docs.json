@@ -42,6 +42,7 @@
           {
             "group": "For AI Agents",
             "pages": [
+              "guides/llm-quick-reference",
               "guides/deprecations"
             ]
           }
