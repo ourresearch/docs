@@ -1,0 +1,192 @@
+---
+title: Key Concepts
+description: Understand entities, IDs, and data structures in OpenAlex
+---
+
+# Key Concepts
+
+Before diving into the API, it helps to understand a few core concepts that underpin everything in OpenAlex.
+
+## Entity Types
+
+OpenAlex describes scholarly research as a graph of interconnected **entities**. There are eight entity types:
+
+| Entity | Description | Count |
+|--------|-------------|-------|
+| [Works](/guides/works) | Scholarly documents (articles, books, datasets, theses) | 270M+ |
+| [Authors](/guides/authors) | Researchers who create works | 90M+ |
+| [Sources](/guides/sources) | Where works are hosted (journals, repositories, conferences) | 250K+ |
+| [Institutions](/guides/institutions) | Organizations where authors are affiliated | 110K+ |
+| [Topics](/guides/topics-and-keywords) | Subject classifications (3-level hierarchy) | 4.5K |
+| [Publishers](/guides/publishers) | Organizations that distribute works | 10K+ |
+| [Funders](/guides/funders-and-awards) | Organizations that fund research | 35K+ |
+| [Geo](/guides/geo) | Geographic information (countries, continents) | — |
+
+Each entity type has its own API endpoint (e.g., `/works`, `/authors`).
+
+## OpenAlex IDs
+
+Every entity in OpenAlex has a unique **OpenAlex ID**. It's a URL formatted like this:
+
+```
+https://openalex.org/W2741809807
+```
+
+### ID Structure
+
+The ID has two parts:
+
+1. **Base**: Always `https://openalex.org/`
+2. **Key**: A letter prefix + numeric ID (e.g., `W2741809807`)
+
+The letter prefix indicates the entity type:
+
+| Prefix | Entity |
+|--------|--------|
+| W | Work |
+| A | Author |
+| S | Source |
+| I | Institution |
+| T | Topic |
+| K | Keyword |
+| P | Publisher |
+| F | Funder |
+| G | Award (Grant) |
+| C | Concept (deprecated) |
+
+IDs are case-insensitive: `W2741809807` and `w2741809807` are equivalent.
+
+### Using IDs in the API
+
+You can use just the key portion when making API calls:
+
+```bash
+# Full URL
+curl "https://api.openalex.org/works/https://openalex.org/W2741809807"
+
+# Just the key (recommended)
+curl "https://api.openalex.org/works/W2741809807"
+```
+
+### External IDs
+
+You can also retrieve entities using external IDs like DOIs, ORCIDs, and RORs:
+
+```bash
+# By DOI
+curl "https://api.openalex.org/works/https://doi.org/10.7717/peerj.4375"
+
+# By ORCID
+curl "https://api.openalex.org/authors/https://orcid.org/0000-0003-1613-5981"
+
+# By ROR
+curl "https://api.openalex.org/institutions/https://ror.org/02y3ad647"
+
+# Shorthand format
+curl "https://api.openalex.org/works/doi:10.7717/peerj.4375"
+```
+
+### Canonical External IDs
+
+Each entity type has a "canonical" external ID—the most widely adopted identifier for that type:
+
+| Entity | Canonical ID |
+|--------|--------------|
+| Works | DOI |
+| Authors | ORCID |
+| Sources | ISSN-L |
+| Institutions | ROR |
+| Topics | Wikidata ID |
+| Publishers | Wikidata ID |
+
+### Merged IDs
+
+Sometimes we merge duplicate entities (e.g., two author records for the same person). If you request a merged ID, you'll be redirected to the new ID:
+
+```bash
+$ curl -i https://api.openalex.org/authors/A5092938886
+HTTP/1.1 301 MOVED PERMANENTLY
+Location: https://api.openalex.org/authors/A5006060960
+```
+
+Most HTTP clients handle this automatically.
+
+## Dehydrated Objects
+
+When entities are nested inside other entities, they're often returned in **dehydrated** form—a stripped-down version with only essential fields.
+
+For example, a Work's `authorships` field contains dehydrated Author objects:
+
+```json
+{
+  "authorships": [
+    {
+      "author": {
+        "id": "https://openalex.org/A5023888391",
+        "display_name": "Jason Priem",
+        "orcid": "https://orcid.org/0000-0001-6187-6610"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4200000001",
+          "display_name": "OurResearch",
+          "ror": "https://ror.org/02nr0ka47",
+          "country_code": "US",
+          "type": "nonprofit"
+        }
+      ]
+    }
+  ]
+}
+```
+
+To get the full entity, make a separate request using the ID:
+
+```bash
+curl "https://api.openalex.org/authors/A5023888391"
+```
+
+## XPAC (Expansion Pack)
+
+In November 2025, OpenAlex added 190+ million new works as part of an expansion called **XPAC** (part of the [Walden rewrite](https://blog.openalex.org/openalex-rewrite-walden-launch/)). This includes:
+
+- All of DataCite
+- Thousands of institutional and subject-area repositories
+- Primarily datasets and repository records
+
+### Why XPAC Works Are Excluded by Default
+
+XPAC works have lower data quality on average (improving over time). To avoid surprising users with sudden changes in result counts and quality, **XPAC works are excluded by default**.
+
+### Including XPAC Works
+
+Add `include_xpac=true` to any works endpoint:
+
+```bash
+# Without XPAC: ~278 million works
+curl "https://api.openalex.org/works"
+
+# With XPAC: ~470 million works
+curl "https://api.openalex.org/works?include_xpac=true"
+```
+
+### Filtering by XPAC
+
+Each work has an `is_xpac` boolean field:
+
+```bash
+# Get only XPAC works
+curl "https://api.openalex.org/works?include_xpac=true&filter=is_xpac:true"
+```
+
+## Query Parameter Naming
+
+<Note>
+OpenAlex uses **snake_case** for all query parameters: `filter`, `sort`, `group_by`, `per_page`, `api_key`, etc.
+</Note>
+
+## What's Next?
+
+- [Resolve IDs](/guides/resolve-ids) — How to look up entity IDs by name
+- [Filtering](/guides/filtering) — Filter results by any field
+- [Authentication](/guides/authentication) — API keys and rate limits

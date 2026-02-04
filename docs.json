@@ -21,33 +21,28 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Docs",
+        "tab": "Guides",
         "groups": [
           {
             "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "authentication"
+              "guides/authentication",
+              "guides/key-concepts"
             ]
           },
           {
-            "group": "Core Operations",
+            "group": "Working with the API",
             "pages": [
-              "guides/get-single-entity",
-              "guides/list-entities",
-              "guides/discover-similar",
-              "guides/download-data"
+              "guides/resolve-ids",
+              "guides/similar-works"
             ]
           },
           {
-            "group": "Working with Data",
+            "group": "For AI Agents",
             "pages": [
-              "guides/filtering",
-              "guides/searching",
-              "guides/sorting",
-              "guides/paging",
-              "guides/select-fields"
+              "guides/deprecations"
             ]
           }
         ]
@@ -58,35 +53,19 @@
           {
             "group": "Overview",
             "pages": [
-              "api-reference/overview",
-              "api-reference/rate-limits"
-            ]
-          },
-          {
-            "group": "Entities",
-            "pages": [
-              "api-reference/entities/works",
-              "api-reference/entities/authors",
-              "api-reference/entities/sources",
-              "api-reference/entities/institutions",
-              "api-reference/entities/topics",
-              "api-reference/entities/publishers",
-              "api-reference/entities/funders",
-              "api-reference/entities/awards"
+              "api-reference/introduction",
+              "api-reference/errors"
             ]
           }
         ]
       },
       {
-        "tab": "Download",
+        "tab": "Changelog",
         "groups": [
           {
-            "group": "Data Snapshot",
+            "group": "Changelog",
             "pages": [
-              "download/overview",
-              "download/snapshot-format",
-              "download/openalex-cli",
-              "download/load-to-database"
+              "changelog/overview"
             ]
           }
         ]

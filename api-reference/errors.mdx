@@ -1,0 +1,137 @@
+---
+title: Error Handling
+description: API error codes and retry strategies
+---
+
+# Error Handling
+
+The OpenAlex API uses standard HTTP status codes to indicate success or failure.
+
+## HTTP Status Codes
+
+| Code | Meaning | What to Do |
+|------|---------|------------|
+| `200` | Success | Request completed successfully |
+| `301` | Moved Permanently | Entity was merged; follow the redirect |
+| `400` | Bad Request | Check your filter syntax or parameters |
+| `403` | Forbidden | Rate limit exceeded; slow down |
+| `404` | Not Found | Entity doesn't exist |
+| `429` | Too Many Requests | Daily credit limit exceeded |
+| `500` | Server Error | Temporary issue; retry with backoff |
+
+## Error Response Format
+
+Error responses include a message explaining what went wrong:
+
+```json
+{
+  "error": "Invalid filter",
+  "message": "Unknown filter field: author_name. Did you mean: authorships.author.id?"
+}
+```
+
+## Common Errors
+
+### Invalid Filter Syntax
+
+```
+400 Bad Request
+"Invalid filter: publication_year:abc"
+```
+
+**Fix:** Ensure values match expected types. `publication_year` expects an integer.
+
+### Unknown Filter Field
+
+```
+400 Bad Request
+"Unknown filter field: author_name"
+```
+
+**Fix:** Use the correct filter field. For authors, use `authorships.author.id` with an ID, not a name. See [Resolve IDs](/guides/resolve-ids).
+
+### Rate Limit Exceeded
+
+```
+429 Too Many Requests
+"Rate limit exceeded"
+```
+
+**Fix:**
+- Check rate limit headers to see your remaining credits
+- Add delays between requests
+- Use `per_page=200` to reduce total requests
+- Consider [OpenAlex Premium](https://openalex.org/pricing) for higher limits
+
+### Entity Not Found
+
+```
+404 Not Found
+"Work W9999999999 not found"
+```
+
+**Fix:** Verify the ID exists. The entity may have been merged—check if you're being redirected.
+
+## Retry Logic
+
+Implement exponential backoff for transient errors:
+
+```python
+import time
+import requests
+
+def fetch_with_retry(url, max_retries=5):
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, timeout=30)
+
+            if response.status_code == 200:
+                return response.json()
+
+            if response.status_code == 429:
+                # Rate limited - wait longer
+                wait_time = 2 ** attempt
+                time.sleep(wait_time)
+                continue
+
+            if response.status_code >= 500:
+                # Server error - retry
+                wait_time = 2 ** attempt
+                time.sleep(wait_time)
+                continue
+
+            # Client error - don't retry
+            response.raise_for_status()
+
+        except requests.exceptions.Timeout:
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+            else:
+                raise
+
+    raise Exception(f"Failed after {max_retries} retries")
+```
+
+## Rate Limit Headers
+
+Every response includes headers showing your current status:
+
+```
+X-RateLimit-Limit: 100000
+X-RateLimit-Remaining: 98766
+X-RateLimit-Credits-Used: 1
+X-RateLimit-Reset: 43200
+```
+
+Use these to:
+- Monitor your credit usage
+- Pause before hitting limits
+- Calculate when limits reset (seconds until midnight UTC)
+
+## Best Practices
+
+1. **Always set timeouts** — Use 30-second timeouts to avoid hanging requests
+2. **Implement backoff** — Don't retry immediately; wait 1s, 2s, 4s, etc.
+3. **Check headers** — Monitor `X-RateLimit-Remaining` to avoid hitting limits
+4. **Log errors** — Record failures for debugging
+5. **Use bulk endpoints** — Batch requests to reduce total API calls
