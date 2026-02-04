@@ -710,7 +710,8 @@
       "get": {
         "operationId": "classifyText",
         "summary": "Classify text (Aboutness)",
-        "description": "Classify arbitrary text to find relevant OpenAlex topics. Costs 1,000 credits per request.",
+        "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs 1,000 credits per request.",
+        "deprecated": true,
         "tags": ["Topics"],
         "parameters": [
           {
