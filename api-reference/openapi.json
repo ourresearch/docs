@@ -148,40 +148,6 @@
         }
       }
     },
-    "/works/{id}/ngrams": {
-      "get": {
-        "operationId": "getWorkNgrams",
-        "summary": "Get N-grams for a work",
-        "description": "Retrieve word and phrase frequency data (N-grams) for a specific work. Only available for works with full text.",
-        "tags": ["Works"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "OpenAlex ID of the work",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {"$ref": "#/components/parameters/api_key"}
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NgramsResponse"
-                }
-              }
-            }
-          },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
-        }
-      }
-    },
     "/authors": {
       "get": {
         "operationId": "listAuthors",
@@ -2047,30 +2013,6 @@
                 "works_count": {"type": "integer"},
                 "entity_type": {"type": "string"},
                 "external_id": {"type": "string", "nullable": true}
-              }
-            }
-          }
-        }
-      },
-      "NgramsResponse": {
-        "type": "object",
-        "properties": {
-          "meta": {
-            "type": "object",
-            "properties": {
-              "count": {"type": "integer"},
-              "openalexWork": {"type": "string"}
-            }
-          },
-          "ngrams": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "ngram": {"type": "string"},
-                "ngram_count": {"type": "integer"},
-                "ngram_tokens": {"type": "integer"},
-                "term_frequency": {"type": "number"}
               }
             }
           }

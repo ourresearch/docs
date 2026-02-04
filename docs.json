@@ -69,8 +69,7 @@
             "openapi": "api-reference/openapi.json",
             "pages": [
               "GET /works",
-              "GET /works/{id}",
-              "GET /works/{id}/ngrams"
+              "GET /works/{id}"
             ]
           },
           {
