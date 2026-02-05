@@ -1,0 +1,227 @@
+---
+title: "The Work object"
+sidebarTitle: "The Work object"
+description: "Schema reference for Work entities"
+---
+
+Works are scholarly documents like journal articles, books, datasets, and theses. OpenAlex indexes over 250 million works.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this work.
+
+  `"https://openalex.org/W2741809807"`
+</ResponseField>
+
+<ResponseField name="doi" type="string">
+  The DOI for the work. This is the Canonical External ID for works.
+
+  `"https://doi.org/10.7717/peerj.4375"`
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  The title of this work.
+
+  `"The state of OA: a large-scale analysis of the prevalence and impact of Open Access articles"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  Same as `title`. Included for consistency with other entities.
+</ResponseField>
+
+<ResponseField name="publication_year" type="integer">
+  The year this work was published.
+
+  `2018`
+</ResponseField>
+
+<ResponseField name="publication_date" type="string">
+  The day when this work was published (ISO 8601 format).
+
+  `"2018-02-13"`
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  The type of the work. Common values: `article`, `book`, `dataset`, `preprint`, `dissertation`, `book-chapter`.
+
+  `"article"`
+</ResponseField>
+
+<ResponseField name="language" type="string">
+  The language of the work in ISO 639-1 format.
+
+  `"en"`
+</ResponseField>
+
+<ResponseField name="authorships" type="array">
+  List of Authorship objects representing authors and their institutions. Limited to the first 100 authors.
+
+  Each authorship includes `author`, `institutions`, `author_position`, `is_corresponding`, and other fields.
+</ResponseField>
+
+<ResponseField name="primary_location" type="object">
+  A Location object with the primary location of this work (closest to the version of record).
+
+  Includes `source`, `landing_page_url`, `pdf_url`, `is_oa`, `license`, and `version`.
+</ResponseField>
+
+<ResponseField name="locations" type="array">
+  List of Location objects describing all unique places where this work lives.
+</ResponseField>
+
+<ResponseField name="locations_count" type="integer">
+  Number of locations for this work.
+</ResponseField>
+
+<ResponseField name="best_oa_location" type="object">
+  A Location object with the best available open access location for this work.
+</ResponseField>
+
+<ResponseField name="open_access" type="object">
+  Information about the access status of this work:
+  - `is_oa`: Boolean, true if this work is Open Access
+  - `oa_status`: One of `diamond`, `gold`, `green`, `hybrid`, `bronze`, `closed`
+  - `oa_url`: URL to the best OA version
+  - `any_repository_has_fulltext`: Boolean
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  The number of citations to this work.
+
+  `382`
+</ResponseField>
+
+<ResponseField name="biblio" type="object">
+  Bibliographic info: `volume`, `issue`, `first_page`, `last_page`.
+</ResponseField>
+
+<ResponseField name="referenced_works" type="array">
+  OpenAlex IDs for works that this work cites.
+</ResponseField>
+
+<ResponseField name="referenced_works_count" type="integer">
+  The number of works that this work cites.
+</ResponseField>
+
+<ResponseField name="related_works" type="array">
+  OpenAlex IDs for works related to this work (computed algorithmically).
+</ResponseField>
+
+<ResponseField name="abstract_inverted_index" type="object">
+  The abstract as an inverted index (word positions). OpenAlex doesn't include plaintext abstracts due to legal constraints.
+</ResponseField>
+
+<ResponseField name="primary_topic" type="object">
+  The top ranked Topic for this work, with `id`, `display_name`, `score`, and hierarchy (`subfield`, `field`, `domain`).
+</ResponseField>
+
+<ResponseField name="topics" type="array">
+  List of up to 3 Topics for this work, each with a relevance score.
+</ResponseField>
+
+<ResponseField name="keywords" type="array">
+  Keywords identified based on the work's topics, with relevance scores.
+</ResponseField>
+
+<ResponseField name="concepts" type="array">
+  Dehydrated Concept objects with relevance scores. Concepts with score >= 0.3 are assigned.
+</ResponseField>
+
+<ResponseField name="funders" type="array">
+  Dehydrated Funder objects representing the funders of this work.
+</ResponseField>
+
+<ResponseField name="awards" type="array">
+  Dehydrated Award objects representing grants associated with this work.
+</ResponseField>
+
+<ResponseField name="is_retracted" type="boolean">
+  True if this work has been retracted (from Retraction Watch database).
+</ResponseField>
+
+<ResponseField name="is_paratext" type="boolean">
+  True if this work is paratext (e.g., front cover, table of contents).
+</ResponseField>
+
+<ResponseField name="fwci" type="float">
+  Field-weighted Citation Impact, calculated as citations received / citations expected.
+</ResponseField>
+
+<ResponseField name="citation_normalized_percentile" type="object">
+  Percentile of citation count normalized by work type, year, and subfield. Includes `value`, `is_in_top_1_percent`, `is_in_top_10_percent`.
+</ResponseField>
+
+<ResponseField name="cited_by_percentile_year" type="object">
+  Percentile rank compared to other works published in the same year. Contains `min` and `max`.
+</ResponseField>
+
+<ResponseField name="counts_by_year" type="array">
+  `cited_by_count` for each of the last ten years.
+</ResponseField>
+
+<ResponseField name="sustainable_development_goals" type="array">
+  UN Sustainable Development Goals relevant to this work, with prediction scores.
+</ResponseField>
+
+<ResponseField name="mesh" type="array">
+  MeSH tags for works found in PubMed.
+</ResponseField>
+
+<ResponseField name="indexed_in" type="array">
+  Sources this work is indexed in. Values: `arxiv`, `crossref`, `doaj`, `pubmed`.
+</ResponseField>
+
+<ResponseField name="has_content" type="object">
+  Information about downloadable full-text content:
+  - `pdf`: Boolean, whether a PDF is available
+  - `grobid_xml`: Boolean, whether TEI XML is available
+</ResponseField>
+
+<ResponseField name="content_url" type="string">
+  URL for downloading full-text content. Only present when `has_content.pdf` or `has_content.grobid_xml` is true.
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers: `openalex`, `doi`, `mag`, `pmid`, `pmcid`.
+</ResponseField>
+
+<ResponseField name="corresponding_author_ids" type="array">
+  OpenAlex IDs of corresponding authors.
+</ResponseField>
+
+<ResponseField name="corresponding_institution_ids" type="array">
+  OpenAlex IDs of institutions for corresponding authors.
+</ResponseField>
+
+<ResponseField name="countries_distinct_count" type="integer">
+  Number of distinct countries among the authorships.
+</ResponseField>
+
+<ResponseField name="institutions_distinct_count" type="integer">
+  Number of distinct institutions among the authorships.
+</ResponseField>
+
+<ResponseField name="apc_list" type="object">
+  Article processing charge list price: `value`, `currency`, `value_usd`, `provenance`.
+</ResponseField>
+
+<ResponseField name="apc_paid" type="object">
+  Estimated APC actually paid: `value`, `currency`, `value_usd`, `provenance`.
+</ResponseField>
+
+<ResponseField name="is_xpac" type="boolean">
+  True if this work is part of the XPAC (Expansion Pack) dataset. XPAC works are excluded by default.
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this work was added to OpenAlex (ISO 8601 date).
+
+  `"2017-08-08"`
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this work was last updated (ISO 8601 datetime).
+
+  `"2022-01-02T00:22:35.180390"`
+</ResponseField>

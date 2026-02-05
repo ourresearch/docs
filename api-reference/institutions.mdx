@@ -1,0 +1,159 @@
+---
+title: "The Institution object"
+sidebarTitle: "The Institution object"
+description: "Schema reference for Institution entities"
+---
+
+Institutions are universities and other organizations to which authors claim affiliations.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this institution.
+
+  `"https://openalex.org/I114027177"`
+</ResponseField>
+
+<ResponseField name="ror" type="string">
+  The ROR ID for this institution. This is the Canonical External ID for institutions.
+
+  `"https://ror.org/0130frc33"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The primary name of the institution.
+
+  `"University of North Carolina at Chapel Hill"`
+</ResponseField>
+
+<ResponseField name="display_name_acronyms" type="array">
+  Acronyms or initialisms for this institution.
+
+  `["UNC"]`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Other names people may use for this institution.
+
+  `["UNC-Chapel Hill"]`
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  The institution's primary type (ROR vocabulary): `Education`, `Healthcare`, `Company`, `Archive`, `Nonprofit`, `Government`, `Facility`, `Other`.
+
+  `"education"`
+</ResponseField>
+
+<ResponseField name="country_code" type="string">
+  ISO two-letter country code where this institution is located.
+
+  `"US"`
+</ResponseField>
+
+<ResponseField name="geo" type="object">
+  Location information:
+  - `city`: City name
+  - `geonames_city_id`: GeoNames database ID
+  - `region`: State/province
+  - `country_code`: ISO country code
+  - `country`: Country name
+  - `latitude`: Latitude
+  - `longitude`: Longitude
+</ResponseField>
+
+<ResponseField name="homepage_url" type="string">
+  URL for the institution's primary homepage.
+
+  `"http://www.unc.edu/"`
+</ResponseField>
+
+<ResponseField name="image_url" type="string">
+  URL for an image representing this institution (usually from Wikimedia).
+</ResponseField>
+
+<ResponseField name="image_thumbnail_url" type="string">
+  Smaller version of `image_url`.
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works created by authors affiliated with this institution.
+
+  `202704`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works from authors affiliated with this institution.
+
+  `21199844`
+</ResponseField>
+
+<ResponseField name="lineage" type="array">
+  OpenAlex IDs including this institution and any parent institutions.
+
+  `["https://openalex.org/I170203145", "https://openalex.org/I90344618"]`
+</ResponseField>
+
+<ResponseField name="associated_institutions" type="array">
+  Related institutions. Each object is a dehydrated Institution with an additional `relationship` property (`parent`, `child`, or `related`).
+</ResponseField>
+
+<ResponseField name="is_super_system" type="boolean">
+  True if this is a "super system" like a large university system or government. Super systems are excluded from other institutions' lineage.
+</ResponseField>
+
+<ResponseField name="repositories" type="array">
+  Sources with `type: repository` that have this institution as their host_organization.
+</ResponseField>
+
+<ResponseField name="roles" type="array">
+  Links to related entities when an organization has multiple roles (funder, publisher, institution). Each object has `role`, `id`, and `works_count`.
+</ResponseField>
+
+<ResponseField name="international" type="object">
+  The institution's display name in different languages. Contains `display_name` object with language codes as keys.
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `ror`: ROR ID
+  - `grid`: GRID ID
+  - `mag`: Microsoft Academic Graph ID
+  - `wikipedia`: Wikipedia page URL
+  - `wikidata`: Wikidata ID
+</ResponseField>
+
+<ResponseField name="summary_stats" type="object">
+  Citation metrics:
+  - `2yr_mean_citedness`: Impact factor
+  - `h_index`: h-index
+  - `i10_index`: i-10 index
+</ResponseField>
+
+<ResponseField name="counts_by_year" type="array">
+  `works_count` and `cited_by_count` for each of the last ten years.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that will get you a list of all works affiliated with this institution.
+
+  `"https://api.openalex.org/works?filter=institutions.id:I114027177"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this institution was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this institution was last updated (ISO 8601 datetime).
+</ResponseField>
+
+## The DehydratedInstitution object
+
+A stripped-down Institution object with only:
+- `id`
+- `display_name`
+- `ror`
+- `country_code`
+- `type`
+- `lineage`

@@ -1,0 +1,111 @@
+---
+title: "The Author object"
+sidebarTitle: "The Author object"
+description: "Schema reference for Author entities"
+---
+
+Authors are people who create works. OpenAlex indexes over 200 million authors.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this author.
+
+  `"https://openalex.org/A5023888391"`
+</ResponseField>
+
+<ResponseField name="orcid" type="string">
+  The ORCID ID for this author. This is the Canonical External ID for authors.
+
+  `"https://orcid.org/0000-0001-6187-6610"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the author as a single string.
+
+  `"Jason Priem"`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Other ways this author's name has been displayed.
+
+  `["Jason R Priem"]`
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works this author has created.
+
+  `38`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  The total number of works that cite a work this author has created.
+
+  `38`
+</ResponseField>
+
+<ResponseField name="last_known_institutions" type="array">
+  This author's last known institutional affiliations. Each item is a dehydrated Institution object.
+
+  ```json
+  [{
+    "id": "https://openalex.org/I4200000001",
+    "ror": "https://ror.org/02nr0ka47",
+    "display_name": "OurResearch",
+    "country_code": "CA",
+    "type": "nonprofit",
+    "lineage": ["https://openalex.org/I4200000001"]
+  }]
+  ```
+</ResponseField>
+
+<ResponseField name="affiliations" type="array">
+  List of affiliations this author has claimed in their publications. Each object has:
+  - `institution`: a dehydrated Institution object
+  - `years`: list of years the author claimed this affiliation
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `orcid`: ORCID ID
+  - `scopus`: Scopus author ID
+  - `twitter`: Twitter handle
+  - `wikipedia`: Wikipedia page URL
+</ResponseField>
+
+<ResponseField name="summary_stats" type="object">
+  Citation metrics:
+  - `2yr_mean_citedness`: Impact factor
+  - `h_index`: h-index
+  - `i10_index`: i-10 index
+</ResponseField>
+
+<ResponseField name="counts_by_year" type="array">
+  `works_count` and `cited_by_count` for each of the last ten years.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that will get you a list of all this author's works.
+
+  `"https://api.openalex.org/works?filter=author.id:A5023888391"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this author was added to OpenAlex (ISO 8601 date).
+
+  `"2017-08-08"`
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this author was last updated (ISO 8601 datetime).
+
+  `"2022-01-02T00:00:00"`
+</ResponseField>
+
+## The DehydratedAuthor object
+
+A stripped-down Author object with only:
+- `id`
+- `display_name`
+- `orcid`

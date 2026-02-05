@@ -79,58 +79,66 @@
               {
                 "group": "Works",
                 "pages": [
-                  "GET /works",
-                  "GET /works/{id}"
+                  "api-reference/works",
+                  "GET /works/{id}",
+                  "GET /works"
                 ]
               },
               {
                 "group": "Authors",
                 "pages": [
-                  "GET /authors",
-                  "GET /authors/{id}"
+                  "api-reference/authors",
+                  "GET /authors/{id}",
+                  "GET /authors"
                 ]
               },
               {
                 "group": "Sources",
                 "pages": [
-                  "GET /sources",
-                  "GET /sources/{id}"
+                  "api-reference/sources",
+                  "GET /sources/{id}",
+                  "GET /sources"
                 ]
               },
               {
                 "group": "Institutions",
                 "pages": [
-                  "GET /institutions",
-                  "GET /institutions/{id}"
+                  "api-reference/institutions",
+                  "GET /institutions/{id}",
+                  "GET /institutions"
                 ]
               },
               {
                 "group": "Topics",
                 "pages": [
-                  "GET /topics",
+                  "api-reference/topics",
                   "GET /topics/{id}",
+                  "GET /topics",
                   "GET /text/topics"
                 ]
               },
               {
                 "group": "Keywords",
                 "pages": [
-                  "GET /keywords",
-                  "GET /keywords/{id}"
+                  "api-reference/keywords",
+                  "GET /keywords/{id}",
+                  "GET /keywords"
                 ]
               },
               {
                 "group": "Publishers",
                 "pages": [
-                  "GET /publishers",
-                  "GET /publishers/{id}"
+                  "api-reference/publishers",
+                  "GET /publishers/{id}",
+                  "GET /publishers"
                 ]
               },
               {
                 "group": "Funders",
                 "pages": [
-                  "GET /funders",
-                  "GET /funders/{id}"
+                  "api-reference/funders",
+                  "GET /funders/{id}",
+                  "GET /funders"
                 ]
               }
             ]

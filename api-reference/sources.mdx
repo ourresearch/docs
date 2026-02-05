@@ -1,0 +1,169 @@
+---
+title: "The Source object"
+sidebarTitle: "The Source object"
+description: "Schema reference for Source entities"
+---
+
+Sources are where works are hosted: journals, conferences, preprint repositories, and institutional repositories.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this source.
+
+  `"https://openalex.org/S1983995261"`
+</ResponseField>
+
+<ResponseField name="issn_l" type="string">
+  The ISSN-L (linking ISSN) for this source. This is the Canonical External ID for sources.
+
+  `"2167-8359"`
+</ResponseField>
+
+<ResponseField name="issn" type="array">
+  All ISSNs used by this source. Many publications have multiple ISSNs.
+
+  `["2167-8359"]`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the source.
+
+  `"PeerJ"`
+</ResponseField>
+
+<ResponseField name="abbreviated_title" type="string">
+  An abbreviated title from the ISSN Centre.
+
+  `"J. addict. med. ther. sci."`
+</ResponseField>
+
+<ResponseField name="alternate_titles" type="array">
+  Alternate titles (abbreviations or translations).
+</ResponseField>
+
+<ResponseField name="type" type="string">
+  The type of source: `journal`, `repository`, `conference`, `ebook platform`, `book series`, `metadata`, or `other`.
+
+  `"journal"`
+</ResponseField>
+
+<ResponseField name="host_organization" type="string">
+  The host organization as an OpenAlex ID. This will be an Institution ID if the source is a repository, or a Publisher ID if it's a journal/conference.
+
+  `"https://openalex.org/P4310320595"`
+</ResponseField>
+
+<ResponseField name="host_organization_name" type="string">
+  The display_name of the host organization.
+
+  `"Elsevier BV"`
+</ResponseField>
+
+<ResponseField name="host_organization_lineage" type="array">
+  OpenAlex IDs of parent publishers (only for publisher-hosted sources).
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works this source hosts.
+
+  `20184`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works hosted in this source.
+
+  `133702`
+</ResponseField>
+
+<ResponseField name="is_oa" type="boolean">
+  Whether this is currently a fully open-access source.
+
+  `true`
+</ResponseField>
+
+<ResponseField name="is_in_doaj" type="boolean">
+  Whether this journal is listed in the Directory of Open Access Journals.
+
+  `true`
+</ResponseField>
+
+<ResponseField name="is_core" type="boolean">
+  Whether this source is identified as a "core source" by CWTS for the Open Leiden Ranking.
+</ResponseField>
+
+<ResponseField name="homepage_url" type="string">
+  The homepage URL for this source.
+
+  `"http://www.peerj.com/"`
+</ResponseField>
+
+<ResponseField name="country_code" type="string">
+  ISO two-letter country code where this source is associated.
+
+  `"GB"`
+</ResponseField>
+
+<ResponseField name="societies" type="array">
+  Societies on whose behalf the source is published.
+</ResponseField>
+
+<ResponseField name="apc_prices" type="array">
+  Article processing charge information from DOAJ. Each object has `price` and `currency`.
+</ResponseField>
+
+<ResponseField name="apc_usd" type="integer">
+  The source's article processing charge in USD.
+
+  `5200`
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `issn_l`: ISSN-L
+  - `issn`: List of ISSNs
+  - `mag`: Microsoft Academic Graph ID
+  - `fatcat`: Fatcat ID
+  - `wikidata`: Wikidata ID
+</ResponseField>
+
+<ResponseField name="summary_stats" type="object">
+  Citation metrics:
+  - `2yr_mean_citedness`: Impact factor
+  - `h_index`: h-index
+  - `i10_index`: i-10 index
+</ResponseField>
+
+<ResponseField name="counts_by_year" type="array">
+  `works_count` and `cited_by_count` for each of the last ten years.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that will get you a list of all this source's works.
+
+  `"https://api.openalex.org/works?filter=primary_location.source.id:S1983995261"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this source was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this source was last updated (ISO 8601 datetime).
+</ResponseField>
+
+## The DehydratedSource object
+
+A stripped-down Source object with only:
+- `id`
+- `display_name`
+- `issn_l`
+- `issn`
+- `is_oa`
+- `is_in_doaj`
+- `is_core`
+- `host_organization`
+- `host_organization_name`
+- `host_organization_lineage`
+- `type`
