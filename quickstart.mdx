@@ -1,80 +1,123 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Query the OpenAlex dataset in 5 minutes
 ---
 
-## Get started in three steps
+Let's use the OpenAlex API to find journal articles published by authors at Stanford University between 2010 and 2020. No login or API key required for basic queries.
 
-Get your documentation site running locally and make your first customization.
+<Tip>
+Install a JSON viewer extension like [JSONVue](https://chrome.google.com/webstore/detail/jsonvue/chklaanhfefbnpoihckbnefhakgolnmc) to make API responses easier to read in your browser.
+</Tip>
 
-### Step 1: Set up your local environment
+## 1. Find an institution
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+Search for Stanford University using the institutions endpoint:
 
-### Step 2: Deploy your changes
+```bash
+https://api.openalex.org/institutions?search=stanford
+```
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+The first result has the ID we need:
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+```json
+{
+  "id": "https://openalex.org/I97018004",
+  "ror": "https://ror.org/00f54p054",
+  "display_name": "Stanford University",
+  "country_code": "US",
+  "type": "education"
+}
+```
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## 2. Get a single entity
 
-### Step 3: Go live
+Fetch the full institution record by ID:
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+```bash
+https://api.openalex.org/institutions/I97018004
+```
+
+This works for any entity type—works, authors, sources, etc.
+
+## 3. Find works from Stanford
+
+Filter works to show those with at least one Stanford author:
+
+```bash
+https://api.openalex.org/works?filter=institutions.id:I97018004
+```
+
+## 4. Filter by year and sort
+
+Narrow to 2010-2020 and sort newest first:
+
+```bash
+https://api.openalex.org/works?filter=institutions.id:I97018004,publication_year:2010-2020&sort=publication_date:desc
+```
+
+## 5. Group by year
+
+Get counts per year:
+
+```bash
+https://api.openalex.org/works?filter=institutions.id:I97018004,publication_year:2010-2020&group_by=publication_year
+```
+
+Response:
+
+```json
+[
+  { "key": "2020", "key_display_name": "2020", "count": 18627 },
+  { "key": "2019", "key_display_name": "2019", "count": 15933 },
+  { "key": "2017", "key_display_name": "2017", "count": 14789 }
+]
+```
+
+## 6. Semantic search (optional)
+
+Find conceptually related works using AI:
+
+```bash
+https://api.openalex.org/find/works?query=machine+learning+in+healthcare&api_key=YOUR_KEY
+```
+
+This finds papers about "AI-driven diagnosis" even if they don't use the exact words "machine learning."
+
+<Note>
+Semantic search requires an [API key](/guides/authentication). Basic filtering and searching is free.
+</Note>
+
+## 7. Download full text (optional)
+
+For works with available content:
+
+<CodeGroup>
+```bash PDF
+https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY
+```
+
+```bash TEI XML
+https://content.openalex.org/works/W2741809807.grobid-xml?api_key=YOUR_KEY
+```
+</CodeGroup>
+
+Check the `has_content.pdf` filter to find downloadable works.
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Works" icon="file-lines" href="/guides/works">
+    Journal articles, books, datasets, theses
+  </Card>
+  <Card title="Authors" icon="user" href="/guides/authors">
+    Researchers and their publications
+  </Card>
+  <Card title="Filtering" icon="filter" href="/guides/filtering">
+    Narrow results with 150+ filter options
+  </Card>
+  <Card title="Recipes" icon="book" href="/guides/recipes">
+    Common API patterns and examples
+  </Card>
 </CardGroup>
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+All data is [CC0 licensed](https://creativecommons.org/publicdomain/zero/1.0/) — free to access and share.
