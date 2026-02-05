@@ -1,0 +1,132 @@
+---
+title: Topics and keywords
+description: Understanding topic classification in OpenAlex
+---
+
+OpenAlex assigns research topics and keywords to works using machine learning. This enables filtering and grouping by subject area.
+
+## Topics
+
+Topics are research areas organized in a 4-level hierarchy. OpenAlex has ~4,500 topics.
+
+```bash
+# List all topics
+https://api.openalex.org/topics
+
+# Get a specific topic
+https://api.openalex.org/topics/T10560
+```
+
+### Topic hierarchy
+
+| Level | Name | Count | Example |
+|-------|------|-------|---------|
+| 1 | Domain | 4 | Life Sciences |
+| 2 | Field | 26 | Medicine |
+| 3 | Subfield | 254 | Endocrinology |
+| 4 | Topic | ~4,500 | Diabetes Management |
+
+```bash
+# Get all domains
+https://api.openalex.org/domains
+
+# Get all fields
+https://api.openalex.org/fields
+
+# Get all subfields
+https://api.openalex.org/subfields
+
+# Get topics in a specific field
+https://api.openalex.org/topics?filter=field.id:17
+```
+
+### Key topic properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID (e.g., `T10560`) |
+| `display_name` | Topic name |
+| `description` | Brief description |
+| `domain` | Parent domain |
+| `field` | Parent field |
+| `subfield` | Parent subfield |
+| `works_count` | Number of tagged works |
+| `siblings` | Related topics |
+
+## Keywords
+
+Keywords are short phrases extracted from topics. Each work has up to 10 keywords.
+
+```bash
+# List all keywords
+https://api.openalex.org/keywords
+
+# Get a specific keyword
+https://api.openalex.org/keywords/type-1-diabetes
+```
+
+### Key keyword properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID |
+| `display_name` | Keyword phrase |
+| `works_count` | Number of tagged works |
+| `cited_by_count` | Total citations |
+
+## SDGs (Sustainable Development Goals)
+
+Works are also tagged with UN Sustainable Development Goals when relevant.
+
+```bash
+# List all SDGs
+https://api.openalex.org/sdgs
+
+# Get works tagged with SDG 3 (Good Health)
+https://api.openalex.org/works?filter=sustainable_development_goals.id:3
+```
+
+| SDG | Name |
+|-----|------|
+| 1 | No Poverty |
+| 2 | Zero Hunger |
+| 3 | Good Health and Well-being |
+| 4 | Quality Education |
+| 5 | Gender Equality |
+| 6 | Clean Water and Sanitation |
+| 7 | Affordable and Clean Energy |
+| 8 | Decent Work and Economic Growth |
+| 9 | Industry, Innovation and Infrastructure |
+| 10 | Reduced Inequalities |
+| 11 | Sustainable Cities and Communities |
+| 12 | Responsible Consumption and Production |
+| 13 | Climate Action |
+| 14 | Life Below Water |
+| 15 | Life on Land |
+| 16 | Peace, Justice and Strong Institutions |
+| 17 | Partnerships for the Goals |
+
+## Filtering works by subject
+
+```bash
+# Works in a specific topic
+https://api.openalex.org/works?filter=topics.id:T10560
+
+# Works in a specific domain
+https://api.openalex.org/works?filter=topics.domain.id:1
+
+# Works with a specific keyword
+https://api.openalex.org/works?filter=keywords.id:machine-learning
+
+# Works tagged with SDG 13 (Climate Action)
+https://api.openalex.org/works?filter=sustainable_development_goals.id:13
+```
+
+## API reference
+
+- [Topics](/api-reference/topics) — Topic schema and endpoints
+- [Keywords](/api-reference/keywords) — Keyword schema and endpoints
+- [Domains](/api-reference/domains) — Domain endpoints
+- [Fields](/api-reference/fields) — Field endpoints
+- [Subfields](/api-reference/subfields) — Subfield endpoints
+- [SDGs](/api-reference/sdgs) — SDG endpoints

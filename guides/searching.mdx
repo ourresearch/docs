@@ -1,0 +1,112 @@
+---
+title: Searching
+description: Find entities using full-text search across titles, abstracts, and more
+---
+
+The `search` parameter finds results matching a given text search.
+
+```bash
+# Works with "dna" in title, abstract, or fulltext
+https://api.openalex.org/works?search=dna
+```
+
+## What gets searched
+
+Each entity type searches different fields:
+
+| Entity | Searchable fields |
+|--------|-------------------|
+| Works | `title`, `abstract`, `fulltext` |
+| Authors | `display_name`, `display_name_alternatives` |
+| Sources | `display_name`, `alternate_titles`, `abbreviated_title` |
+| Institutions | `display_name`, `display_name_alternatives`, `display_name_acronyms` |
+| Topics/Keywords | `display_name`, `description` |
+
+## Text processing
+
+OpenAlex uses [stemming](https://en.wikipedia.org/wiki/Stemming) and removes [stop words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stop-tokenfilter.html) to improve results:
+
+- Words like "the" and "an" are removed
+- A search for "possums" also returns "possum"
+- Searches match whole words only ("lun" won't match "lunar")
+
+### Disable stemming
+
+Add `.no_stem` to search without stemming:
+
+```bash
+# Exact match "surgery" without "surgeries"
+https://api.openalex.org/works?filter=display_name.search.no_stem:surgery
+https://api.openalex.org/works?filter=title.search.no_stem:surgery
+https://api.openalex.org/works?filter=abstract.search.no_stem:surgery
+```
+
+## Boolean searches
+
+Use `AND`, `OR`, `NOT` (uppercase) for complex queries. Surround phrases with double quotes for exact matching:
+
+```bash
+# Works about "elmo" AND "sesame street" but NOT "cookie" or "monster"
+https://api.openalex.org/works?search=(elmo AND "sesame street") NOT (cookie OR monster)
+```
+
+<Note>
+Words not separated by boolean operators are treated as `AND`. Wildcard (`*`, `?`) and fuzzy (`~`) searches are not supported.
+</Note>
+
+## Relevance score
+
+Search results include a `relevance_score` property and are sorted by it (descending) by default. The score is based on:
+
+- Text similarity to your search term
+- Citation count (more cited = higher score)
+
+### Phrase matching
+
+Multi-word searches rank results higher when words appear close together. For exact phrase matching, use quotes:
+
+<CodeGroup>
+```bash Exact phrase (few results)
+https://api.openalex.org/works?search="fierce creatures"
+```
+
+```bash Words anywhere (more results)
+https://api.openalex.org/works?search=fierce creatures
+```
+</CodeGroup>
+
+## Search filter
+
+Use `.search` as a filter suffix to search specific fields:
+
+```bash
+# Authors with "Einstein" in their name
+https://api.openalex.org/authors?filter=display_name.search:einstein
+
+# Works with "cubist" in the title only
+https://api.openalex.org/works?filter=title.search:cubist
+```
+
+The `default.search` filter works the same as the `search` parameter.
+
+<Warning>
+**Don't use search filters for autocomplete.** The [autocomplete endpoint](/guides/autocomplete) is much faster:
+
+```bash
+# Slow
+https://api.openalex.org/institutions?filter=display_name.search:florida
+
+# Fast
+https://api.openalex.org/autocomplete/institutions?q=Florida
+```
+</Warning>
+
+## Keyword vs. semantic search
+
+| Use keyword search when... | Use [semantic search](/guides/similar-works) when... |
+|----------------------------|------------------------------------------------------|
+| You know the exact terms | You want conceptually related works |
+| You need filters/sorting | You're exploring a new research area |
+| You want specific fields | Your query is a sentence or paragraph |
+
+Semantic search uses AI embeddings to find works by meaning. A query about "machine learning in healthcare" finds papers using "AI-driven diagnosis" or "computational medicine."

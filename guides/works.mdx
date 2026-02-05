@@ -1,0 +1,133 @@
+---
+title: Works
+description: Understanding scholarly works in OpenAlex
+---
+
+Works are scholarly documents: journal articles, books, datasets, theses, and more. OpenAlex indexes over 250 million works, with ~50,000 added daily.
+
+```bash
+# List all works
+https://api.openalex.org/works
+
+# Get a specific work
+https://api.openalex.org/works/W2741809807
+```
+
+## Sources
+
+OpenAlex collects works from:
+- **Crossref** — DOI registrations from publishers
+- **PubMed** — Biomedical literature
+- **Repositories** — arXiv, institutional repositories, discipline-specific archives
+- **Microsoft Academic Graph** — Historical data (now defunct)
+
+## Key properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID (e.g., `W2741809807`) |
+| `doi` | Digital Object Identifier |
+| `title` | Work title |
+| `display_name` | Title for display |
+| `publication_date` | Date published |
+| `publication_year` | Year published |
+| `type` | Work type (see table below) |
+| `cited_by_count` | Number of citations |
+| `open_access` | OA status and location |
+| `authorships` | Authors and their affiliations |
+| `primary_location` | Where the work is hosted |
+| `topics` | Assigned research topics |
+| `keywords` | Extracted keywords |
+
+See the [Work object](/api-reference/works) for the complete schema.
+
+## Work types
+
+Filter works by type using `filter=type:{type}`:
+
+| Type | Description |
+|------|-------------|
+| `article` | Journal article |
+| `book` | Complete book |
+| `book-chapter` | Chapter in a book |
+| `dataset` | Research dataset |
+| `dissertation` | PhD/Master's thesis |
+| `editorial` | Editorial content |
+| `erratum` | Correction notice |
+| `grant` | Funding grant |
+| `letter` | Letter to editor |
+| `libguides` | Library guide |
+| `other` | Uncategorized |
+| `paratext` | Front/back matter |
+| `peer-review` | Peer review |
+| `posted-content` | Preprint |
+| `proceedings-article` | Conference paper |
+| `reference-entry` | Encyclopedia entry |
+| `report` | Technical report |
+| `standard` | Standard document |
+
+```bash
+# Get all articles
+https://api.openalex.org/works?filter=type:article
+
+# Get all datasets
+https://api.openalex.org/works?filter=type:dataset
+```
+
+## Licenses
+
+Filter by open access license using `filter=best_oa_location.license:{license}`:
+
+| License | Description |
+|---------|-------------|
+| `cc-by` | Attribution |
+| `cc-by-sa` | Attribution-ShareAlike |
+| `cc-by-nc` | Attribution-NonCommercial |
+| `cc-by-nc-sa` | Attribution-NonCommercial-ShareAlike |
+| `cc-by-nd` | Attribution-NoDerivatives |
+| `cc-by-nc-nd` | Attribution-NonCommercial-NoDerivatives |
+| `cc0` | Public domain dedication |
+| `public-domain` | Public domain |
+| `publisher-specific-oa` | Publisher-specific license |
+
+```bash
+# Get CC-BY works
+https://api.openalex.org/works?filter=best_oa_location.license:cc-by
+```
+
+## Citations
+
+Works link to other works through:
+
+| Property | Description |
+|----------|-------------|
+| `referenced_works` | Outgoing citations (works this one cites) |
+| `cited_by_api_url` | Incoming citations (works that cite this one) |
+| `related_works` | Semantically related works |
+
+```bash
+# Get works that cite a specific work
+https://api.openalex.org/works?filter=cites:W2741809807
+```
+
+## Common filters
+
+| Filter | Example |
+|--------|---------|
+| By year | `filter=publication_year:2023` |
+| By type | `filter=type:article` |
+| By OA status | `filter=open_access.is_oa:true` |
+| By author | `filter=author.id:A5023888391` |
+| By institution | `filter=institutions.id:I27837315` |
+| By topic | `filter=topics.id:T10560` |
+| Has abstract | `filter=has_abstract:true` |
+| Has DOI | `filter=has_doi:true` |
+| High citations | `filter=cited_by_count:>100` |
+
+See [List works](/api-reference/works/list-works) for all available filters.
+
+## API reference
+
+- [The Work object](/api-reference/works) — Schema and properties
+- [Get a work](/api-reference/works/get-work) — Retrieve by ID
+- [List works](/api-reference/works/list-works) — Filter, search, sort

@@ -1,0 +1,157 @@
+---
+title: Recipes
+description: Common API patterns and use cases
+---
+
+Quick solutions for common OpenAlex tasks.
+
+## Find works by an author
+
+```bash
+# Get all works by a specific author
+https://api.openalex.org/works?filter=author.id:A5023888391&sort=-publication_date
+
+# Get highly cited works by an author
+https://api.openalex.org/works?filter=author.id:A5023888391,cited_by_count:>10&sort=-cited_by_count
+```
+
+## Find works from an institution
+
+```bash
+# Works from Harvard
+https://api.openalex.org/works?filter=institutions.id:I136199984&sort=-publication_date
+
+# Open access works from MIT since 2020
+https://api.openalex.org/works?filter=institutions.id:I63966007,open_access.is_oa:true,publication_year:>2019
+```
+
+## Find works on a topic
+
+```bash
+# Works about machine learning
+https://api.openalex.org/works?filter=topics.id:T10000&sort=-cited_by_count
+
+# Keyword search for "CRISPR"
+https://api.openalex.org/works?search=CRISPR&sort=-relevance_score
+```
+
+## Find citations to a work
+
+```bash
+# Works that cite a specific paper
+https://api.openalex.org/works?filter=cites:W2741809807&sort=-publication_date
+```
+
+## Find co-authors
+
+```bash
+# Other authors who published with a specific author
+https://api.openalex.org/authors?filter=x_concepts.id:C41008148&sort=-works_count
+```
+
+## Get publication trends
+
+```bash
+# Count works per year (2020-2024)
+https://api.openalex.org/works?filter=publication_year:2020-2024&group_by=publication_year
+
+# Count open access works per year
+https://api.openalex.org/works?filter=publication_year:2020-2024,open_access.is_oa:true&group_by=publication_year
+```
+
+## Find open access works
+
+```bash
+# All OA works from 2024
+https://api.openalex.org/works?filter=publication_year:2024,open_access.is_oa:true
+
+# Gold OA works (published in OA journals)
+https://api.openalex.org/works?filter=open_access.oa_status:gold
+
+# Works with CC-BY license
+https://api.openalex.org/works?filter=best_oa_location.license:cc-by
+```
+
+## Find works with full text
+
+```bash
+# Works with downloadable PDFs
+https://api.openalex.org/works?filter=has_content.pdf:true
+
+# Works with abstracts
+https://api.openalex.org/works?filter=has_abstract:true
+```
+
+## Get institution rankings
+
+```bash
+# Top US universities by citation count
+https://api.openalex.org/institutions?filter=country_code:US,type:education&sort=-cited_by_count&per_page=20
+```
+
+## Get journal metrics
+
+```bash
+# Top journals by work count
+https://api.openalex.org/sources?filter=type:journal&sort=-works_count&per_page=20
+
+# Open access journals
+https://api.openalex.org/sources?filter=type:journal,is_oa:true&sort=-works_count
+```
+
+## Batch fetch multiple IDs
+
+Use the OR operator (`|`) to fetch up to 100 IDs at once:
+
+```bash
+# Get multiple works by DOI
+https://api.openalex.org/works?filter=doi:https://doi.org/10.1234/a|https://doi.org/10.1234/b|https://doi.org/10.1234/c&per_page=100
+
+# Get multiple authors by ORCID
+https://api.openalex.org/authors?filter=orcid:0000-0001-2345-6789|0000-0002-3456-7890&per_page=100
+```
+
+## Random sample
+
+```bash
+# 100 random works from 2024
+https://api.openalex.org/works?filter=publication_year:2024&sample=100&per_page=100&seed=42
+```
+
+## Combine filters
+
+```bash
+# Highly cited OA articles about cancer from 2023
+https://api.openalex.org/works?filter=publication_year:2023,type:article,open_access.is_oa:true,default.search:cancer,cited_by_count:>50&sort=-cited_by_count
+```
+
+## Python example
+
+```python
+import requests
+
+def get_works(filter_str, per_page=100):
+    """Fetch works with pagination."""
+    url = "https://api.openalex.org/works"
+    params = {
+        "filter": filter_str,
+        "per_page": per_page,
+        "cursor": "*",
+        "api_key": "YOUR_KEY"
+    }
+
+    all_works = []
+    while True:
+        response = requests.get(url, params=params).json()
+        all_works.extend(response["results"])
+
+        cursor = response["meta"].get("next_cursor")
+        if not cursor:
+            break
+        params["cursor"] = cursor
+
+    return all_works
+
+# Get all 2024 works about AI
+works = get_works("publication_year:2024,default.search:artificial intelligence")
+```

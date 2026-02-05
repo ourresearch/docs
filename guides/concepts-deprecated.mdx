@@ -1,0 +1,61 @@
+---
+title: Concepts (deprecated)
+description: Legacy taxonomy replaced by Topics
+---
+
+<Warning>
+**Deprecated.** Concepts are OpenAlex's legacy subject classification system. Use [Topics](/guides/topics-and-keywords) instead for new projects. The Concepts API remains available for backward compatibility.
+</Warning>
+
+## What are Concepts?
+
+Concepts were a hierarchical taxonomy of research areas, similar to Topics but based on the deprecated Microsoft Academic Graph classification. OpenAlex had ~65,000 concepts organized in 6 levels.
+
+## Migration to Topics
+
+Topics replaced Concepts in 2023. Key differences:
+
+| Feature | Concepts | Topics |
+|---------|----------|--------|
+| Count | ~65,000 | ~4,500 |
+| Hierarchy | 6 levels | 4 levels |
+| Source | Microsoft Academic Graph | OpenAlex native |
+| Status | Deprecated | Active |
+
+## Using Concepts (if needed)
+
+```bash
+# List all concepts
+https://api.openalex.org/concepts
+
+# Get a specific concept
+https://api.openalex.org/concepts/C71924100
+
+# Works tagged with a concept
+https://api.openalex.org/works?filter=concepts.id:C71924100
+```
+
+### Key properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID (e.g., `C71924100`) |
+| `wikidata` | Wikidata ID |
+| `display_name` | Concept name |
+| `level` | Hierarchy level (0-5) |
+| `ancestors` | Parent concepts |
+| `related_concepts` | Related concepts |
+| `works_count` | Tagged works |
+
+### Common filters
+
+| Filter | Example |
+|--------|---------|
+| By level | `filter=level:0` (top-level) |
+| By ancestor | `filter=ancestors.id:C71924100` |
+| Has Wikidata | `filter=has_wikidata:true` |
+
+## API reference
+
+- [Concepts](/api-reference/concepts) — Concept schema and endpoints (deprecated)
+- [Topics](/api-reference/topics) — Replacement system

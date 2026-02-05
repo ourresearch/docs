@@ -1,0 +1,63 @@
+---
+title: Aboutness tagging
+description: Tag your own text with OpenAlex topics, keywords, and concepts
+---
+
+<Warning>
+**Deprecated endpoint.** The `/text/topics` endpoint is deprecated. Use the `/text/keywords` endpoint instead.
+</Warning>
+
+The `/text` endpoint lets you tag free text with OpenAlex's "aboutness" assignments: topics, keywords, and concepts.
+
+## Request format
+
+Send a `title` and optional `abstract` via GET or POST:
+
+```bash
+GET https://api.openalex.org/text/keywords?title=type%201%20diabetes%20research%20for%20children
+```
+
+## Available endpoints
+
+| Endpoint | Returns |
+|----------|---------|
+| `/text/keywords` | Keywords for your text |
+| `/text/concepts` | Concepts for your text |
+| `/text` | All of the above in one request |
+
+## Example response
+
+```bash
+GET https://api.openalex.org/text?title=type%201%20diabetes%20research%20for%20children
+```
+
+```json
+{
+  "meta": {
+    "keywords_count": 5,
+    "concepts_count": 3
+  },
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/type-1-diabetes",
+      "display_name": "Type 1 Diabetes",
+      "score": 0.677
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "display_name": "Medicine",
+      "score": 0.85
+    }
+  ]
+}
+```
+
+## Limits
+
+| Constraint | Value |
+|------------|-------|
+| Text length | 20-2000 characters |
+| Rate limit | 1 request per second |
+| Credit cost | 1,000 credits per request |

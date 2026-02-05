@@ -1,0 +1,131 @@
+---
+title: Filtering
+description: Narrow down results to entities that match specific conditions
+---
+
+Filters narrow your results to entities matching specific conditions. Use the `filter` parameter with attribute-value pairs:
+
+```
+filter=attribute:value,attribute2:value2
+```
+
+<Note>
+Filters are case-insensitive.
+</Note>
+
+## Examples
+
+<CodeGroup>
+```bash Works by type
+curl "https://api.openalex.org/works?filter=type:book"
+```
+
+```bash Authors by name
+curl "https://api.openalex.org/authors?filter=display_name.search:einstein"
+```
+
+```bash Sources with many works
+curl "https://api.openalex.org/sources?filter=works_count:>1000"
+```
+</CodeGroup>
+
+## Logical expressions
+
+### Inequality
+
+For numerical filters, use `<` and `>` for inequalities:
+
+```bash
+# Sources hosting more than 1000 works
+https://api.openalex.org/sources?filter=works_count:>1000
+```
+
+Some attributes have convenience filters like `from_publication_date` and `to_publication_date`:
+
+```bash
+# Works published between Jan 1-26, 2022
+https://api.openalex.org/works?filter=from_publication_date:2022-01-01,to_publication_date:2022-01-26
+```
+
+### Negation (NOT)
+
+Prepend `!` to negate any filter:
+
+```bash
+# All institutions except those in the US
+https://api.openalex.org/institutions?filter=country_code:!us
+```
+
+### Intersection (AND)
+
+Comma-separated filters are combined with AND:
+
+```bash
+# Works cited more than once AND open access
+https://api.openalex.org/works?filter=cited_by_count:>1,is_oa:true
+```
+
+For AND within a single attribute, repeat the filter or use `+`:
+
+<CodeGroup>
+```bash Repeating filters
+# Works with authors from France AND UK
+https://api.openalex.org/works?filter=institutions.country_code:fr,institutions.country_code:gb
+```
+
+```bash Using + symbol
+# Works with authors from France AND UK
+https://api.openalex.org/works?filter=institutions.country_code:fr+gb
+```
+</CodeGroup>
+
+<Note>
+The `+` syntax doesn't work for search filters, boolean filters, or numeric filters.
+</Note>
+
+### Addition (OR)
+
+Use the pipe `|` to match any of multiple values:
+
+```bash
+# Works with authors from France OR UK
+https://api.openalex.org/works?filter=institutions.country_code:fr|gb
+```
+
+This is efficient for retrieving many records by ID at once:
+
+```bash
+# Get two works by DOI in one request
+https://api.openalex.org/works?filter=doi:https://doi.org/10.1371/journal.pone.0266781|https://doi.org/10.1371/journal.pone.0267149
+```
+
+<Warning>
+**OR limit:** You can combine up to 100 values with `|` in a single filter. Use `per_page=100` to get all results.
+</Warning>
+
+<Warning>
+**OR works within a filter, not between filters.** This will return an error:
+```bash
+# INVALID: OR between different filters
+https://api.openalex.org/works?filter=institutions.country_code:fr|primary_location.source.issn:0957-1558
+```
+</Warning>
+
+## Available filters by entity
+
+Each entity type has its own set of filterable fields. See the API reference for complete filter lists:
+
+| Entity | Filters |
+|--------|---------|
+| [Works](/api-reference/works/list-works) | `publication_year`, `type`, `open_access.is_oa`, `author.id`, `institutions.id`, `cited_by_count`, `doi`, `has_abstract`, and ~150 more |
+| [Authors](/api-reference/authors/list-authors) | `has_orcid`, `last_known_institutions.id`, `works_count`, `cited_by_count`, `orcid` |
+| [Sources](/api-reference/sources/list-sources) | `is_oa`, `is_in_doaj`, `type`, `country_code`, `host_organization`, `issn` |
+| [Institutions](/api-reference/institutions/list-institutions) | `country_code`, `type`, `is_global_south`, `continent`, `ror`, `has_ror` |
+| [Topics](/api-reference/topics/list-topics) | `domain.id`, `field.id`, `subfield.id`, `works_count` |
+| [Keywords](/api-reference/keywords/list-keywords) | `works_count`, `cited_by_count` |
+| [Publishers](/api-reference/publishers/list-publishers) | `country_codes`, `hierarchy_level`, `ror`, `parent_publisher` |
+| [Funders](/api-reference/funders/list-funders) | `country_code`, `is_global_south`, `continent`, `ror`, `awards_count` |
+
+<Info>
+**Looking for text search?** Filters match exact values. For full-text search in titles, abstracts, and other fields, see [Searching](/guides/searching). For AI-powered semantic search that finds conceptually related works, see [Similar works](/guides/similar-works).
+</Info>

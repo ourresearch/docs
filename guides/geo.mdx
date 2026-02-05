@@ -1,0 +1,115 @@
+---
+title: Geographic entities
+description: Countries, continents, and languages in OpenAlex
+---
+
+OpenAlex provides geographic metadata to filter and analyze research by location and language.
+
+## Countries
+
+Countries are identified by ISO 3166-1 alpha-2 codes (e.g., `US`, `GB`, `CN`).
+
+```bash
+# List all countries
+https://api.openalex.org/countries
+
+# Get a specific country
+https://api.openalex.org/countries/US
+```
+
+### Key country properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | ISO 3166-1 alpha-2 code |
+| `display_name` | Country name |
+| `works_count` | Works with authors from this country |
+| `cited_by_count` | Citations to works from this country |
+| `is_global_south` | Global South classification |
+| `continent` | Parent continent |
+
+### Filtering by country
+
+```bash
+# Works with US authors
+https://api.openalex.org/works?filter=authorships.countries:US
+
+# Institutions in Germany
+https://api.openalex.org/institutions?filter=country_code:DE
+
+# Authors at UK institutions
+https://api.openalex.org/authors?filter=affiliations.institution.country_code:GB
+```
+
+## Continents
+
+Continents are identified by Wikidata IDs.
+
+| Continent | Wikidata ID |
+|-----------|-------------|
+| Africa | Q15 |
+| Asia | Q48 |
+| Europe | Q46 |
+| North America | Q49 |
+| Oceania | Q55643 |
+| South America | Q18 |
+| Antarctica | Q51 |
+
+```bash
+# List all continents
+https://api.openalex.org/continents
+
+# Get European institutions
+https://api.openalex.org/institutions?filter=continent:Q46
+
+# Works from African authors
+https://api.openalex.org/works?filter=authorships.countries:!null,institutions.continent:Q15
+```
+
+## Languages
+
+Languages are identified by ISO 639-1 codes (e.g., `en`, `zh`, `es`).
+
+```bash
+# List all languages
+https://api.openalex.org/languages
+
+# Get a specific language
+https://api.openalex.org/languages/en
+```
+
+### Key language properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | ISO 639-1 code |
+| `display_name` | Language name |
+| `works_count` | Works in this language |
+
+### Filtering by language
+
+```bash
+# Works in Spanish
+https://api.openalex.org/works?filter=language:es
+
+# Works in Chinese
+https://api.openalex.org/works?filter=language:zh
+```
+
+## Global South
+
+The `is_global_south` filter identifies countries in the Global South (developing nations).
+
+```bash
+# Works from Global South countries
+https://api.openalex.org/works?filter=institutions.is_global_south:true
+
+# Institutions in Global South
+https://api.openalex.org/institutions?filter=is_global_south:true
+```
+
+## API reference
+
+- [Countries](/api-reference/countries) — Country endpoints
+- [Continents](/api-reference/continents) — Continent endpoints
+- [Languages](/api-reference/languages) — Language endpoints

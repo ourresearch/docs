@@ -41,6 +41,15 @@
           {
             "group": "Working with the API",
             "pages": [
+              "guides/filtering",
+              "guides/searching",
+              "guides/sorting-and-paging",
+              "guides/grouping",
+              "guides/selecting-fields",
+              "guides/sampling",
+              "guides/autocomplete",
+              "guides/content-downloads",
+              "guides/aboutness",
               "guides/resolve-ids",
               "guides/similar-works"
             ]
@@ -50,6 +59,26 @@
             "pages": [
               "guides/llm-quick-reference",
               "guides/deprecations"
+            ]
+          },
+          {
+            "group": "Entities",
+            "pages": [
+              "guides/works",
+              "guides/authors",
+              "guides/sources",
+              "guides/institutions",
+              "guides/topics-and-keywords",
+              "guides/publishers",
+              "guides/funders-and-awards",
+              "guides/geo",
+              "guides/concepts-deprecated"
+            ]
+          },
+          {
+            "group": "Tutorials",
+            "pages": [
+              "guides/recipes"
             ]
           }
         ]

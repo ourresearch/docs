@@ -1,0 +1,114 @@
+---
+title: Grouping
+description: Aggregate entities into faceted counts using group_by
+---
+
+The `group_by` parameter aggregates entities into groups and counts how many are in each group.
+
+```bash
+# Count works by type
+https://api.openalex.org/works?group_by=type
+```
+
+Response:
+
+```json
+{
+  "meta": {
+    "count": 246136992,
+    "groups_count": 15
+  },
+  "group_by": [
+    {
+      "key": "article",
+      "key_display_name": "article",
+      "count": 202814957
+    },
+    {
+      "key": "book-chapter",
+      "key_display_name": "book-chapter",
+      "count": 21250659
+    },
+    {
+      "key": "dissertation",
+      "key_display_name": "dissertation",
+      "count": 6055973
+    }
+  ]
+}
+```
+
+## Group properties
+
+Each group object contains:
+
+| Property | Description |
+|----------|-------------|
+| `key` | The OpenAlex ID or raw value for this group |
+| `key_display_name` | The display name or raw value for this group |
+| `count` | Number of entities in the group |
+
+### `key` vs `key_display_name`
+
+When grouping by an OpenAlex entity, `key` is the ID and `key_display_name` is the display name:
+
+```bash
+# Group works by institution
+https://api.openalex.org/works?group_by=authorships.institutions.id
+```
+
+Returns groups like:
+```json
+{
+  "key": "https://openalex.org/I136199984",
+  "key_display_name": "Harvard University",
+  "count": 1234567
+}
+```
+
+For non-entity values (like `level`), both `key` and `key_display_name` are the raw value.
+
+## Including unknowns
+
+The "unknown" group (entities without a value) is hidden by default. Add `:include_unknown` to include it:
+
+<CodeGroup>
+```bash Without unknowns (default)
+https://api.openalex.org/works?group_by=authorships.countries
+```
+
+```bash With unknowns
+https://api.openalex.org/works?group_by=authorships.countries:include_unknown
+```
+</CodeGroup>
+
+## Combining with filters
+
+Group by and filter work together:
+
+```bash
+# Count work types for 2023 publications
+https://api.openalex.org/works?filter=publication_year:2023&group_by=type
+
+# Count open access status for a specific author
+https://api.openalex.org/works?filter=author.id:A5023888391&group_by=open_access.is_oa
+```
+
+## Paging
+
+Maximum 200 groups per page. Use [cursor paging](/guides/sorting-and-paging#cursor-paging) for more.
+
+<Note>
+When paging through groups, results are sorted by `key` (not by `count`).
+</Note>
+
+## Meta properties
+
+| Property | Description |
+|----------|-------------|
+| `meta.count` | Total entities matching the filter |
+| `meta.groups_count` | Number of groups in current page (or `null` if none) |
+
+<Note>
+Due to technical limitations, `groups_count` only reports groups in the current page, not the total number of groups.
+</Note>

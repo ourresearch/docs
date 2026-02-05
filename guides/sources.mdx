@@ -1,0 +1,75 @@
+---
+title: Sources
+description: Understanding source entities in OpenAlex
+---
+
+Sources are venues where works are hosted: journals, repositories, conference proceedings, and more. OpenAlex indexes over 250,000 sources.
+
+```bash
+# List all sources
+https://api.openalex.org/sources
+
+# Get a specific source
+https://api.openalex.org/sources/S137773608
+```
+
+## Key properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID (e.g., `S137773608`) |
+| `issn` | ISSN identifiers |
+| `display_name` | Source name |
+| `host_organization` | Publisher or host |
+| `type` | Source type (see table below) |
+| `works_count` | Number of works |
+| `cited_by_count` | Total citations |
+| `is_oa` | Open access journal |
+| `is_in_doaj` | Listed in DOAJ |
+| `apc_usd` | Article processing charge |
+
+See the [Source object](/api-reference/sources) for the complete schema.
+
+## Source types
+
+Filter sources by type using `filter=type:{type}`:
+
+| Type | Description |
+|------|-------------|
+| `journal` | Academic journal |
+| `repository` | Institutional/subject repository |
+| `conference` | Conference proceedings |
+| `ebook platform` | E-book collection |
+| `book series` | Book series |
+| `metadata` | Metadata aggregator |
+| `other` | Uncategorized |
+
+```bash
+# Get all journals
+https://api.openalex.org/sources?filter=type:journal
+
+# Get all repositories
+https://api.openalex.org/sources?filter=type:repository
+```
+
+## Common filters
+
+| Filter | Example |
+|--------|---------|
+| By type | `filter=type:journal` |
+| Open access | `filter=is_oa:true` |
+| In DOAJ | `filter=is_in_doaj:true` |
+| By country | `filter=country_code:US` |
+| By publisher | `filter=host_organization:P4310319965` |
+| High impact | `filter=works_count:>10000` |
+
+```bash
+# Open access journals with high work counts
+https://api.openalex.org/sources?filter=is_oa:true,type:journal,works_count:>5000
+```
+
+## API reference
+
+- [The Source object](/api-reference/sources) — Schema and properties
+- [Get a source](/api-reference/sources/get-source) — Retrieve by ID
+- [List sources](/api-reference/sources/list-sources) — Filter, search, sort

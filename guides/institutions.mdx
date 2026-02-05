@@ -1,0 +1,76 @@
+---
+title: Institutions
+description: Understanding institution entities in OpenAlex
+---
+
+Institutions are organizations affiliated with scholarly works: universities, research institutes, hospitals, companies, and government agencies. OpenAlex indexes over 100,000 institutions.
+
+```bash
+# List all institutions
+https://api.openalex.org/institutions
+
+# Get a specific institution
+https://api.openalex.org/institutions/I27837315
+```
+
+## Key properties
+
+| Property | Description |
+|----------|-------------|
+| `id` | OpenAlex ID (e.g., `I27837315`) |
+| `ror` | ROR identifier |
+| `display_name` | Institution name |
+| `country_code` | ISO 3166-1 alpha-2 code |
+| `type` | Institution type (see table below) |
+| `works_count` | Number of works |
+| `cited_by_count` | Total citations |
+| `homepage_url` | Official website |
+| `lineage` | Parent institutions |
+| `associated_institutions` | Related institutions |
+
+See the [Institution object](/api-reference/institutions) for the complete schema.
+
+## Institution types
+
+Filter institutions by type using `filter=type:{type}`:
+
+| Type | Description |
+|------|-------------|
+| `education` | Universities, colleges |
+| `healthcare` | Hospitals, medical centers |
+| `company` | Private companies |
+| `government` | Government agencies |
+| `nonprofit` | Non-profit organizations |
+| `facility` | Research facilities |
+| `archive` | Libraries, archives |
+| `other` | Uncategorized |
+
+```bash
+# Get all universities
+https://api.openalex.org/institutions?filter=type:education
+
+# Get all companies
+https://api.openalex.org/institutions?filter=type:company
+```
+
+## Common filters
+
+| Filter | Example |
+|--------|---------|
+| By type | `filter=type:education` |
+| By country | `filter=country_code:US` |
+| By continent | `filter=continent:Q46` (Europe) |
+| Global South | `filter=is_global_south:true` |
+| Has ROR | `filter=has_ror:true` |
+| High citations | `filter=cited_by_count:>1000000` |
+
+```bash
+# US universities with high citation counts
+https://api.openalex.org/institutions?filter=country_code:US,type:education&sort=-cited_by_count
+```
+
+## API reference
+
+- [The Institution object](/api-reference/institutions) — Schema and properties
+- [Get an institution](/api-reference/institutions/get-institution) — Retrieve by ID
+- [List institutions](/api-reference/institutions/list-institutions) — Filter, search, sort

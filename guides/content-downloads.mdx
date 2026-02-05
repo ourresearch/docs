@@ -1,0 +1,109 @@
+---
+title: Content downloads
+description: Download PDFs and TEI XML for OpenAlex works
+---
+
+OpenAlex caches full-text content for ~60 million Open Access works:
+
+- **PDF** (60M): Download PDFs directly from us
+- **TEI XML** (43M): Machine-readable format parsed from PDFs via [Grobid](https://github.com/kermitt2/grobid)
+
+<Warning>
+Content downloads require an API key and cost **100 credits per file**. See [authentication](/guides/authentication) for details.
+</Warning>
+
+## Download a single work
+
+```
+https://content.openalex.org/works/{work_id}.pdf?api_key=YOUR_KEY
+```
+
+| Extension | Format |
+|-----------|--------|
+| `.pdf` | PDF (default) |
+| `.grobid-xml` | TEI XML |
+
+<CodeGroup>
+```bash PDF
+curl "https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY"
+```
+
+```bash TEI XML
+curl "https://content.openalex.org/works/W2741809807.grobid-xml?api_key=YOUR_KEY"
+```
+</CodeGroup>
+
+## Download multiple works
+
+For thousands to millions of downloads, use the CLI tool:
+
+```bash
+pip install openalex-content-downloader
+
+openalex-content download \
+  --api-key YOUR_KEY \
+  --output ./pdfs \
+  --filter "has_content.pdf:true"
+```
+
+The tool handles parallel downloads, retries, and checkpointing. See [Full-text PDFs](/download/full-text-pdfs) for details.
+
+## Find downloadable content
+
+### Check the work object
+
+Look for the `content_url` field:
+
+```json
+{
+  "id": "https://openalex.org/W2741809807",
+  "content_url": "https://content.openalex.org/works/W2741809807"
+}
+```
+
+### Use the has_content filter
+
+```bash
+# Works about frogs with PDFs
+https://api.openalex.org/works?filter=default.search:frogs,has_content.pdf:true
+
+# CC-BY works from 2024 with PDFs
+https://api.openalex.org/works?filter=has_content.pdf:true,best_oa_location.license:cc-by,publication_year:2024-
+```
+
+## How it works
+
+1. We verify your API key has enough credits
+2. We generate a presigned URL to Cloudflare R2 (expires in 5 minutes)
+3. We return a 302 redirect to that URL
+4. Your client follows the redirect and downloads from Cloudflare's edge network
+
+## Credit costs
+
+| Action | Credits |
+|--------|---------|
+| Download PDF or TEI XML | 100 |
+| Get a work by ID | 0 |
+| List/filter works | 1 |
+
+## Example: Build a corpus for AI synthesis
+
+```python
+import requests
+
+work_ids = ["W4388482763", "W4386073691", ...]
+
+for work_id in work_ids:
+    r = requests.get(
+        f"https://content.openalex.org/works/{work_id}.pdf",
+        params={"api_key": "YOUR_KEY"},
+        allow_redirects=True
+    )
+
+    with open(f"{work_id}.pdf", "wb") as f:
+        f.write(r.content)
+```
+
+<Info>
+**Downloading more than a few thousand files?** Use the [CLI tool](/download/full-text-pdfs#option-2-command-line-tool-up-to-a-few-million-files) for parallel downloads and automatic retries.
+</Info>
