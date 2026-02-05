@@ -65,6 +65,14 @@
             ]
           },
           {
+            "group": "Utilities",
+            "openapi": "api-reference/openapi.json",
+            "pages": [
+              "GET /autocomplete/{entity_type}",
+              "GET /rate-limit"
+            ]
+          },
+          {
             "group": "Entities",
             "openapi": "api-reference/openapi.json",
             "pages": [
@@ -125,14 +133,6 @@
                   "GET /funders/{id}"
                 ]
               }
-            ]
-          },
-          {
-            "group": "Utilities",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /autocomplete/{entity_type}",
-              "GET /rate-limit"
             ]
           }
         ]
