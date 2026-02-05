@@ -123,15 +123,30 @@
         "description": "Get a list of scholarly works with optional filtering, searching, sorting, and pagination. Works include journal articles, books, datasets, theses, and more.",
         "tags": ["Works"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter works. Examples: `publication_year:2023`, `type:article`, `open_access.is_oa:true`, `author.id:A5023888391`, `institutions.id:I27837315`, `cited_by_count:>100`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `cited_by_count`, `publication_date`, `relevance_score` (with search). Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `publication_year`, `type`, `open_access.is_oa`, `authorships.institutions.country_code`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -207,15 +222,30 @@
         "description": "Get a list of authors with optional filtering, searching, sorting, and pagination.",
         "tags": ["Authors"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter authors. Examples: `has_orcid:true`, `last_known_institutions.id:I27837315`, `works_count:>100`, `affiliations.institution.country_code:US`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`, `summary_stats.i10_index`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `last_known_institutions.country_code`, `last_known_institutions.type`, `has_orcid`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -286,15 +316,30 @@
         "description": "Get a list of sources (journals, repositories, conferences) with optional filtering, searching, sorting, and pagination.",
         "tags": ["Sources"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter sources. Examples: `is_oa:true`, `is_in_doaj:true`, `type:journal`, `country_code:US`, `host_organization:P4310320595`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `type`, `country_code`, `is_oa`, `is_in_doaj`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -365,15 +410,30 @@
         "description": "Get a list of institutions with optional filtering, searching, sorting, and pagination.",
         "tags": ["Institutions"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter institutions. Examples: `country_code:US`, `type:education`, `is_global_south:true`, `continent:Q46`, `has_ror:true`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `country_code`, `type`, `continent`, `is_global_south`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -444,15 +504,30 @@
         "description": "Get a list of topics with optional filtering, searching, sorting, and pagination. Topics are research areas automatically assigned to works.",
         "tags": ["Topics"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter topics. Examples: `domain.id:1`, `field.id:17`, `subfield.id:1702`, `works_count:>1000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `domain.id`, `field.id`, `subfield.id`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -513,9 +588,19 @@
         "description": "Get a list of keywords with optional filtering, searching, sorting, and pagination.",
         "tags": ["Keywords"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter keywords. Examples: `works_count:>100`, `cited_by_count:>1000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
@@ -582,15 +667,30 @@
         "description": "Get a list of publishers with optional filtering, searching, sorting, and pagination.",
         "tags": ["Publishers"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter publishers. Examples: `country_codes:US`, `hierarchy_level:0`, `lineage:P4310319965`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `country_codes`, `hierarchy_level`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -651,15 +751,30 @@
         "description": "Get a list of funders with optional filtering, searching, sorting, and pagination.",
         "tags": ["Funders"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter funders. Examples: `country_code:US`, `is_global_south:true`, `continent:Q46`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `awards_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `country_code`, `continent`, `is_global_south`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
           {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -831,12 +946,25 @@
         "description": "Get a list of domains (top-level topic categories). There are only 4 domains: Life Sciences, Social Sciences, Physical Sciences, and Health Sciences.",
         "tags": ["Domains"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter domains. Examples: `id:1`, `works_count:>10000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -907,11 +1035,29 @@
         "description": "Get a list of fields (second-level topic categories). There are 26 fields spread across 4 domains.",
         "tags": ["Fields"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter fields. Examples: `domain.id:1`, `works_count:>1000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `domain.id`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
           {"$ref": "#/components/parameters/api_key"}
         ],
@@ -983,11 +1129,29 @@
         "description": "Get a list of subfields (third-level topic categories). There are 254 subfields spread across 26 fields.",
         "tags": ["Subfields"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter subfields. Examples: `field.id:17`, `domain.id:3`, `works_count:>100000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `field.id`, `domain.id`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
           {"$ref": "#/components/parameters/api_key"}
         ],
@@ -1059,12 +1223,25 @@
         "description": "Get a list of UN Sustainable Development Goals. There are 17 SDGs.",
         "tags": ["SDGs"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter SDGs. Examples: `id:3` (Good Health), `works_count:>100000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1135,12 +1312,25 @@
         "description": "Get a list of countries. Useful for filtering works by author affiliation country.",
         "tags": ["Countries"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter countries. Examples: `id:US`, `works_count:>1000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1211,12 +1401,25 @@
         "description": "Get a list of continents (7 total).",
         "tags": ["Continents"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter continents. Examples: `id:Q46` (Europe), `works_count:>10000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1287,12 +1490,25 @@
         "description": "Get a list of languages used in scholarly works.",
         "tags": ["Languages"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter languages. Examples: `id:en` (English), `works_count:>100000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1363,12 +1579,29 @@
         "description": "Get a list of research grants and funding awards.",
         "tags": ["Awards"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter awards. Examples: `funder.id:F4320306076`, `start_year:2023`, `funded_outputs_count:>10`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `funded_outputs_count`, `amount`, `start_year`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `funder.id`, `start_year`, `currency`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
           {"$ref": "#/components/parameters/api_key"}
         ],
@@ -1431,12 +1664,29 @@
         "deprecated": true,
         "tags": ["Concepts"],
         "parameters": [
-          {"$ref": "#/components/parameters/filter"},
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter concepts. Examples: `level:0` (top-level), `ancestors.id:C41008148`, `wikidata_id:Q21198`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`, `level`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group by: `level`",
+            "schema": {"type": "string"}
+          },
           {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/sort"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
           {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
           {"$ref": "#/components/parameters/select"},
           {"$ref": "#/components/parameters/api_key"}
         ],
@@ -1499,8 +1749,25 @@
         "description": "Get a list of work types (article, book, dataset, etc.).",
         "tags": ["Work Types"],
         "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter work types. Examples: `id:article`, `works_count:>1000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {"$ref": "#/components/parameters/search"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1525,8 +1792,25 @@
         "description": "Get a list of source types (journal, repository, conference, etc.).",
         "tags": ["Source Types"],
         "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter source types. Examples: `id:journal`, `works_count:>100000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {"$ref": "#/components/parameters/search"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1551,8 +1835,25 @@
         "description": "Get a list of institution types (education, healthcare, company, etc.).",
         "tags": ["Institution Types"],
         "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter institution types. Examples: `id:education`, `works_count:>1000000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {"$ref": "#/components/parameters/search"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1577,8 +1878,25 @@
         "description": "Get a list of open access licenses (CC BY, CC BY-SA, etc.).",
         "tags": ["Licenses"],
         "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter licenses. Examples: `id:cc-by`, `works_count:>100000`",
+            "schema": {"type": "string"}
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {"type": "string"}
+          },
+          {"$ref": "#/components/parameters/search"},
           {"$ref": "#/components/parameters/per_page"},
           {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/sample"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/group_by"},
           {"$ref": "#/components/parameters/api_key"}
         ],
         "responses": {
@@ -1610,7 +1928,7 @@
       "filter": {
         "name": "filter",
         "in": "query",
-        "description": "Filter results using field:value syntax. Multiple filters can be combined with commas (AND) or pipes (OR). Example: `filter=publication_year:2023,type:article`",
+        "description": "Filter results using field:value syntax. Multiple filters can be combined with commas (AND) or pipes (OR). Available fields vary by entity type.",
         "schema": {
           "type": "string"
         }
@@ -1626,7 +1944,7 @@
       "sort": {
         "name": "sort",
         "in": "query",
-        "description": "Sort results by a field. Prefix with `-` for descending order. Example: `sort=cited_by_count` or `sort=-publication_date`",
+        "description": "Sort results by a field. Prefix with `-` for descending order. Available fields vary by entity type.",
         "schema": {
           "type": "string"
         }
@@ -1679,7 +1997,7 @@
       "group_by": {
         "name": "group_by",
         "in": "query",
-        "description": "Group results by a field and return counts. Example: `group_by=publication_year`",
+        "description": "Group results by a field and return counts. Available fields vary by entity type.",
         "schema": {
           "type": "string"
         }
