@@ -65,81 +65,73 @@
             ]
           },
           {
-            "group": "Works",
+            "group": "Entities",
             "openapi": "api-reference/openapi.json",
             "pages": [
-              "GET /works",
-              "GET /works/{id}"
+              {
+                "group": "Works",
+                "pages": [
+                  "GET /works",
+                  "GET /works/{id}"
+                ]
+              },
+              {
+                "group": "Authors",
+                "pages": [
+                  "GET /authors",
+                  "GET /authors/{id}"
+                ]
+              },
+              {
+                "group": "Sources",
+                "pages": [
+                  "GET /sources",
+                  "GET /sources/{id}"
+                ]
+              },
+              {
+                "group": "Institutions",
+                "pages": [
+                  "GET /institutions",
+                  "GET /institutions/{id}"
+                ]
+              },
+              {
+                "group": "Topics",
+                "pages": [
+                  "GET /topics",
+                  "GET /topics/{id}",
+                  "GET /text/topics"
+                ]
+              },
+              {
+                "group": "Keywords",
+                "pages": [
+                  "GET /keywords",
+                  "GET /keywords/{id}"
+                ]
+              },
+              {
+                "group": "Publishers",
+                "pages": [
+                  "GET /publishers",
+                  "GET /publishers/{id}"
+                ]
+              },
+              {
+                "group": "Funders",
+                "pages": [
+                  "GET /funders",
+                  "GET /funders/{id}"
+                ]
+              }
             ]
           },
           {
-            "group": "Authors",
+            "group": "Utilities",
             "openapi": "api-reference/openapi.json",
             "pages": [
-              "GET /authors",
-              "GET /authors/{id}"
-            ]
-          },
-          {
-            "group": "Sources",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /sources",
-              "GET /sources/{id}"
-            ]
-          },
-          {
-            "group": "Institutions",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /institutions",
-              "GET /institutions/{id}"
-            ]
-          },
-          {
-            "group": "Topics",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /topics",
-              "GET /topics/{id}",
-              "GET /text/topics"
-            ]
-          },
-          {
-            "group": "Keywords",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /keywords",
-              "GET /keywords/{id}"
-            ]
-          },
-          {
-            "group": "Publishers",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /publishers",
-              "GET /publishers/{id}"
-            ]
-          },
-          {
-            "group": "Funders",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /funders",
-              "GET /funders/{id}"
-            ]
-          },
-          {
-            "group": "Autocomplete",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
-              "GET /autocomplete/{entity_type}"
-            ]
-          },
-          {
-            "group": "Rate Limits",
-            "openapi": "api-reference/openapi.json",
-            "pages": [
+              "GET /autocomplete/{entity_type}",
               "GET /rate-limit"
             ]
           }
