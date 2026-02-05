@@ -1,0 +1,62 @@
+---
+title: "The Continent object"
+sidebarTitle: "The Continent object"
+description: "Schema reference for Continent entities"
+---
+
+Continents represent the major geographic regions of the world. They are used for filtering works by geographic region and for understanding the global distribution of research.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this continent (uses Wikidata Q-IDs).
+
+  `"https://openalex.org/continents/Q49"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the continent.
+
+  `"North America"`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  A brief description of the continent.
+
+  `"continent and northern subcontinent of the Americas"`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Alternate names for this continent.
+</ResponseField>
+
+<ResponseField name="countries" type="array">
+  The countries within this continent. Each object has `id` and `display_name`.
+
+  ```json
+  [
+    {
+      "id": "https://openalex.org/countries/US",
+      "display_name": "United States of America"
+    },
+    {
+      "id": "https://openalex.org/countries/CA",
+      "display_name": "Canada"
+    }
+  ]
+  ```
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `wikidata`: Wikidata Q-ID
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this continent was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this continent was last updated (ISO 8601 datetime).
+</ResponseField>

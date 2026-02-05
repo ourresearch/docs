@@ -1,0 +1,123 @@
+---
+title: "The Award object"
+sidebarTitle: "The Award object"
+description: "Schema reference for Award entities"
+---
+
+Awards represent research grants and funding awards. They link funders to the works they have funded.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this award.
+
+  `"https://openalex.org/G5859020988"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the award, if available.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  A description of the award, if available.
+</ResponseField>
+
+<ResponseField name="funder_award_id" type="string">
+  The funder's internal ID for this award.
+
+  `"001"`
+</ResponseField>
+
+<ResponseField name="funder" type="object">
+  The funder that issued this award.
+
+  ```json
+  {
+    "id": "https://openalex.org/F4320321091",
+    "display_name": "National Institutes of Health",
+    "doi": "10.13039/100000002"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="funded_outputs" type="array">
+  OpenAlex IDs of works funded by this award (first 100).
+</ResponseField>
+
+<ResponseField name="funded_outputs_count" type="integer">
+  Total number of works funded by this award.
+
+  `16087`
+</ResponseField>
+
+<ResponseField name="amount" type="number">
+  The funding amount, if available.
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  The currency of the funding amount, if available.
+</ResponseField>
+
+<ResponseField name="funding_type" type="string">
+  The type of funding, if available.
+</ResponseField>
+
+<ResponseField name="funder_scheme" type="string">
+  The funder's scheme or program, if available.
+</ResponseField>
+
+<ResponseField name="start_date" type="string">
+  Start date of the award (ISO 8601), if available.
+</ResponseField>
+
+<ResponseField name="end_date" type="string">
+  End date of the award (ISO 8601), if available.
+</ResponseField>
+
+<ResponseField name="start_year" type="integer">
+  Start year of the award, if available.
+</ResponseField>
+
+<ResponseField name="end_year" type="integer">
+  End year of the award, if available.
+</ResponseField>
+
+<ResponseField name="landing_page_url" type="string">
+  URL to the award's landing page, if available.
+</ResponseField>
+
+<ResponseField name="doi" type="string">
+  DOI for this award, if available.
+</ResponseField>
+
+<ResponseField name="provenance" type="string">
+  The source of this award data.
+
+  `"crossref_work.grants"`
+</ResponseField>
+
+<ResponseField name="lead_investigator" type="object">
+  The lead investigator for this award, if available.
+</ResponseField>
+
+<ResponseField name="co_lead_investigator" type="object">
+  The co-lead investigator, if available.
+</ResponseField>
+
+<ResponseField name="investigators" type="array">
+  List of investigators on this award, if available.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works funded by this award.
+
+  `"https://api.openalex.org/works?filter=awards.id:G5859020988"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this award was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this award was last updated (ISO 8601 datetime).
+</ResponseField>

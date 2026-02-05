@@ -1,0 +1,113 @@
+---
+title: "The Field object"
+sidebarTitle: "The Field object"
+description: "Schema reference for Field entities"
+---
+
+Fields are the second level of the OpenAlex topic hierarchy. There are 26 fields spread across 4 domains. Each field contains multiple subfields.
+
+The topic hierarchy is: Domain → **Field** → Subfield → Topic
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this field.
+
+  `"https://openalex.org/fields/27"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The English-language label of the field.
+
+  `"Medicine"`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  A description of this field.
+
+  `"field of study for diagnosing, treating and preventing disease"`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Alternate names for this field.
+
+  `["healthcare sciences"]`
+</ResponseField>
+
+<ResponseField name="domain" type="object">
+  The domain containing this field.
+
+  ```json
+  {
+    "id": "https://openalex.org/domains/4",
+    "display_name": "Health Sciences"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="subfields" type="array">
+  The subfields within this field. Each object has `id` and `display_name`.
+
+  ```json
+  [
+    {
+      "id": "https://openalex.org/subfields/2736",
+      "display_name": "Pharmacology"
+    },
+    {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    }
+  ]
+  ```
+</ResponseField>
+
+<ResponseField name="siblings" type="array">
+  Other fields at the same level. Each object has `id` and `display_name`.
+
+  ```json
+  [
+    {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+    },
+    {
+      "id": "https://openalex.org/fields/22",
+      "display_name": "Engineering"
+    }
+  ]
+  ```
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `wikidata`: Wikidata ID
+  - `wikipedia`: Wikipedia page URL
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works tagged with topics in this field.
+
+  `50214489`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works in this field.
+
+  `576569052`
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works tagged with this field.
+
+  `"https://api.openalex.org/works?filter=topics.field.id:27"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this field was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this field was last updated (ISO 8601 datetime).
+</ResponseField>

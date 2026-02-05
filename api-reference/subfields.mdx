@@ -1,0 +1,111 @@
+---
+title: "The Subfield object"
+sidebarTitle: "The Subfield object"
+description: "Schema reference for Subfield entities"
+---
+
+Subfields are the third level of the OpenAlex topic hierarchy. There are 254 subfields spread across 26 fields. Each subfield contains multiple topics.
+
+The topic hierarchy is: Domain → Field → **Subfield** → Topic
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this subfield.
+
+  `"https://openalex.org/subfields/1702"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The English-language label of the subfield.
+
+  `"Artificial Intelligence"`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  A description of this subfield.
+
+  `"field of computer science and engineering practices for intelligence demonstrated by machines and intelligent agents"`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Alternate names for this subfield.
+
+  `["AI", "A.I.", "Machine intelligence", "Artificial Intelligence (AI)"]`
+</ResponseField>
+
+<ResponseField name="domain" type="object">
+  The domain containing this subfield (top level of hierarchy).
+
+  ```json
+  {
+    "id": "https://openalex.org/domains/3",
+    "display_name": "Physical Sciences"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="field" type="object">
+  The field containing this subfield (parent level).
+
+  ```json
+  {
+    "id": "https://openalex.org/fields/17",
+    "display_name": "Computer Science"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="topics" type="array">
+  The topics within this subfield. Each object has `id` and `display_name`.
+
+  ```json
+  [
+    {
+      "id": "https://openalex.org/T10181",
+      "display_name": "Natural Language Processing Techniques"
+    },
+    {
+      "id": "https://openalex.org/T12026",
+      "display_name": "Explainable Artificial Intelligence (XAI)"
+    }
+  ]
+  ```
+</ResponseField>
+
+<ResponseField name="siblings" type="array">
+  Other subfields at the same level (across all fields). Each object has `id` and `display_name`.
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `wikidata`: Wikidata ID
+  - `wikipedia`: Wikipedia page URL
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works tagged with topics in this subfield.
+
+  `2847291`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works in this subfield.
+
+  `31284923`
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works tagged with this subfield.
+
+  `"https://api.openalex.org/works?filter=topics.subfield.id:1702"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this subfield was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this subfield was last updated (ISO 8601 datetime).
+</ResponseField>

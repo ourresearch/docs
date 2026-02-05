@@ -1,0 +1,102 @@
+---
+title: "The Country object"
+sidebarTitle: "The Country object"
+description: "Schema reference for Country entities"
+---
+
+Countries represent geographic nations. They are used for filtering works by author affiliation country, and for understanding the geographic distribution of research.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this country.
+
+  `"https://openalex.org/countries/US"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The full name of the country.
+
+  `"United States of America"`
+</ResponseField>
+
+<ResponseField name="country_code" type="string">
+  ISO 3166-1 alpha-2 country code.
+
+  `"US"`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  A brief description of the country.
+
+  `"country primarily located in North America"`
+</ResponseField>
+
+<ResponseField name="display_name_alternatives" type="array">
+  Alternate names for this country.
+
+  `["USA", "America", "US"]`
+</ResponseField>
+
+<ResponseField name="continent" type="object">
+  The continent containing this country.
+
+  ```json
+  {
+    "id": "https://openalex.org/continents/Q49",
+    "display_name": "North America"
+  }
+  ```
+</ResponseField>
+
+<ResponseField name="is_global_south" type="boolean">
+  Whether this country is part of the Global South.
+
+  `false`
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `iso`: ISO 3166-1 entry
+  - `wikidata`: Wikidata ID
+  - `wikipedia`: Wikipedia page URL
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works with authors affiliated with institutions in this country.
+
+  `32404831`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works from this country.
+
+  `927617008`
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works from authors in this country.
+
+  `"https://api.openalex.org/works?filter=authorships.countries:US"`
+</ResponseField>
+
+<ResponseField name="authors_api_url" type="string">
+  A URL that returns all authors with affiliations in this country.
+
+  `"https://api.openalex.org/authors?filter=last_known_institutions.country_code:US"`
+</ResponseField>
+
+<ResponseField name="institutions_api_url" type="string">
+  A URL that returns all institutions in this country.
+
+  `"https://api.openalex.org/institutions?filter=country_code:US"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this country was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this country was last updated (ISO 8601 datetime).
+</ResponseField>

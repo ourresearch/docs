@@ -1,0 +1,68 @@
+---
+title: "The SDG object"
+sidebarTitle: "The SDG object"
+description: "Schema reference for Sustainable Development Goal entities"
+---
+
+SDGs (Sustainable Development Goals) are the 17 global goals adopted by the United Nations in 2015. OpenAlex automatically tags works that are relevant to each SDG.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this SDG.
+
+  `"https://openalex.org/sdgs/3"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the SDG.
+
+  `"Good health and well-being"`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  The official UN description of this goal.
+
+  `"Ensure healthy lives and promote well-being for all at all ages."`
+</ResponseField>
+
+<ResponseField name="ids" type="object">
+  External identifiers:
+  - `openalex`: OpenAlex ID
+  - `un`: UN metadata ID
+  - `wikidata`: Wikidata ID
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works tagged with this SDG.
+
+  `25503195`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works tagged with this SDG.
+
+  `491386135`
+</ResponseField>
+
+<ResponseField name="image_url" type="string">
+  URL to the official SDG icon image.
+</ResponseField>
+
+<ResponseField name="image_thumbnail_url" type="string">
+  Smaller version of `image_url`.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works tagged with this SDG.
+
+  `"https://api.openalex.org/works?filter=sustainable_development_goals.id:https://metadata.un.org/sdg/3"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this SDG was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this SDG was last updated (ISO 8601 datetime).
+</ResponseField>

@@ -1,0 +1,45 @@
+---
+title: "The Language object"
+sidebarTitle: "The Language object"
+description: "Schema reference for Language entities"
+---
+
+Languages represent the languages in which scholarly works are written. OpenAlex automatically detects the language of each work.
+
+## Fields
+
+<ResponseField name="id" type="string">
+  The OpenAlex ID for this language (uses ISO 639-1 codes).
+
+  `"https://openalex.org/languages/en"`
+</ResponseField>
+
+<ResponseField name="display_name" type="string">
+  The name of the language.
+
+  `"English"`
+</ResponseField>
+
+<ResponseField name="works_count" type="integer">
+  The number of works written in this language.
+
+  `329060944`
+</ResponseField>
+
+<ResponseField name="cited_by_count" type="integer">
+  Total citations to works in this language.
+</ResponseField>
+
+<ResponseField name="works_api_url" type="string">
+  A URL that returns all works in this language.
+
+  `"https://api.openalex.org/works?filter=language:en"`
+</ResponseField>
+
+<ResponseField name="created_date" type="string">
+  When this language was added to OpenAlex (ISO 8601 date).
+</ResponseField>
+
+<ResponseField name="updated_date" type="string">
+  When this language was last updated (ISO 8601 datetime).
+</ResponseField>

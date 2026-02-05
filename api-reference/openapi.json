@@ -61,6 +61,58 @@
     {
       "name": "Autocomplete",
       "description": "Fast typeahead search for any entity type"
+    },
+    {
+      "name": "Domains",
+      "description": "Top-level categories in the topic hierarchy (4 total)"
+    },
+    {
+      "name": "Fields",
+      "description": "Second-level categories in the topic hierarchy (26 total)"
+    },
+    {
+      "name": "Subfields",
+      "description": "Third-level categories in the topic hierarchy (254 total)"
+    },
+    {
+      "name": "SDGs",
+      "description": "UN Sustainable Development Goals (17 total)"
+    },
+    {
+      "name": "Countries",
+      "description": "Geographic countries for filtering research by location"
+    },
+    {
+      "name": "Continents",
+      "description": "Geographic continents (7 total)"
+    },
+    {
+      "name": "Languages",
+      "description": "Languages of scholarly works"
+    },
+    {
+      "name": "Awards",
+      "description": "Research grants and funding awards"
+    },
+    {
+      "name": "Concepts",
+      "description": "Legacy taxonomy of research areas (deprecated - use Topics instead)"
+    },
+    {
+      "name": "Work Types",
+      "description": "Types of scholarly works (article, book, dataset, etc.)"
+    },
+    {
+      "name": "Source Types",
+      "description": "Types of sources (journal, repository, conference, etc.)"
+    },
+    {
+      "name": "Institution Types",
+      "description": "Types of institutions (education, healthcare, company, etc.)"
+    },
+    {
+      "name": "Licenses",
+      "description": "Open access licenses (CC BY, CC BY-SA, etc.)"
     }
   ],
   "paths": {
@@ -764,6 +816,778 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RateLimitResponse"
+                }
+              }
+            }
+          },
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/domains": {
+      "get": {
+        "operationId": "listDomains",
+        "summary": "List domains",
+        "description": "Get a list of domains (top-level topic categories). There are only 4 domains: Life Sciences, Social Sciences, Physical Sciences, and Health Sciences.",
+        "tags": ["Domains"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DomainsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/domains/{id}": {
+      "get": {
+        "operationId": "getDomain",
+        "summary": "Get a single domain",
+        "description": "Retrieve a single domain by its ID (1-4).",
+        "tags": ["Domains"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Domain ID (1-4)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "lifesciences": {
+                "value": "1",
+                "summary": "Life Sciences"
+              },
+              "socialsciences": {
+                "value": "2",
+                "summary": "Social Sciences"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Domain"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/fields": {
+      "get": {
+        "operationId": "listFields",
+        "summary": "List fields",
+        "description": "Get a list of fields (second-level topic categories). There are 26 fields spread across 4 domains.",
+        "tags": ["Fields"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/fields/{id}": {
+      "get": {
+        "operationId": "getField",
+        "summary": "Get a single field",
+        "description": "Retrieve a single field by its ID.",
+        "tags": ["Fields"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Field ID (e.g., 27 for Medicine)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "medicine": {
+                "value": "27",
+                "summary": "Medicine"
+              },
+              "computerscience": {
+                "value": "17",
+                "summary": "Computer Science"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Field"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/subfields": {
+      "get": {
+        "operationId": "listSubfields",
+        "summary": "List subfields",
+        "description": "Get a list of subfields (third-level topic categories). There are 254 subfields spread across 26 fields.",
+        "tags": ["Subfields"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubfieldsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/subfields/{id}": {
+      "get": {
+        "operationId": "getSubfield",
+        "summary": "Get a single subfield",
+        "description": "Retrieve a single subfield by its ID.",
+        "tags": ["Subfields"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Subfield ID (e.g., 1702 for Artificial Intelligence)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "ai": {
+                "value": "1702",
+                "summary": "Artificial Intelligence"
+              },
+              "cardiology": {
+                "value": "2705",
+                "summary": "Cardiology and Cardiovascular Medicine"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subfield"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/sdgs": {
+      "get": {
+        "operationId": "listSdgs",
+        "summary": "List SDGs",
+        "description": "Get a list of UN Sustainable Development Goals. There are 17 SDGs.",
+        "tags": ["SDGs"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SdgsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/sdgs/{id}": {
+      "get": {
+        "operationId": "getSdg",
+        "summary": "Get a single SDG",
+        "description": "Retrieve a single Sustainable Development Goal by its ID (1-17).",
+        "tags": ["SDGs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "SDG ID (1-17)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "health": {
+                "value": "3",
+                "summary": "Good Health and Well-being"
+              },
+              "climate": {
+                "value": "13",
+                "summary": "Climate Action"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sdg"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/countries": {
+      "get": {
+        "operationId": "listCountries",
+        "summary": "List countries",
+        "description": "Get a list of countries. Useful for filtering works by author affiliation country.",
+        "tags": ["Countries"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CountriesListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/countries/{id}": {
+      "get": {
+        "operationId": "getCountry",
+        "summary": "Get a single country",
+        "description": "Retrieve a single country by its ISO 3166-1 alpha-2 code.",
+        "tags": ["Countries"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ISO 3166-1 alpha-2 country code (e.g., US, GB, CN)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "us": {
+                "value": "US",
+                "summary": "United States"
+              },
+              "cn": {
+                "value": "CN",
+                "summary": "China"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Country"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/continents": {
+      "get": {
+        "operationId": "listContinents",
+        "summary": "List continents",
+        "description": "Get a list of continents (7 total).",
+        "tags": ["Continents"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContinentsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/continents/{id}": {
+      "get": {
+        "operationId": "getContinent",
+        "summary": "Get a single continent",
+        "description": "Retrieve a single continent by its Wikidata Q-ID.",
+        "tags": ["Continents"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Wikidata Q-ID (e.g., Q49 for North America)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "northamerica": {
+                "value": "Q49",
+                "summary": "North America"
+              },
+              "europe": {
+                "value": "Q46",
+                "summary": "Europe"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Continent"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/languages": {
+      "get": {
+        "operationId": "listLanguages",
+        "summary": "List languages",
+        "description": "Get a list of languages used in scholarly works.",
+        "tags": ["Languages"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LanguagesListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/languages/{id}": {
+      "get": {
+        "operationId": "getLanguage",
+        "summary": "Get a single language",
+        "description": "Retrieve a single language by its ISO 639-1 code.",
+        "tags": ["Languages"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ISO 639-1 language code (e.g., en, zh, es)",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "english": {
+                "value": "en",
+                "summary": "English"
+              },
+              "chinese": {
+                "value": "zh",
+                "summary": "Chinese"
+              }
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Language"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/awards": {
+      "get": {
+        "operationId": "listAwards",
+        "summary": "List awards",
+        "description": "Get a list of research grants and funding awards.",
+        "tags": ["Awards"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/awards/{id}": {
+      "get": {
+        "operationId": "getAward",
+        "summary": "Get a single award",
+        "description": "Retrieve a single award by its OpenAlex ID.",
+        "tags": ["Awards"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., G5859020988)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AwardFull"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/concepts": {
+      "get": {
+        "operationId": "listConcepts",
+        "summary": "List concepts (deprecated)",
+        "description": "**DEPRECATED:** Use Topics instead. Get a list of concepts from the legacy taxonomy.",
+        "deprecated": true,
+        "tags": ["Concepts"],
+        "parameters": [
+          {"$ref": "#/components/parameters/filter"},
+          {"$ref": "#/components/parameters/search"},
+          {"$ref": "#/components/parameters/sort"},
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/cursor"},
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConceptsListResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/BadRequest"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/concepts/{id}": {
+      "get": {
+        "operationId": "getConcept",
+        "summary": "Get a single concept (deprecated)",
+        "description": "**DEPRECATED:** Use Topics instead. Retrieve a single concept by OpenAlex ID.",
+        "deprecated": true,
+        "tags": ["Concepts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "OpenAlex ID (e.g., C41008148 for Computer Science)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {"$ref": "#/components/parameters/select"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Concept"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/work-types": {
+      "get": {
+        "operationId": "listWorkTypes",
+        "summary": "List work types",
+        "description": "Get a list of work types (article, book, dataset, etc.).",
+        "tags": ["Work Types"],
+        "parameters": [
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkTypesListResponse"
+                }
+              }
+            }
+          },
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/source-types": {
+      "get": {
+        "operationId": "listSourceTypes",
+        "summary": "List source types",
+        "description": "Get a list of source types (journal, repository, conference, etc.).",
+        "tags": ["Source Types"],
+        "parameters": [
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceTypesListResponse"
+                }
+              }
+            }
+          },
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/institution-types": {
+      "get": {
+        "operationId": "listInstitutionTypes",
+        "summary": "List institution types",
+        "description": "Get a list of institution types (education, healthcare, company, etc.).",
+        "tags": ["Institution Types"],
+        "parameters": [
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionTypesListResponse"
+                }
+              }
+            }
+          },
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/licenses": {
+      "get": {
+        "operationId": "listLicenses",
+        "summary": "List licenses",
+        "description": "Get a list of open access licenses (CC BY, CC BY-SA, etc.).",
+        "tags": ["Licenses"],
+        "parameters": [
+          {"$ref": "#/components/parameters/per_page"},
+          {"$ref": "#/components/parameters/page"},
+          {"$ref": "#/components/parameters/api_key"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LicensesListResponse"
                 }
               }
             }
@@ -1825,6 +2649,434 @@
           "updated_date": {"type": "string", "format": "date-time"}
         }
       },
+      "Domain": {
+        "type": "object",
+        "description": "Top-level category in the topic hierarchy (4 total)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/domains/1"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Fields within this domain"
+          },
+          "siblings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Other domains at the same level"
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "wikipedia": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Field": {
+        "type": "object",
+        "description": "Second-level category in the topic hierarchy (26 total)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/fields/27"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "domain": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            },
+            "description": "The parent domain"
+          },
+          "subfields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Subfields within this field"
+          },
+          "siblings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Other fields at the same level"
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "wikipedia": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Subfield": {
+        "type": "object",
+        "description": "Third-level category in the topic hierarchy (254 total)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/subfields/1702"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "field": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            },
+            "description": "The parent field"
+          },
+          "domain": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            },
+            "description": "The parent domain"
+          },
+          "topics": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Topics within this subfield"
+          },
+          "siblings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            },
+            "description": "Other subfields at the same level"
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "wikipedia": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Sdg": {
+        "type": "object",
+        "description": "UN Sustainable Development Goal (17 total)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/sdgs/3"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "un": {"type": "string"},
+              "wikidata": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "image_url": {"type": "string"},
+          "image_thumbnail_url": {"type": "string"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Country": {
+        "type": "object",
+        "description": "Geographic country",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/countries/US"
+          },
+          "display_name": {"type": "string"},
+          "country_code": {"type": "string", "description": "ISO 3166-1 alpha-2 code"},
+          "description": {"type": "string"},
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "continent": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"}
+            }
+          },
+          "is_global_south": {"type": "boolean"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "iso": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "wikipedia": {"type": "string"}
+            }
+          },
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "authors_api_url": {"type": "string"},
+          "institutions_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Continent": {
+        "type": "object",
+        "description": "Geographic continent (7 total)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/continents/Q49"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "display_name_alternatives": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "countries": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "string"},
+                "display_name": {"type": "string"}
+              }
+            }
+          },
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikidata": {"type": "string"}
+            }
+          },
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Language": {
+        "type": "object",
+        "description": "Language of scholarly works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/languages/en"
+          },
+          "display_name": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "AwardFull": {
+        "type": "object",
+        "description": "Research grant or funding award",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/G5859020988"
+          },
+          "display_name": {"type": "string", "nullable": true},
+          "description": {"type": "string", "nullable": true},
+          "funder_award_id": {"type": "string"},
+          "funder": {
+            "type": "object",
+            "properties": {
+              "id": {"type": "string"},
+              "display_name": {"type": "string"},
+              "doi": {"type": "string", "nullable": true}
+            }
+          },
+          "funded_outputs": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "OpenAlex IDs of funded works (first 100)"
+          },
+          "funded_outputs_count": {"type": "integer"},
+          "amount": {"type": "number", "nullable": true},
+          "currency": {"type": "string", "nullable": true},
+          "funding_type": {"type": "string", "nullable": true},
+          "funder_scheme": {"type": "string", "nullable": true},
+          "start_date": {"type": "string", "format": "date", "nullable": true},
+          "end_date": {"type": "string", "format": "date", "nullable": true},
+          "start_year": {"type": "integer", "nullable": true},
+          "end_year": {"type": "integer", "nullable": true},
+          "landing_page_url": {"type": "string", "nullable": true},
+          "doi": {"type": "string", "nullable": true},
+          "provenance": {"type": "string"},
+          "lead_investigator": {"type": "object", "nullable": true},
+          "co_lead_investigator": {"type": "object", "nullable": true},
+          "investigators": {"type": "array", "nullable": true},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "Concept": {
+        "type": "object",
+        "description": "Legacy research area taxonomy (deprecated)",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/C41008148"
+          },
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "level": {"type": "integer", "description": "Hierarchy level (0 = top)"},
+          "wikidata": {"type": "string"},
+          "ids": {
+            "type": "object",
+            "properties": {
+              "openalex": {"type": "string"},
+              "wikidata": {"type": "string"},
+              "wikipedia": {"type": "string"},
+              "mag": {"type": "integer", "nullable": true}
+            }
+          },
+          "image_url": {"type": "string", "nullable": true},
+          "image_thumbnail_url": {"type": "string", "nullable": true},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "ancestors": {"type": "array", "nullable": true},
+          "related_concepts": {"type": "array", "nullable": true},
+          "counts_by_year": {"type": "array", "nullable": true},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "WorkType": {
+        "type": "object",
+        "description": "Type of scholarly work",
+        "properties": {
+          "id": {"type": "string", "example": "https://openalex.org/types/article"},
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "SourceType": {
+        "type": "object",
+        "description": "Type of source",
+        "properties": {
+          "id": {"type": "string", "example": "https://openalex.org/source-types/journal"},
+          "display_name": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "InstitutionType": {
+        "type": "object",
+        "description": "Type of institution",
+        "properties": {
+          "id": {"type": "string", "example": "https://openalex.org/institution-types/education"},
+          "display_name": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
+      "License": {
+        "type": "object",
+        "description": "Open access license",
+        "properties": {
+          "id": {"type": "string", "example": "https://openalex.org/licenses/cc-by"},
+          "display_name": {"type": "string"},
+          "url": {"type": "string", "nullable": true},
+          "description": {"type": "string"},
+          "works_count": {"type": "integer"},
+          "cited_by_count": {"type": "integer"},
+          "works_api_url": {"type": "string"},
+          "created_date": {"type": "string", "format": "date"},
+          "updated_date": {"type": "string", "format": "date-time"}
+        }
+      },
       "DehydratedAuthor": {
         "type": "object",
         "description": "Minimal author info (used in authorships)",
@@ -1989,6 +3241,136 @@
           "group_by": {
             "type": "array",
             "items": {"$ref": "#/components/schemas/GroupByResult"}
+          }
+        }
+      },
+      "DomainsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Domain"}
+          }
+        }
+      },
+      "FieldsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Field"}
+          }
+        }
+      },
+      "SubfieldsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Subfield"}
+          }
+        }
+      },
+      "SdgsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Sdg"}
+          }
+        }
+      },
+      "CountriesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Country"}
+          }
+        }
+      },
+      "ContinentsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Continent"}
+          }
+        }
+      },
+      "LanguagesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Language"}
+          }
+        }
+      },
+      "AwardsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/AwardFull"}
+          }
+        }
+      },
+      "ConceptsListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/Concept"}
+          }
+        }
+      },
+      "WorkTypesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/WorkType"}
+          }
+        }
+      },
+      "SourceTypesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/SourceType"}
+          }
+        }
+      },
+      "InstitutionTypesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/InstitutionType"}
+          }
+        }
+      },
+      "LicensesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {"$ref": "#/components/schemas/Meta"},
+          "results": {
+            "type": "array",
+            "items": {"$ref": "#/components/schemas/License"}
           }
         }
       },

@@ -118,6 +118,62 @@
                 ]
               },
               {
+                "group": "Domains",
+                "pages": [
+                  "api-reference/domains",
+                  "GET /domains/{id}",
+                  "GET /domains"
+                ]
+              },
+              {
+                "group": "Fields",
+                "pages": [
+                  "api-reference/fields",
+                  "GET /fields/{id}",
+                  "GET /fields"
+                ]
+              },
+              {
+                "group": "Subfields",
+                "pages": [
+                  "api-reference/subfields",
+                  "GET /subfields/{id}",
+                  "GET /subfields"
+                ]
+              },
+              {
+                "group": "SDGs",
+                "pages": [
+                  "api-reference/sdgs",
+                  "GET /sdgs/{id}",
+                  "GET /sdgs"
+                ]
+              },
+              {
+                "group": "Countries",
+                "pages": [
+                  "api-reference/countries",
+                  "GET /countries/{id}",
+                  "GET /countries"
+                ]
+              },
+              {
+                "group": "Continents",
+                "pages": [
+                  "api-reference/continents",
+                  "GET /continents/{id}",
+                  "GET /continents"
+                ]
+              },
+              {
+                "group": "Languages",
+                "pages": [
+                  "api-reference/languages",
+                  "GET /languages/{id}",
+                  "GET /languages"
+                ]
+              },
+              {
                 "group": "Keywords",
                 "pages": [
                   "api-reference/keywords",
@@ -139,6 +195,46 @@
                   "api-reference/funders",
                   "GET /funders/{id}",
                   "GET /funders"
+                ]
+              },
+              {
+                "group": "Awards",
+                "pages": [
+                  "api-reference/awards",
+                  "GET /awards/{id}",
+                  "GET /awards"
+                ]
+              },
+              {
+                "group": "Concepts (deprecated)",
+                "pages": [
+                  "api-reference/concepts",
+                  "GET /concepts/{id}",
+                  "GET /concepts"
+                ]
+              },
+              {
+                "group": "Work Types",
+                "pages": [
+                  "GET /work-types"
+                ]
+              },
+              {
+                "group": "Source Types",
+                "pages": [
+                  "GET /source-types"
+                ]
+              },
+              {
+                "group": "Institution Types",
+                "pages": [
+                  "GET /institution-types"
+                ]
+              },
+              {
+                "group": "Licenses",
+                "pages": [
+                  "GET /licenses"
                 ]
               }
             ]
