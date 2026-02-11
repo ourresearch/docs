@@ -59,10 +59,20 @@ a.link {
   filter: saturate(0.7);
 }
 
-/* Footer styling */
+/* Footer styling — blend into content area, bright icons */
 footer {
-  background: var(--background-sidebar, #0D0D0D);
-  border-top: 1px solid var(--border-color, #2D2D2D);
+  background: transparent !important;
+  border-top: none !important;
+}
+.dark footer a,
+.dark footer svg {
+  color: #ECECEC !important;
+  fill: #ECECEC !important;
+  opacity: 0.8;
+}
+.dark footer a:hover,
+.dark footer a:hover svg {
+  opacity: 1;
 }
 
 /* Card styling - subtle borders */
