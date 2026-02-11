@@ -31,15 +31,13 @@ article {
   background: var(--background-content, #171717);
 }
 
-/* Links - subtle underline on hover */
-a:not([class*="button"]):not([class*="card"]) {
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-
-a:not([class*="button"]):not([class*="card"]):hover {
-  border-bottom-color: currentColor;
+/* Content links - underlined by default, single underline only */
+a.link {
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px !important;
+  text-decoration-color: currentColor !important;
+  border-bottom: none !important;
 }
 
 /* Reduce saturation on accent elements for greyscale feel */
@@ -59,6 +57,22 @@ footer {
 [class*="Card"] {
   border: 1px solid var(--border-color, #2D2D2D);
   background: var(--background-content, #171717);
+}
+
+/* API playground path parameter spans — override Mintlify's hardcoded green */
+.text-\[\#2AB673\] {
+  color: #4493F8 !important;
+}
+.bg-\[\#2AB673\]\/10 {
+  background-color: rgb(68 147 248 / 0.1) !important;
+}
+.border-\[\#2AB673\]\/30 {
+  border-color: rgb(68 147 248 / 0.3) !important;
+}
+
+/* API playground "Try it" button */
+.tryit-button.bg-\[\#2AB673\] {
+  background-color: #4493F8 !important;
 }
 
 /* Code blocks - always dark */

@@ -3,9 +3,9 @@
   "theme": "palm",
   "name": "OpenAlex technical documentation",
   "colors": {
-    "primary": "#10A37F",
-    "light": "#10A37F",
-    "dark": "#10A37F"
+    "primary": "#4493F8",
+    "light": "#2563EB",
+    "dark": "#4493F8"
   },
   "appearance": {
     "default": "dark"
