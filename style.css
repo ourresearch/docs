@@ -39,6 +39,11 @@ aside {
   background-color: #252525 !important;
 }
 
+/* Mintlify's --gray-800 (38 41 44) is invisible on #252525 — bump for visible borders */
+.dark {
+  --gray-800: 58 61 64 !important;
+}
+
 /* Content links - underlined by default, single underline only */
 a.link {
   text-decoration: underline !important;
