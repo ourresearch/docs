@@ -109,3 +109,21 @@ The topic hierarchy is: Domain → Field → **Subfield** → Topic
 <ResponseField name="updated_date" type="string">
   When this subfield was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing subfields.
+All 10 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `domain.id` | string (ID) | ✓ | ✓ |
+| `field.id` | string (ID) | ✓ | ✓ |
+| `from_created_date` | date | ✓ |  |
+| `id` | string | ✓ | ✓ |
+| `topics.id` | string (ID) | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |

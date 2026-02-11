@@ -167,3 +167,60 @@ A stripped-down Source object with only:
 - `host_organization_name`
 - `host_organization_lineage`
 - `type`
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing sources.
+All 45 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 45 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `apc_prices.currency` | string | ✓ | ✓ |
+| `apc_prices.price` | number | ✓ |  |
+| `apc_usd` | number | ✓ | ✓ |
+| `cited_by_count` | integer | ✓ | ✓ |
+| `concept.id` | string (ID) | ✓ | ✓ |
+| `concepts.id` | string (ID) | ✓ | ✓ |
+| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `first_publication_year` | integer | ✓ |  |
+| `from_created_date` | date | ✓ |  |
+| `has_issn` | boolean | ✓ | ✓ |
+| `host_organization` | string | ✓ | ✓ |
+| `host_organization.id` | string (ID) | ✓ |  |
+| `host_organization_lineage` | string | ✓ | ✓ |
+| `ids.mag` | string | ✓ |  |
+| `ids.openalex` | string | ✓ | ✓ |
+| `is_core` | boolean | ✓ | ✓ |
+| `is_global_south` | boolean | ✓ | ✓ |
+| `is_high_oa_rate` | boolean | ✓ | ✓ |
+| `is_high_oa_rate_since_year` | boolean | ✓ |  |
+| `is_in_doaj` | boolean | ✓ | ✓ |
+| `is_in_doaj_since_year` | boolean | ✓ |  |
+| `is_in_jstage` | boolean |  | ✓ |
+| `is_in_jstage_since_year` | boolean |  |  |
+| `is_oa` | boolean | ✓ | ✓ |
+| `is_ojs` | boolean | ✓ | ✓ |
+| `issn` | string | ✓ | ✓ |
+| `issn_l` | string | ✓ | ✓ |
+| `last_publication_year` | integer | ✓ |  |
+| `oa_flip_year` | integer | ✓ |  |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
+| `summary_stats.h_index` | number | ✓ | ✓ |
+| `summary_stats.i10_index` | number | ✓ | ✓ |
+| `to_created_date` | date | ✓ |  |
+| `to_updated_date` | date | ✓ |  |
+| `topic_share.id` | string (ID) | ✓ | ✓ |
+| `topics.id` | string (ID) |  |  |
+| `type` | [source type](/api-reference/source-types) | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+| `x_concepts.id` | string (ID) | ✓ | ✓ |
+
+</Accordion>

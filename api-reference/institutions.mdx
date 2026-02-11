@@ -157,3 +157,45 @@ A stripped-down Institution object with only:
 - `country_code`
 - `type`
 - `lineage`
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing institutions.
+All 30 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 30 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `concept.id` | string (ID) |  | ✓ |
+| `concepts.id` | string (ID) |  | ✓ |
+| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `has_ror` | boolean | ✓ | ✓ |
+| `id` | string | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `is_global_south` | boolean | ✓ | ✓ |
+| `is_super_system` | boolean | ✓ | ✓ |
+| `lineage` | string | ✓ | ✓ |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `repositories.host_organization` | string | ✓ | ✓ |
+| `repositories.host_organization_lineage` | string | ✓ | ✓ |
+| `repositories.id` | string (ID) | ✓ | ✓ |
+| `roles.id` | string (ID) | ✓ | ✓ |
+| `ror` | string | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
+| `summary_stats.h_index` | number | ✓ | ✓ |
+| `summary_stats.i10_index` | number | ✓ | ✓ |
+| `topic_share.id` | string (ID) | ✓ | ✓ |
+| `topics.id` | string (ID) | ✓ | ✓ |
+| `type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+| `x_concepts.id` | string (ID) |  | ✓ |
+
+</Accordion>

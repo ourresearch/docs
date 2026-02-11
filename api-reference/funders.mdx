@@ -103,3 +103,39 @@ Funders are connected to works through [grants](/guides/key-concepts#grants).
 <ResponseField name="updated_date" type="string">
   When this funder was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing funders.
+All 24 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 24 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `awards_count` | integer | ✓ | ✓ |
+| `cited_by_count` | integer | ✓ | ✓ |
+| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `description.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `ids.crossref` | string | ✓ | ✓ |
+| `ids.doi` | string | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `ids.ror` | string | ✓ | ✓ |
+| `ids.wikidata` | string | ✓ | ✓ |
+| `is_global_south` | boolean | ✓ | ✓ |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `roles.id` | string (ID) | ✓ | ✓ |
+| `ror` | string | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
+| `summary_stats.h_index` | number | ✓ | ✓ |
+| `summary_stats.i10_index` | number | ✓ | ✓ |
+| `wikidata` | string | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+
+</Accordion>

@@ -105,3 +105,37 @@ Publishers are companies and organizations that distribute works. Publishers can
 <ResponseField name="updated_date" type="string">
   When this publisher was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing publishers.
+All 22 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 22 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `country_codes` | [country](/api-reference/countries) | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `hierarchy_level` | integer | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `ids.ror` | string | ✓ | ✓ |
+| `ids.wikidata` | string | ✓ | ✓ |
+| `lineage` | string | ✓ | ✓ |
+| `openalex` | string |  | ✓ |
+| `openalex_id` | string | ✓ | ✓ |
+| `parent_publisher` | string | ✓ | ✓ |
+| `roles.id` | string (ID) | ✓ | ✓ |
+| `ror` | string | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
+| `summary_stats.h_index` | number | ✓ | ✓ |
+| `summary_stats.i10_index` | number | ✓ | ✓ |
+| `wikidata` | string | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+
+</Accordion>

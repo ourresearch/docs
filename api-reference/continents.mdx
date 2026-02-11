@@ -60,3 +60,18 @@ Continents represent the major geographic regions of the world. They are used fo
 <ResponseField name="updated_date" type="string">
   When this continent was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing continents.
+All 7 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `id` | string | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |

@@ -121,3 +121,39 @@ Awards represent research grants and funding awards. They link funders to the wo
 <ResponseField name="updated_date" type="string">
   When this award was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing awards.
+All 24 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 24 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `amount` | number | ✓ |  |
+| `currency` | string | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `description.search` | search |  |  |
+| `display_name.search` | search |  |  |
+| `doi` | string |  |  |
+| `end_year` | integer | ✓ | ✓ |
+| `funded_outputs` | integer | ✓ | ✓ |
+| `funded_outputs_count` | integer | ✓ |  |
+| `funder.doi` | string | ✓ | ✓ |
+| `funder.id` | string (ID) | ✓ | ✓ |
+| `funder.ror` | string | ✓ | ✓ |
+| `funder_award_id` | string | ✓ | ✓ |
+| `funder_name` | string | ✓ | ✓ |
+| `funder_scheme` | string |  |  |
+| `funding_type` | string | ✓ | ✓ |
+| `id` | string | ✓ | ✓ |
+| `lead_investigator.affiliation.country` | string | ✓ | ✓ |
+| `lead_investigator.affiliation.name` | string |  |  |
+| `lead_investigator.family_name` | string |  |  |
+| `lead_investigator.given_name` | string |  |  |
+| `lead_investigator.orcid` | string | ✓ | ✓ |
+| `provenance` | string | ✓ | ✓ |
+| `start_year` | integer | ✓ | ✓ |
+
+</Accordion>

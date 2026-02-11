@@ -88,3 +88,29 @@ Topics are research areas automatically assigned to works. Topics exist in a fou
 
   `"2024-02-05T05:00:03.798420"`
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing topics.
+All 14 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 14 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `description.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `domain.id` | string (ID) | ✓ | ✓ |
+| `field.id` | string (ID) | ✓ | ✓ |
+| `from_created_date` | date | ✓ |  |
+| `id` | string | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `keywords.search` | search |  |  |
+| `openalex` | string | ✓ | ✓ |
+| `subfield.id` | string (ID) | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+
+</Accordion>

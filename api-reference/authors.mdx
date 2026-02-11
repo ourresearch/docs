@@ -109,3 +109,55 @@ A stripped-down Author object with only:
 - `id`
 - `display_name`
 - `orcid`
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing authors.
+All 40 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 40 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `affiliations.institution.country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `affiliations.institution.id` | string (ID) | ✓ | ✓ |
+| `affiliations.institution.lineage` | string | ✓ | ✓ |
+| `affiliations.institution.ror` | string | ✓ | ✓ |
+| `affiliations.institution.type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `block_key` | string | ✓ | ✓ |
+| `cited_by_count` | integer | ✓ | ✓ |
+| `concept.id` | string (ID) | ✓ |  |
+| `concepts.id` | string (ID) | ✓ |  |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `has_orcid` | boolean | ✓ | ✓ |
+| `id` | string | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `last_known_institutions.continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `last_known_institutions.country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `last_known_institutions.id` | string (ID) | ✓ | ✓ |
+| `last_known_institutions.is_global_south` | boolean | ✓ | ✓ |
+| `last_known_institutions.lineage` | string | ✓ | ✓ |
+| `last_known_institutions.ror` | string | ✓ | ✓ |
+| `last_known_institutions.type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `orcid` | string | ✓ | ✓ |
+| `parsed_longest_name.first` | string | ✓ | ✓ |
+| `parsed_longest_name.last` | string | ✓ | ✓ |
+| `parsed_longest_name.middle` | string | ✓ | ✓ |
+| `parsed_longest_name.suffix` | string | ✓ | ✓ |
+| `scopus` | string |  | ✓ |
+| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
+| `summary_stats.h_index` | number | ✓ | ✓ |
+| `summary_stats.i10_index` | number | ✓ | ✓ |
+| `to_created_date` | date | ✓ |  |
+| `to_updated_date` | date | ✓ |  |
+| `topic_share.id` | string (ID) |  | ✓ |
+| `topics.id` | string (ID) | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+| `x_concepts.id` | string (ID) | ✓ |  |
+
+</Accordion>

@@ -225,3 +225,217 @@ Works are scholarly documents like journal articles, books, datasets, and theses
 
   `"2022-01-02T00:22:35.180390"`
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing works.
+All 202 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 202 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `abstract.search` | search |  |  |
+| `abstract.search.no_stem` | search |  |  |
+| `apc_list.currency` | string | ✓ | ✓ |
+| `apc_list.provenance` | string | ✓ | ✓ |
+| `apc_list.value` | number | ✓ | ✓ |
+| `apc_list.value_usd` | number | ✓ | ✓ |
+| `apc_paid.currency` | string | ✓ | ✓ |
+| `apc_paid.provenance` | string | ✓ | ✓ |
+| `apc_paid.value` | number | ✓ | ✓ |
+| `apc_paid.value_usd` | number | ✓ | ✓ |
+| `author.id` | string (ID) |  | ✓ |
+| `author.orcid` | string |  | ✓ |
+| `authors_count` | integer | ✓ | ✓ |
+| `authorships.affiliations.institution_ids` | string | ✓ | ✓ |
+| `authorships.author.id` | string (ID) | ✓ | ✓ |
+| `authorships.author.orcid` | string | ✓ | ✓ |
+| `authorships.countries` | string | ✓ | ✓ |
+| `authorships.institutions.continent` | [continent](/api-reference/continents) | ✓ | ✓ |
+| `authorships.institutions.country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `authorships.institutions.id` | string (ID) | ✓ | ✓ |
+| `authorships.institutions.is_global_south` | boolean | ✓ | ✓ |
+| `authorships.institutions.lineage` | string | ✓ | ✓ |
+| `authorships.institutions.ror` | string | ✓ | ✓ |
+| `authorships.institutions.type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `authorships.is_corresponding` | string | ✓ | ✓ |
+| `awards.doi` | string | ✓ | ✓ |
+| `awards.funder_award_id` | string | ✓ | ✓ |
+| `awards.funder_display_name` | string | ✓ | ✓ |
+| `awards.funder_id` | string | ✓ | ✓ |
+| `awards.id` | string (ID) | ✓ | ✓ |
+| `best_oa_location.is_accepted` | string | ✓ | ✓ |
+| `best_oa_location.is_oa` | string | ✓ | ✓ |
+| `best_oa_location.is_published` | string | ✓ | ✓ |
+| `best_oa_location.landing_page_url` | string | ✓ | ✓ |
+| `best_oa_location.license` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `best_oa_location.license_id` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `best_oa_location.raw_type` | string |  |  |
+| `best_oa_location.source.host_organization` | string | ✓ | ✓ |
+| `best_oa_location.source.host_organization_lineage` | string | ✓ | ✓ |
+| `best_oa_location.source.id` | string (ID) | ✓ | ✓ |
+| `best_oa_location.source.is_in_doaj` | string | ✓ | ✓ |
+| `best_oa_location.source.is_oa` | string | ✓ | ✓ |
+| `best_oa_location.source.issn` | string | ✓ | ✓ |
+| `best_oa_location.source.type` | [source type](/api-reference/source-types) | ✓ | ✓ |
+| `best_oa_location.version` | string | ✓ | ✓ |
+| `best_open_version` | string | ✓ | ✓ |
+| `biblio.first_page` | string | ✓ |  |
+| `biblio.issue` | string | ✓ | ✓ |
+| `biblio.last_page` | string | ✓ |  |
+| `biblio.volume` | string | ✓ | ✓ |
+| `citation_normalized_percentile.is_in_top_10_percent` | string | ✓ | ✓ |
+| `citation_normalized_percentile.is_in_top_1_percent` | string | ✓ | ✓ |
+| `citation_normalized_percentile.value` | number | ✓ |  |
+| `cited_by` | string |  |  |
+| `cited_by_count` | integer | ✓ | ✓ |
+| `cited_by_percentile_year.max` | string | ✓ | ✓ |
+| `cited_by_percentile_year.min` | string | ✓ | ✓ |
+| `cites` | string |  |  |
+| `concept.id` | string (ID) |  | ✓ |
+| `concepts.id` | string (ID) | ✓ | ✓ |
+| `concepts.wikidata` | string | ✓ | ✓ |
+| `concepts_count` | integer | ✓ | ✓ |
+| `corresponding_author_ids` | string | ✓ | ✓ |
+| `corresponding_institution_ids` | string | ✓ | ✓ |
+| `countries_distinct_count` | integer | ✓ | ✓ |
+| `created_date` | date | ✓ |  |
+| `datasets` | string | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `display_name.search.no_stem` | search |  |  |
+| `doi` | string | ✓ |  |
+| `doi_starts_with` | string | ✓ | ✓ |
+| `from_created_date` | date | ✓ |  |
+| `from_publication_date` | date | ✓ |  |
+| `fulltext.search` | search |  |  |
+| `fulltext_origin` | string | ✓ | ✓ |
+| `funders.id` | string (ID) | ✓ | ✓ |
+| `fwci` | float | ✓ |  |
+| `has_abstract` | boolean |  | ✓ |
+| `has_content.grobid_xml` | boolean | ✓ | ✓ |
+| `has_content.pdf` | boolean | ✓ | ✓ |
+| `has_doi` | boolean | ✓ | ✓ |
+| `has_embeddings` | boolean |  |  |
+| `has_fulltext` | boolean | ✓ | ✓ |
+| `has_oa_accepted_or_published_version` | boolean |  | ✓ |
+| `has_oa_submitted_version` | boolean |  | ✓ |
+| `has_old_authors` | boolean |  | ✓ |
+| `has_orcid` | boolean | ✓ | ✓ |
+| `has_pdf_url` | boolean | ✓ | ✓ |
+| `has_pmcid` | boolean | ✓ | ✓ |
+| `has_pmid` | boolean | ✓ | ✓ |
+| `has_raw_affiliation_strings` | boolean |  | ✓ |
+| `has_references` | boolean | ✓ | ✓ |
+| `ids.mag` | string | ✓ |  |
+| `ids.openalex` | string | ✓ | ✓ |
+| `ids.pmcid` | string | ✓ |  |
+| `ids.pmid` | string | ✓ |  |
+| `indexed_in` | string | ✓ | ✓ |
+| `institution.id` | string (ID) |  | ✓ |
+| `institution_assertions.country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `institution_assertions.id` | string (ID) | ✓ | ✓ |
+| `institution_assertions.lineage` | string | ✓ | ✓ |
+| `institution_assertions.ror` | string | ✓ | ✓ |
+| `institution_assertions.type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `institutions.continent` | [continent](/api-reference/continents) |  | ✓ |
+| `institutions.country_code` | [country](/api-reference/countries) | ✓ | ✓ |
+| `institutions.id` | string (ID) | ✓ | ✓ |
+| `institutions.is_global_south` | boolean | ✓ | ✓ |
+| `institutions.ror` | string | ✓ | ✓ |
+| `institutions.type` | [institution type](/api-reference/institution-types) | ✓ | ✓ |
+| `institutions_distinct_count` | integer | ✓ | ✓ |
+| `is_corresponding` | boolean | ✓ | ✓ |
+| `is_oa` | boolean |  | ✓ |
+| `is_paratext` | boolean | ✓ | ✓ |
+| `is_retracted` | boolean | ✓ | ✓ |
+| `is_xpac` | boolean | ✓ | ✓ |
+| `journal` | string | ✓ | ✓ |
+| `keyword.search` | search | ✓ |  |
+| `keywords.id` | string (ID) | ✓ | ✓ |
+| `language` | [language](/api-reference/languages) | ✓ | ✓ |
+| `locations.is_accepted` | string | ✓ | ✓ |
+| `locations.is_oa` | string | ✓ | ✓ |
+| `locations.is_published` | string | ✓ | ✓ |
+| `locations.landing_page_url` | string | ✓ | ✓ |
+| `locations.license` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `locations.license_id` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `locations.raw_type` | string |  |  |
+| `locations.source.has_issn` | string | ✓ | ✓ |
+| `locations.source.host_institution_lineage` | string | ✓ | ✓ |
+| `locations.source.host_organization` | string | ✓ | ✓ |
+| `locations.source.host_organization_lineage` | string | ✓ | ✓ |
+| `locations.source.id` | string (ID) | ✓ | ✓ |
+| `locations.source.is_core` | string | ✓ | ✓ |
+| `locations.source.is_in_doaj` | string | ✓ | ✓ |
+| `locations.source.is_oa` | string | ✓ | ✓ |
+| `locations.source.issn` | string | ✓ | ✓ |
+| `locations.source.publisher_lineage` | string | ✓ | ✓ |
+| `locations.source.type` | [source type](/api-reference/source-types) | ✓ | ✓ |
+| `locations.version` | string | ✓ | ✓ |
+| `locations_count` | integer | ✓ | ✓ |
+| `mag` | string | ✓ |  |
+| `mag_only` | string |  | ✓ |
+| `oa_status` | string |  | ✓ |
+| `open_access.any_repository_has_fulltext` | string | ✓ | ✓ |
+| `open_access.is_oa` | string | ✓ | ✓ |
+| `open_access.oa_status` | string | ✓ | ✓ |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `pmcid` | string | ✓ |  |
+| `pmid` | string | ✓ |  |
+| `primary_location.is_accepted` | string | ✓ | ✓ |
+| `primary_location.is_oa` | string | ✓ | ✓ |
+| `primary_location.is_published` | string | ✓ | ✓ |
+| `primary_location.landing_page_url` | string | ✓ | ✓ |
+| `primary_location.license` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `primary_location.license_id` | [license](/api-reference/licenses) | ✓ | ✓ |
+| `primary_location.raw_type` | string |  |  |
+| `primary_location.source.has_issn` | string | ✓ | ✓ |
+| `primary_location.source.host_institution_lineage` | string | ✓ | ✓ |
+| `primary_location.source.host_organization` | string | ✓ | ✓ |
+| `primary_location.source.host_organization_lineage` | string | ✓ | ✓ |
+| `primary_location.source.id` | string (ID) | ✓ | ✓ |
+| `primary_location.source.is_core` | string | ✓ | ✓ |
+| `primary_location.source.is_in_doaj` | string | ✓ | ✓ |
+| `primary_location.source.is_oa` | string | ✓ | ✓ |
+| `primary_location.source.issn` | string | ✓ | ✓ |
+| `primary_location.source.publisher_lineage` | string | ✓ | ✓ |
+| `primary_location.source.type` | [source type](/api-reference/source-types) | ✓ | ✓ |
+| `primary_location.version` | string | ✓ | ✓ |
+| `primary_topic.domain.id` | string (ID) | ✓ | ✓ |
+| `primary_topic.field.id` | string (ID) | ✓ | ✓ |
+| `primary_topic.id` | string (ID) | ✓ | ✓ |
+| `primary_topic.subfield.id` | string (ID) | ✓ | ✓ |
+| `publication_date` | date | ✓ |  |
+| `publication_year` | integer | ✓ | ✓ |
+| `raw_affiliation_strings` | string | ✓ | ✓ |
+| `raw_affiliation_strings.search` | search |  |  |
+| `raw_author_name.search` | search |  |  |
+| `referenced_works` | string | ✓ |  |
+| `referenced_works_count` | integer | ✓ | ✓ |
+| `related_to` | string |  |  |
+| `repository` | string | ✓ | ✓ |
+| `semantic.search` | search |  |  |
+| `sustainable_development_goals.id` | string (ID) | ✓ | ✓ |
+| `sustainable_development_goals.score` | number | ✓ |  |
+| `title.search` | search |  |  |
+| `title.search.no_stem` | search |  |  |
+| `title_and_abstract.search` | search |  |  |
+| `title_and_abstract.search.no_stem` | search |  |  |
+| `to_created_date` | date | ✓ |  |
+| `to_publication_date` | date | ✓ |  |
+| `to_updated_date` | date | ✓ |  |
+| `topics.domain.id` | string (ID) | ✓ | ✓ |
+| `topics.field.id` | string (ID) | ✓ | ✓ |
+| `topics.id` | string (ID) | ✓ | ✓ |
+| `topics.subfield.id` | string (ID) | ✓ | ✓ |
+| `topics_count` | integer |  |  |
+| `type` | [work type](/api-reference/work-types) | ✓ | ✓ |
+| `type_crossref` | string | ✓ | ✓ |
+| `updated_date` | date | ✓ |  |
+| `version` | string | ✓ | ✓ |
+
+</Accordion>

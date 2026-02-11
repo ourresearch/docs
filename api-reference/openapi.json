@@ -121,33 +121,55 @@
         "operationId": "listWorks",
         "summary": "List works",
         "description": "Get a list of scholarly works with optional filtering, searching, sorting, and pagination. Works include journal articles, books, datasets, theses, and more.",
-        "tags": ["Works"],
+        "tags": [
+          "Works"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter works. Examples: `publication_year:2023`, `type:article`, `open_access.is_oa:true`, `author.id:A5023888391`, `institutions.id:I27837315`, `cited_by_count:>100`",
-            "schema": {"type": "string"}
+            "description": "Filter works. Examples: `publication_year:2023`, `type:article`, `open_access.is_oa:true`, `author.id:A5023888391`, `institutions.id:I27837315`, `cited_by_count:>100` See [all Work fields](/api-reference/works#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `cited_by_count`, `publication_date`, `relevance_score` (with search). Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `cited_by_count`, `publication_date`, `relevance_score` (with search). Prefix with `-` for descending. See [all Work fields](/api-reference/works#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `publication_year`, `type`, `open_access.is_oa`, `authorships.institutions.country_code`",
-            "schema": {"type": "string"}
+            "description": "Group by: `publication_year`, `type`, `open_access.is_oa`, `authorships.institutions.country_code` See [all Work fields](/api-reference/works#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -160,9 +182,15 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "403": {"$ref": "#/components/responses/Forbidden"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -171,7 +199,9 @@
         "operationId": "getWork",
         "summary": "Get a single work",
         "description": "Retrieve a single work by its OpenAlex ID or external ID (DOI, PMID, PMCID, MAG ID). External IDs can be passed as full URLs or URN format (e.g., `doi:10.1234/example` or `pmid:12345678`).",
-        "tags": ["Works"],
+        "tags": [
+          "Works"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -196,8 +226,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -210,8 +244,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -220,33 +258,55 @@
         "operationId": "listAuthors",
         "summary": "List authors",
         "description": "Get a list of authors with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Authors"],
+        "tags": [
+          "Authors"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter authors. Examples: `has_orcid:true`, `last_known_institutions.id:I27837315`, `works_count:>100`, `affiliations.institution.country_code:US`",
-            "schema": {"type": "string"}
+            "description": "Filter authors. Examples: `has_orcid:true`, `last_known_institutions.id:I27837315`, `works_count:>100`, `affiliations.institution.country_code:US` See [all Author fields](/api-reference/authors#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`, `summary_stats.i10_index`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`, `summary_stats.i10_index`. Prefix with `-` for descending. See [all Author fields](/api-reference/authors#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `last_known_institutions.country_code`, `last_known_institutions.type`, `has_orcid`",
-            "schema": {"type": "string"}
+            "description": "Group by: `last_known_institutions.country_code`, `last_known_institutions.type`, `has_orcid` See [all Author fields](/api-reference/authors#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -259,8 +319,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -269,7 +333,9 @@
         "operationId": "getAuthor",
         "summary": "Get a single author",
         "description": "Retrieve a single author by OpenAlex ID or ORCID.",
-        "tags": ["Authors"],
+        "tags": [
+          "Authors"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -290,8 +356,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -304,8 +374,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -314,33 +388,55 @@
         "operationId": "listSources",
         "summary": "List sources",
         "description": "Get a list of sources (journals, repositories, conferences) with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Sources"],
+        "tags": [
+          "Sources"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter sources. Examples: `is_oa:true`, `is_in_doaj:true`, `type:journal`, `country_code:US`, `host_organization:P4310320595`",
-            "schema": {"type": "string"}
+            "description": "Filter sources. Examples: `is_oa:true`, `is_in_doaj:true`, `type:journal`, `country_code:US`, `host_organization:P4310320595` See [all Source fields](/api-reference/sources#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending. See [all Source fields](/api-reference/sources#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `type`, `country_code`, `is_oa`, `is_in_doaj`",
-            "schema": {"type": "string"}
+            "description": "Group by: `type`, `country_code`, `is_oa`, `is_in_doaj` See [all Source fields](/api-reference/sources#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -353,8 +449,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -363,7 +463,9 @@
         "operationId": "getSource",
         "summary": "Get a single source",
         "description": "Retrieve a single source by OpenAlex ID or ISSN.",
-        "tags": ["Sources"],
+        "tags": [
+          "Sources"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -384,8 +486,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -398,8 +504,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -408,33 +518,55 @@
         "operationId": "listInstitutions",
         "summary": "List institutions",
         "description": "Get a list of institutions with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Institutions"],
+        "tags": [
+          "Institutions"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter institutions. Examples: `country_code:US`, `type:education`, `is_global_south:true`, `continent:Q46`, `has_ror:true`",
-            "schema": {"type": "string"}
+            "description": "Filter institutions. Examples: `country_code:US`, `type:education`, `is_global_south:true`, `continent:Q46`, `has_ror:true` See [all Institution fields](/api-reference/institutions#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending. See [all Institution fields](/api-reference/institutions#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `country_code`, `type`, `continent`, `is_global_south`",
-            "schema": {"type": "string"}
+            "description": "Group by: `country_code`, `type`, `continent`, `is_global_south` See [all Institution fields](/api-reference/institutions#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -447,8 +579,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -457,7 +593,9 @@
         "operationId": "getInstitution",
         "summary": "Get a single institution",
         "description": "Retrieve a single institution by OpenAlex ID or ROR.",
-        "tags": ["Institutions"],
+        "tags": [
+          "Institutions"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -478,8 +616,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -492,8 +634,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -502,33 +648,55 @@
         "operationId": "listTopics",
         "summary": "List topics",
         "description": "Get a list of topics with optional filtering, searching, sorting, and pagination. Topics are research areas automatically assigned to works.",
-        "tags": ["Topics"],
+        "tags": [
+          "Topics"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter topics. Examples: `domain.id:1`, `field.id:17`, `subfield.id:1702`, `works_count:>1000`",
-            "schema": {"type": "string"}
+            "description": "Filter topics. Examples: `domain.id:1`, `field.id:17`, `subfield.id:1702`, `works_count:>1000` See [all Topic fields](/api-reference/topics#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Topic fields](/api-reference/topics#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `domain.id`, `field.id`, `subfield.id`",
-            "schema": {"type": "string"}
+            "description": "Group by: `domain.id`, `field.id`, `subfield.id` See [all Topic fields](/api-reference/topics#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -541,8 +709,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -551,7 +723,9 @@
         "operationId": "getTopic",
         "summary": "Get a single topic",
         "description": "Retrieve a single topic by OpenAlex ID.",
-        "tags": ["Topics"],
+        "tags": [
+          "Topics"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -562,8 +736,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -576,8 +754,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -586,28 +768,55 @@
         "operationId": "listKeywords",
         "summary": "List keywords",
         "description": "Get a list of keywords with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Keywords"],
+        "tags": [
+          "Keywords"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter keywords. Examples: `works_count:>100`, `cited_by_count:>1000`",
-            "schema": {"type": "string"}
+            "description": "Filter keywords. Examples: `works_count:>100`, `cited_by_count:>1000` See [all Keyword fields](/api-reference/keywords#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Keyword fields](/api-reference/keywords#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all Keyword fields](/api-reference/keywords#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -620,8 +829,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -630,7 +843,9 @@
         "operationId": "getKeyword",
         "summary": "Get a single keyword",
         "description": "Retrieve a single keyword by OpenAlex ID.",
-        "tags": ["Keywords"],
+        "tags": [
+          "Keywords"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -641,8 +856,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -655,8 +874,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -665,33 +888,55 @@
         "operationId": "listPublishers",
         "summary": "List publishers",
         "description": "Get a list of publishers with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Publishers"],
+        "tags": [
+          "Publishers"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter publishers. Examples: `country_codes:US`, `hierarchy_level:0`, `lineage:P4310319965`",
-            "schema": {"type": "string"}
+            "description": "Filter publishers. Examples: `country_codes:US`, `hierarchy_level:0`, `lineage:P4310319965` See [all Publisher fields](/api-reference/publishers#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `summary_stats.h_index`. Prefix with `-` for descending. See [all Publisher fields](/api-reference/publishers#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `country_codes`, `hierarchy_level`",
-            "schema": {"type": "string"}
+            "description": "Group by: `country_codes`, `hierarchy_level` See [all Publisher fields](/api-reference/publishers#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -704,8 +949,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -714,7 +963,9 @@
         "operationId": "getPublisher",
         "summary": "Get a single publisher",
         "description": "Retrieve a single publisher by OpenAlex ID.",
-        "tags": ["Publishers"],
+        "tags": [
+          "Publishers"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -725,8 +976,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -739,8 +994,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -749,33 +1008,55 @@
         "operationId": "listFunders",
         "summary": "List funders",
         "description": "Get a list of funders with optional filtering, searching, sorting, and pagination.",
-        "tags": ["Funders"],
+        "tags": [
+          "Funders"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter funders. Examples: `country_code:US`, `is_global_south:true`, `continent:Q46`",
-            "schema": {"type": "string"}
+            "description": "Filter funders. Examples: `country_code:US`, `is_global_south:true`, `continent:Q46` See [all Funder fields](/api-reference/funders#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `awards_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `awards_count`. Prefix with `-` for descending. See [all Funder fields](/api-reference/funders#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `country_code`, `continent`, `is_global_south`",
-            "schema": {"type": "string"}
+            "description": "Group by: `country_code`, `continent`, `is_global_south` See [all Funder fields](/api-reference/funders#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -788,8 +1069,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -798,7 +1083,9 @@
         "operationId": "getFunder",
         "summary": "Get a single funder",
         "description": "Retrieve a single funder by OpenAlex ID or Crossref Funder ID.",
-        "tags": ["Funders"],
+        "tags": [
+          "Funders"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -809,8 +1096,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -823,8 +1114,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -833,7 +1128,9 @@
         "operationId": "autocomplete",
         "summary": "Autocomplete search",
         "description": "Fast typeahead search returning up to 10 results. Use for search-as-you-type interfaces.",
-        "tags": ["Autocomplete"],
+        "tags": [
+          "Autocomplete"
+        ],
         "parameters": [
           {
             "name": "entity_type",
@@ -842,7 +1139,16 @@
             "description": "Type of entity to search",
             "schema": {
               "type": "string",
-              "enum": ["works", "authors", "sources", "institutions", "topics", "keywords", "publishers", "funders"]
+              "enum": [
+                "works",
+                "authors",
+                "sources",
+                "institutions",
+                "topics",
+                "keywords",
+                "publishers",
+                "funders"
+              ]
             }
           },
           {
@@ -854,8 +1160,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/filter"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/filter"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -868,8 +1178,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -879,7 +1193,9 @@
         "summary": "Classify text (Aboutness)",
         "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs 1,000 credits per request.",
         "deprecated": true,
-        "tags": ["Topics"],
+        "tags": [
+          "Topics"
+        ],
         "parameters": [
           {
             "name": "title",
@@ -897,7 +1213,9 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -910,8 +1228,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -920,9 +1242,13 @@
         "operationId": "getRateLimit",
         "summary": "Check rate limit status",
         "description": "Check your current rate limit status including credits used and remaining.",
-        "tags": ["Rate Limits"],
+        "tags": [
+          "Rate Limits"
+        ],
         "parameters": [
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -935,7 +1261,9 @@
               }
             }
           },
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -944,28 +1272,55 @@
         "operationId": "listDomains",
         "summary": "List domains",
         "description": "Get a list of domains (top-level topic categories). There are only 4 domains: Life Sciences, Social Sciences, Physical Sciences, and Health Sciences.",
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter domains. Examples: `id:1`, `works_count:>10000000`",
-            "schema": {"type": "string"}
+            "description": "Filter domains. Examples: `id:1`, `works_count:>10000000` See [all Domain fields](/api-reference/domains#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Domain fields](/api-reference/domains#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all Domain fields](/api-reference/domains#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -978,8 +1333,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -988,7 +1347,9 @@
         "operationId": "getDomain",
         "summary": "Get a single domain",
         "description": "Retrieve a single domain by its ID (1-4).",
-        "tags": ["Domains"],
+        "tags": [
+          "Domains"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1009,8 +1370,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1023,8 +1388,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1033,33 +1402,55 @@
         "operationId": "listFields",
         "summary": "List fields",
         "description": "Get a list of fields (second-level topic categories). There are 26 fields spread across 4 domains.",
-        "tags": ["Fields"],
+        "tags": [
+          "Fields"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter fields. Examples: `domain.id:1`, `works_count:>1000000`",
-            "schema": {"type": "string"}
+            "description": "Filter fields. Examples: `domain.id:1`, `works_count:>1000000` See [all Field fields](/api-reference/fields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Field fields](/api-reference/fields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `domain.id`",
-            "schema": {"type": "string"}
+            "description": "Group by: `domain.id` See [all Field fields](/api-reference/fields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1072,8 +1463,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1082,7 +1477,9 @@
         "operationId": "getField",
         "summary": "Get a single field",
         "description": "Retrieve a single field by its ID.",
-        "tags": ["Fields"],
+        "tags": [
+          "Fields"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1103,8 +1500,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1117,8 +1518,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1127,33 +1532,55 @@
         "operationId": "listSubfields",
         "summary": "List subfields",
         "description": "Get a list of subfields (third-level topic categories). There are 254 subfields spread across 26 fields.",
-        "tags": ["Subfields"],
+        "tags": [
+          "Subfields"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter subfields. Examples: `field.id:17`, `domain.id:3`, `works_count:>100000`",
-            "schema": {"type": "string"}
+            "description": "Filter subfields. Examples: `field.id:17`, `domain.id:3`, `works_count:>100000` See [all Subfield fields](/api-reference/subfields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Subfield fields](/api-reference/subfields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `field.id`, `domain.id`",
-            "schema": {"type": "string"}
+            "description": "Group by: `field.id`, `domain.id` See [all Subfield fields](/api-reference/subfields#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1166,8 +1593,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1176,7 +1607,9 @@
         "operationId": "getSubfield",
         "summary": "Get a single subfield",
         "description": "Retrieve a single subfield by its ID.",
-        "tags": ["Subfields"],
+        "tags": [
+          "Subfields"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1197,8 +1630,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1211,8 +1648,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1221,28 +1662,55 @@
         "operationId": "listSdgs",
         "summary": "List SDGs",
         "description": "Get a list of UN Sustainable Development Goals. There are 17 SDGs.",
-        "tags": ["SDGs"],
+        "tags": [
+          "SDGs"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter SDGs. Examples: `id:3` (Good Health), `works_count:>100000`",
-            "schema": {"type": "string"}
+            "description": "Filter SDGs. Examples: `id:3` (Good Health), `works_count:>100000` See [all SDG fields](/api-reference/sdgs#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all SDG fields](/api-reference/sdgs#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all SDG fields](/api-reference/sdgs#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1255,8 +1723,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1265,7 +1737,9 @@
         "operationId": "getSdg",
         "summary": "Get a single SDG",
         "description": "Retrieve a single Sustainable Development Goal by its ID (1-17).",
-        "tags": ["SDGs"],
+        "tags": [
+          "SDGs"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1286,8 +1760,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1300,8 +1778,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1310,28 +1792,55 @@
         "operationId": "listCountries",
         "summary": "List countries",
         "description": "Get a list of countries. Useful for filtering works by author affiliation country.",
-        "tags": ["Countries"],
+        "tags": [
+          "Countries"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter countries. Examples: `id:US`, `works_count:>1000000`",
-            "schema": {"type": "string"}
+            "description": "Filter countries. Examples: `id:US`, `works_count:>1000000` See [all Country fields](/api-reference/countries#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Country fields](/api-reference/countries#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all Country fields](/api-reference/countries#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1344,8 +1853,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1354,7 +1867,9 @@
         "operationId": "getCountry",
         "summary": "Get a single country",
         "description": "Retrieve a single country by its ISO 3166-1 alpha-2 code.",
-        "tags": ["Countries"],
+        "tags": [
+          "Countries"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1375,8 +1890,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1389,8 +1908,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1399,28 +1922,55 @@
         "operationId": "listContinents",
         "summary": "List continents",
         "description": "Get a list of continents (7 total).",
-        "tags": ["Continents"],
+        "tags": [
+          "Continents"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter continents. Examples: `id:Q46` (Europe), `works_count:>10000000`",
-            "schema": {"type": "string"}
+            "description": "Filter continents. Examples: `id:Q46` (Europe), `works_count:>10000000` See [all Continent fields](/api-reference/continents#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Continent fields](/api-reference/continents#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all Continent fields](/api-reference/continents#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1433,8 +1983,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1443,7 +1997,9 @@
         "operationId": "getContinent",
         "summary": "Get a single continent",
         "description": "Retrieve a single continent by its Wikidata Q-ID.",
-        "tags": ["Continents"],
+        "tags": [
+          "Continents"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1464,8 +2020,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1478,8 +2038,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1488,28 +2052,55 @@
         "operationId": "listLanguages",
         "summary": "List languages",
         "description": "Get a list of languages used in scholarly works.",
-        "tags": ["Languages"],
+        "tags": [
+          "Languages"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter languages. Examples: `id:en` (English), `works_count:>100000`",
-            "schema": {"type": "string"}
+            "description": "Filter languages. Examples: `id:en` (English), `works_count:>100000` See [all Language fields](/api-reference/languages#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending. See [all Language fields](/api-reference/languages#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Group results by a field and return counts. Available fields vary by entity type. See [all Language fields](/api-reference/languages#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1522,8 +2113,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1532,7 +2127,9 @@
         "operationId": "getLanguage",
         "summary": "Get a single language",
         "description": "Retrieve a single language by its ISO 639-1 code.",
-        "tags": ["Languages"],
+        "tags": [
+          "Languages"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1553,8 +2150,12 @@
               }
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1567,8 +2168,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1577,33 +2182,55 @@
         "operationId": "listAwards",
         "summary": "List awards",
         "description": "Get a list of research grants and funding awards.",
-        "tags": ["Awards"],
+        "tags": [
+          "Awards"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter awards. Examples: `funder.id:F4320306076`, `start_year:2023`, `funded_outputs_count:>10`",
-            "schema": {"type": "string"}
+            "description": "Filter awards. Examples: `funder.id:F4320306076`, `start_year:2023`, `funded_outputs_count:>10` See [all Award fields](/api-reference/awards#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `funded_outputs_count`, `amount`, `start_year`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `funded_outputs_count`, `amount`, `start_year`. Prefix with `-` for descending. See [all Award fields](/api-reference/awards#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `funder.id`, `start_year`, `currency`",
-            "schema": {"type": "string"}
+            "description": "Group by: `funder.id`, `start_year`, `currency` See [all Award fields](/api-reference/awards#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1616,8 +2243,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1626,7 +2257,9 @@
         "operationId": "getAward",
         "summary": "Get a single award",
         "description": "Retrieve a single award by its OpenAlex ID.",
-        "tags": ["Awards"],
+        "tags": [
+          "Awards"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1637,8 +2270,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1651,8 +2288,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1662,33 +2303,55 @@
         "summary": "List concepts (deprecated)",
         "description": "**DEPRECATED:** Use Topics instead. Get a list of concepts from the legacy taxonomy.",
         "deprecated": true,
-        "tags": ["Concepts"],
+        "tags": [
+          "Concepts"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
-            "description": "Filter concepts. Examples: `level:0` (top-level), `ancestors.id:C41008148`, `wikidata_id:Q21198`",
-            "schema": {"type": "string"}
+            "description": "Filter concepts. Examples: `level:0` (top-level), `ancestors.id:C41008148`, `wikidata_id:Q21198` See [all Concept fields](/api-reference/concepts#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
-            "description": "Sort by: `works_count`, `cited_by_count`, `level`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "description": "Sort by: `works_count`, `cited_by_count`, `level`. Prefix with `-` for descending. See [all Concept fields](/api-reference/concepts#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "group_by",
             "in": "query",
-            "description": "Group by: `level`",
-            "schema": {"type": "string"}
+            "description": "Group by: `level` See [all Concept fields](/api-reference/concepts#available-filter-sort-and-group_by-fields).",
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1701,8 +2364,12 @@
               }
             }
           },
-          "400": {"$ref": "#/components/responses/BadRequest"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1712,7 +2379,9 @@
         "summary": "Get a single concept (deprecated)",
         "description": "**DEPRECATED:** Use Topics instead. Retrieve a single concept by OpenAlex ID.",
         "deprecated": true,
-        "tags": ["Concepts"],
+        "tags": [
+          "Concepts"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1723,8 +2392,12 @@
               "type": "string"
             }
           },
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1737,8 +2410,12 @@
               }
             }
           },
-          "404": {"$ref": "#/components/responses/NotFound"},
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1747,28 +2424,50 @@
         "operationId": "listWorkTypes",
         "summary": "List work types",
         "description": "Get a list of work types (article, book, dataset, etc.).",
-        "tags": ["Work Types"],
+        "tags": [
+          "Work Types"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
             "description": "Filter work types. Examples: `id:article`, `works_count:>1000000`",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
             "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/group_by"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1781,7 +2480,9 @@
               }
             }
           },
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1790,28 +2491,50 @@
         "operationId": "listSourceTypes",
         "summary": "List source types",
         "description": "Get a list of source types (journal, repository, conference, etc.).",
-        "tags": ["Source Types"],
+        "tags": [
+          "Source Types"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
             "description": "Filter source types. Examples: `id:journal`, `works_count:>100000`",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
             "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/group_by"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1824,7 +2547,9 @@
               }
             }
           },
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1833,28 +2558,50 @@
         "operationId": "listInstitutionTypes",
         "summary": "List institution types",
         "description": "Get a list of institution types (education, healthcare, company, etc.).",
-        "tags": ["Institution Types"],
+        "tags": [
+          "Institution Types"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
             "description": "Filter institution types. Examples: `id:education`, `works_count:>1000000`",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
             "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/group_by"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1867,7 +2614,9 @@
               }
             }
           },
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -1876,28 +2625,50 @@
         "operationId": "listLicenses",
         "summary": "List licenses",
         "description": "Get a list of open access licenses (CC BY, CC BY-SA, etc.).",
-        "tags": ["Licenses"],
+        "tags": [
+          "Licenses"
+        ],
         "parameters": [
           {
             "name": "filter",
             "in": "query",
             "description": "Filter licenses. Examples: `id:cc-by`, `works_count:>100000`",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "sort",
             "in": "query",
             "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
-            "schema": {"type": "string"}
+            "schema": {
+              "type": "string"
+            }
           },
-          {"$ref": "#/components/parameters/search"},
-          {"$ref": "#/components/parameters/per_page"},
-          {"$ref": "#/components/parameters/page"},
-          {"$ref": "#/components/parameters/cursor"},
-          {"$ref": "#/components/parameters/sample"},
-          {"$ref": "#/components/parameters/select"},
-          {"$ref": "#/components/parameters/group_by"},
-          {"$ref": "#/components/parameters/api_key"}
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/group_by"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
         ],
         "responses": {
           "200": {
@@ -1910,7 +2681,9 @@
               }
             }
           },
-          "429": {"$ref": "#/components/responses/RateLimited"}
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     }
@@ -2153,12 +2926,12 @@
           },
           "type": {
             "type": "string",
-            "description": "Work type (article, book, dataset, etc.)"
+            "description": "The [work type](/api-reference/work-types) (article, book, dataset, etc.)"
           },
           "language": {
             "type": "string",
             "nullable": true,
-            "description": "ISO 639-1 language code"
+            "description": "[Language](/api-reference/languages) in ISO 639-1 format"
           },
           "cited_by_count": {
             "type": "integer",
@@ -2198,21 +2971,43 @@
             "type": "object",
             "description": "External identifiers",
             "properties": {
-              "openalex": {"type": "string"},
-              "doi": {"type": "string"},
-              "mag": {"type": "integer"},
-              "pmid": {"type": "string"},
-              "pmcid": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "doi": {
+                "type": "string"
+              },
+              "mag": {
+                "type": "integer"
+              },
+              "pmid": {
+                "type": "string"
+              },
+              "pmcid": {
+                "type": "string"
+              }
             }
           },
           "biblio": {
             "type": "object",
             "description": "Bibliographic information",
             "properties": {
-              "volume": {"type": "string", "nullable": true},
-              "issue": {"type": "string", "nullable": true},
-              "first_page": {"type": "string", "nullable": true},
-              "last_page": {"type": "string", "nullable": true}
+              "volume": {
+                "type": "string",
+                "nullable": true
+              },
+              "issue": {
+                "type": "string",
+                "nullable": true
+              },
+              "first_page": {
+                "type": "string",
+                "nullable": true
+              },
+              "last_page": {
+                "type": "string",
+                "nullable": true
+              }
             }
           },
           "abstract_inverted_index": {
@@ -2222,7 +3017,9 @@
           },
           "referenced_works": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "OpenAlex IDs of works cited by this work"
           },
           "referenced_works_count": {
@@ -2231,7 +3028,9 @@
           },
           "related_works": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "OpenAlex IDs of related works"
           },
           "topics": {
@@ -2254,7 +3053,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DehydratedFunder"
-            }
+            },
+            "description": "[Dehydrated funders](/api-reference/funders)"
           },
           "awards": {
             "type": "array",
@@ -2271,17 +3071,27 @@
             "type": "object",
             "nullable": true,
             "properties": {
-              "value": {"type": "number"},
-              "is_in_top_1_percent": {"type": "boolean"},
-              "is_in_top_10_percent": {"type": "boolean"}
+              "value": {
+                "type": "number"
+              },
+              "is_in_top_1_percent": {
+                "type": "boolean"
+              },
+              "is_in_top_10_percent": {
+                "type": "boolean"
+              }
             }
           },
           "cited_by_percentile_year": {
             "type": "object",
             "nullable": true,
             "properties": {
-              "min": {"type": "integer"},
-              "max": {"type": "integer"}
+              "min": {
+                "type": "integer"
+              },
+              "max": {
+                "type": "integer"
+              }
             }
           },
           "counts_by_year": {
@@ -2289,8 +3099,12 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
@@ -2299,9 +3113,15 @@
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"},
-                "score": {"type": "number"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "number"
+                }
               }
             }
           },
@@ -2310,25 +3130,41 @@
             "items": {
               "type": "object",
               "properties": {
-                "descriptor_ui": {"type": "string"},
-                "descriptor_name": {"type": "string"},
-                "qualifier_ui": {"type": "string"},
-                "qualifier_name": {"type": "string"},
-                "is_major_topic": {"type": "boolean"}
+                "descriptor_ui": {
+                  "type": "string"
+                },
+                "descriptor_name": {
+                  "type": "string"
+                },
+                "qualifier_ui": {
+                  "type": "string"
+                },
+                "qualifier_name": {
+                  "type": "string"
+                },
+                "is_major_topic": {
+                  "type": "boolean"
+                }
               }
             }
           },
           "indexed_in": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Sources this work is indexed in (crossref, pubmed, doaj, arxiv)"
           },
           "has_content": {
             "type": "object",
             "nullable": true,
             "properties": {
-              "pdf": {"type": "boolean"},
-              "grobid_xml": {"type": "boolean"}
+              "pdf": {
+                "type": "boolean"
+              },
+              "grobid_xml": {
+                "type": "boolean"
+              }
             }
           },
           "content_url": {
@@ -2367,12 +3203,13 @@
             "description": "Direct URL to PDF"
           },
           "source": {
-            "$ref": "#/components/schemas/DehydratedSource"
+            "$ref": "#/components/schemas/DehydratedSource",
+            "description": "[Dehydrated source](/api-reference/sources#the-dehydratedsource-object)"
           },
           "license": {
             "type": "string",
             "nullable": true,
-            "description": "License (e.g., cc-by)"
+            "description": "The [license](/api-reference/licenses) (e.g., cc-by)"
           },
           "license_id": {
             "type": "string",
@@ -2381,7 +3218,11 @@
           "version": {
             "type": "string",
             "nullable": true,
-            "enum": ["publishedVersion", "acceptedVersion", "submittedVersion"],
+            "enum": [
+              "publishedVersion",
+              "acceptedVersion",
+              "submittedVersion"
+            ],
             "description": "Version of the work at this location"
           },
           "is_accepted": {
@@ -2402,7 +3243,14 @@
           },
           "oa_status": {
             "type": "string",
-            "enum": ["diamond", "gold", "hybrid", "bronze", "green", "closed"],
+            "enum": [
+              "diamond",
+              "gold",
+              "hybrid",
+              "bronze",
+              "green",
+              "closed"
+            ],
             "description": "Open access status"
           },
           "oa_url": {
@@ -2422,21 +3270,29 @@
         "properties": {
           "author_position": {
             "type": "string",
-            "enum": ["first", "middle", "last"],
+            "enum": [
+              "first",
+              "middle",
+              "last"
+            ],
             "description": "Position in author list"
           },
           "author": {
-            "$ref": "#/components/schemas/DehydratedAuthor"
+            "$ref": "#/components/schemas/DehydratedAuthor",
+            "description": "[Dehydrated author](/api-reference/authors#the-dehydratedauthor-object)"
           },
           "institutions": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DehydratedInstitution"
-            }
+            },
+            "description": "[Dehydrated institutions](/api-reference/institutions#the-dehydratedinstitution-object)"
           },
           "countries": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Country codes of affiliations"
           },
           "is_corresponding": {
@@ -2449,56 +3305,98 @@
           },
           "raw_affiliation_strings": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
       "WorkTopic": {
         "type": "object",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "score": {"type": "number"},
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
           "subfield": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [subfield](/api-reference/subfields)"
           },
           "field": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [field](/api-reference/fields)"
           },
           "domain": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [domain](/api-reference/domains)"
           }
         }
       },
       "WorkKeyword": {
         "type": "object",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "score": {"type": "number"}
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          }
         }
       },
       "Award": {
         "type": "object",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "funder_award_id": {"type": "string"},
-          "funder_id": {"type": "string"},
-          "funder_display_name": {"type": "string"},
-          "doi": {"type": "string", "nullable": true}
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "funder_award_id": {
+            "type": "string"
+          },
+          "funder_id": {
+            "type": "string"
+          },
+          "funder_display_name": {
+            "type": "string"
+          },
+          "doi": {
+            "type": "string",
+            "nullable": true
+          }
         }
       },
       "Author": {
@@ -2521,7 +3419,9 @@
           },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Alternative names"
           },
           "works_count": {
@@ -2535,9 +3435,15 @@
           "summary_stats": {
             "type": "object",
             "properties": {
-              "2yr_mean_citedness": {"type": "number"},
-              "h_index": {"type": "integer"},
-              "i10_index": {"type": "integer"}
+              "2yr_mean_citedness": {
+                "type": "number"
+              },
+              "h_index": {
+                "type": "integer"
+              },
+              "i10_index": {
+                "type": "integer"
+              }
             }
           },
           "affiliations": {
@@ -2545,26 +3451,40 @@
             "items": {
               "type": "object",
               "properties": {
-                "institution": {"$ref": "#/components/schemas/DehydratedInstitution"},
+                "institution": {
+                  "$ref": "#/components/schemas/DehydratedInstitution",
+                  "description": "[Dehydrated institution](/api-reference/institutions#the-dehydratedinstitution-object)"
+                },
                 "years": {
                   "type": "array",
-                  "items": {"type": "integer"}
+                  "items": {
+                    "type": "integer"
+                  }
                 }
               }
             }
           },
           "last_known_institutions": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/DehydratedInstitution"}
+            "items": {
+              "$ref": "#/components/schemas/DehydratedInstitution"
+            },
+            "description": "[Dehydrated institutions](/api-reference/institutions#the-dehydratedinstitution-object)"
           },
           "topics": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"},
-                "count": {"type": "integer"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer"
+                }
               }
             }
           },
@@ -2573,26 +3493,44 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "orcid": {"type": "string"},
-              "scopus": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "orcid": {
+                "type": "string"
+              },
+              "scopus": {
+                "type": "string"
+              }
             }
           },
           "works_api_url": {
             "type": "string",
             "description": "API URL to get this author's works"
           },
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Source": {
@@ -2611,7 +3549,9 @@
           },
           "issn": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "nullable": true,
             "description": "All ISSNs"
           },
@@ -2621,8 +3561,14 @@
           },
           "type": {
             "type": "string",
-            "enum": ["journal", "repository", "conference", "ebook platform", "book series"],
-            "description": "Source type"
+            "enum": [
+              "journal",
+              "repository",
+              "conference",
+              "ebook platform",
+              "book series"
+            ],
+            "description": "The [source type](/api-reference/source-types) (journal, repository, conference, etc.)"
           },
           "host_organization": {
             "type": "string",
@@ -2635,7 +3581,9 @@
           },
           "host_organization_lineage": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "is_oa": {
             "type": "boolean",
@@ -2654,9 +3602,15 @@
           "summary_stats": {
             "type": "object",
             "properties": {
-              "2yr_mean_citedness": {"type": "number"},
-              "h_index": {"type": "integer"},
-              "i10_index": {"type": "integer"}
+              "2yr_mean_citedness": {
+                "type": "number"
+              },
+              "h_index": {
+                "type": "integer"
+              },
+              "i10_index": {
+                "type": "integer"
+              }
             }
           },
           "apc_usd": {
@@ -2671,12 +3625,27 @@
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "issn_l": {"type": "string"},
-              "issn": {"type": "array", "items": {"type": "string"}},
-              "mag": {"type": "integer"},
-              "wikidata": {"type": "string"},
-              "fatcat": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "issn_l": {
+                "type": "string"
+              },
+              "issn": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mag": {
+                "type": "integer"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "fatcat": {
+                "type": "string"
+              }
             }
           },
           "counts_by_year": {
@@ -2684,15 +3653,29 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Institution": {
@@ -2708,64 +3691,126 @@
             "nullable": true,
             "description": "ROR identifier"
           },
-          "display_name": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
           "country_code": {
             "type": "string",
             "nullable": true,
-            "description": "ISO 3166-1 alpha-2 country code"
+            "description": "[Country](/api-reference/countries) code (ISO 3166-1 alpha-2)"
           },
           "type": {
             "type": "string",
-            "enum": ["education", "healthcare", "company", "archive", "nonprofit", "government", "facility", "other"],
-            "description": "Institution type"
+            "enum": [
+              "education",
+              "healthcare",
+              "company",
+              "archive",
+              "nonprofit",
+              "government",
+              "facility",
+              "other"
+            ],
+            "description": "The [institution type](/api-reference/institution-types) (education, healthcare, company, etc.)"
           },
-          "homepage_url": {"type": "string", "nullable": true},
-          "image_url": {"type": "string", "nullable": true},
-          "image_thumbnail_url": {"type": "string", "nullable": true},
+          "homepage_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_thumbnail_url": {
+            "type": "string",
+            "nullable": true
+          },
           "display_name_acronyms": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
           "summary_stats": {
             "type": "object",
             "properties": {
-              "2yr_mean_citedness": {"type": "number"},
-              "h_index": {"type": "integer"},
-              "i10_index": {"type": "integer"}
+              "2yr_mean_citedness": {
+                "type": "number"
+              },
+              "h_index": {
+                "type": "integer"
+              },
+              "i10_index": {
+                "type": "integer"
+              }
             }
           },
           "geo": {
             "type": "object",
             "properties": {
-              "city": {"type": "string"},
-              "geonames_city_id": {"type": "string"},
-              "region": {"type": "string"},
-              "country_code": {"type": "string"},
-              "country": {"type": "string"},
-              "latitude": {"type": "number"},
-              "longitude": {"type": "number"}
+              "city": {
+                "type": "string"
+              },
+              "geonames_city_id": {
+                "type": "string"
+              },
+              "region": {
+                "type": "string"
+              },
+              "country_code": {
+                "type": "string"
+              },
+              "country": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "number"
+              },
+              "longitude": {
+                "type": "number"
+              }
             }
           },
           "lineage": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "Parent institutions (OpenAlex IDs)"
           },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "ror": {"type": "string"},
-              "mag": {"type": "integer"},
-              "grid": {"type": "string"},
-              "wikipedia": {"type": "string"},
-              "wikidata": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "ror": {
+                "type": "string"
+              },
+              "mag": {
+                "type": "integer"
+              },
+              "grid": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              }
             }
           },
           "counts_by_year": {
@@ -2773,15 +3818,29 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Topic": {
@@ -2792,58 +3851,111 @@
             "type": "string",
             "example": "https://openalex.org/T12419"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "keywords": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "subfield": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [subfield](/api-reference/subfields)"
           },
           "field": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [field](/api-reference/fields)"
           },
           "domain": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The parent [domain](/api-reference/domains)"
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikipedia": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              }
             }
           },
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Keyword": {
         "type": "object",
         "description": "A keyword identified from works' topics",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Publisher": {
@@ -2854,14 +3966,20 @@
             "type": "string",
             "example": "https://openalex.org/P4310319965"
           },
-          "display_name": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
           "alternate_titles": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "country_codes": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "hierarchy_level": {
             "type": "integer",
@@ -2871,23 +3989,42 @@
             "type": "object",
             "nullable": true,
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "Parent [publisher](/api-reference/publishers)"
           },
           "lineage": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "sources_api_url": {"type": "string"},
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "sources_api_url": {
+            "type": "string"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "ror": {"type": "string"},
-              "wikidata": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "ror": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              }
             }
           },
           "counts_by_year": {
@@ -2895,14 +4032,26 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Funder": {
@@ -2913,14 +4062,19 @@
             "type": "string",
             "example": "https://openalex.org/F4320306076"
           },
-          "display_name": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
           "alternate_titles": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "country_code": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "[Country](/api-reference/countries) code"
           },
           "description": {
             "type": "string",
@@ -2938,17 +4092,33 @@
             "type": "string",
             "nullable": true
           },
-          "grants_count": {"type": "integer"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
+          "grants_count": {
+            "type": "integer"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "ror": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "crossref": {"type": "string"},
-              "doi": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "ror": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "crossref": {
+                "type": "string"
+              },
+              "doi": {
+                "type": "string"
+              }
             }
           },
           "counts_by_year": {
@@ -2956,15 +4126,29 @@
             "items": {
               "type": "object",
               "properties": {
-                "year": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "cited_by_count": {"type": "integer"}
+                "year": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                }
               }
             }
           },
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Domain": {
@@ -2975,30 +4159,44 @@
             "type": "string",
             "example": "https://openalex.org/domains/1"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "fields": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
-            "description": "Fields within this domain"
+            "description": "[Fields](/api-reference/fields) within this domain"
           },
           "siblings": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
             "description": "Other domains at the same level"
@@ -3006,16 +4204,34 @@
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "wikipedia": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              }
             }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Field": {
@@ -3026,38 +4242,56 @@
             "type": "string",
             "example": "https://openalex.org/fields/27"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "domain": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
             },
-            "description": "The parent domain"
+            "description": "The parent [domain](/api-reference/domains)"
           },
           "subfields": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
-            "description": "Subfields within this field"
+            "description": "[Subfields](/api-reference/subfields) within this field"
           },
           "siblings": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
             "description": "Other fields at the same level"
@@ -3065,16 +4299,34 @@
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "wikipedia": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              }
             }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Subfield": {
@@ -3085,46 +4337,68 @@
             "type": "string",
             "example": "https://openalex.org/subfields/1702"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "field": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
             },
-            "description": "The parent field"
+            "description": "The parent [field](/api-reference/fields)"
           },
           "domain": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
             },
-            "description": "The parent domain"
+            "description": "The parent [domain](/api-reference/domains)"
           },
           "topics": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
-            "description": "Topics within this subfield"
+            "description": "[Topics](/api-reference/topics) within this subfield"
           },
           "siblings": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
             },
             "description": "Other subfields at the same level"
@@ -3132,16 +4406,34 @@
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "wikipedia": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              }
             }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Sdg": {
@@ -3152,23 +4444,49 @@
             "type": "string",
             "example": "https://openalex.org/sdgs/3"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "un": {"type": "string"},
-              "wikidata": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "un": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              }
             }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "image_url": {"type": "string"},
-          "image_thumbnail_url": {"type": "string"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "image_thumbnail_url": {
+            "type": "string"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Country": {
@@ -3179,37 +4497,77 @@
             "type": "string",
             "example": "https://openalex.org/countries/US"
           },
-          "display_name": {"type": "string"},
-          "country_code": {"type": "string", "description": "ISO 3166-1 alpha-2 code"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "ISO 3166-1 alpha-2 code"
+          },
+          "description": {
+            "type": "string"
+          },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "continent": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              }
+            },
+            "description": "The [continent](/api-reference/continents)"
           },
-          "is_global_south": {"type": "boolean"},
+          "is_global_south": {
+            "type": "boolean"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "iso": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "wikipedia": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "iso": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              }
             }
           },
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "authors_api_url": {"type": "string"},
-          "institutions_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "authors_api_url": {
+            "type": "string"
+          },
+          "institutions_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Continent": {
@@ -3220,31 +4578,52 @@
             "type": "string",
             "example": "https://openalex.org/continents/Q49"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "display_name_alternatives": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
           "countries": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                }
               }
-            }
+            },
+            "description": "[Countries](/api-reference/countries) on this continent"
           },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikidata": {"type": "string"}
+              "openalex": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              }
             }
           },
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Language": {
@@ -3255,12 +4634,26 @@
             "type": "string",
             "example": "https://openalex.org/languages/en"
           },
-          "display_name": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "display_name": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "AwardFull": {
@@ -3271,40 +4664,111 @@
             "type": "string",
             "example": "https://openalex.org/G5859020988"
           },
-          "display_name": {"type": "string", "nullable": true},
-          "description": {"type": "string", "nullable": true},
-          "funder_award_id": {"type": "string"},
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "funder_award_id": {
+            "type": "string"
+          },
           "funder": {
             "type": "object",
             "properties": {
-              "id": {"type": "string"},
-              "display_name": {"type": "string"},
-              "doi": {"type": "string", "nullable": true}
-            }
+              "id": {
+                "type": "string"
+              },
+              "display_name": {
+                "type": "string"
+              },
+              "doi": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "description": "The [funder](/api-reference/funders) of this award"
           },
           "funded_outputs": {
             "type": "array",
-            "items": {"type": "string"},
+            "items": {
+              "type": "string"
+            },
             "description": "OpenAlex IDs of funded works (first 100)"
           },
-          "funded_outputs_count": {"type": "integer"},
-          "amount": {"type": "number", "nullable": true},
-          "currency": {"type": "string", "nullable": true},
-          "funding_type": {"type": "string", "nullable": true},
-          "funder_scheme": {"type": "string", "nullable": true},
-          "start_date": {"type": "string", "format": "date", "nullable": true},
-          "end_date": {"type": "string", "format": "date", "nullable": true},
-          "start_year": {"type": "integer", "nullable": true},
-          "end_year": {"type": "integer", "nullable": true},
-          "landing_page_url": {"type": "string", "nullable": true},
-          "doi": {"type": "string", "nullable": true},
-          "provenance": {"type": "string"},
-          "lead_investigator": {"type": "object", "nullable": true},
-          "co_lead_investigator": {"type": "object", "nullable": true},
-          "investigators": {"type": "array", "nullable": true},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "funded_outputs_count": {
+            "type": "integer"
+          },
+          "amount": {
+            "type": "number",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "funding_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "funder_scheme": {
+            "type": "string",
+            "nullable": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "start_year": {
+            "type": "integer",
+            "nullable": true
+          },
+          "end_year": {
+            "type": "integer",
+            "nullable": true
+          },
+          "landing_page_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "doi": {
+            "type": "string",
+            "nullable": true
+          },
+          "provenance": {
+            "type": "string"
+          },
+          "lead_investigator": {
+            "type": "object",
+            "nullable": true
+          },
+          "co_lead_investigator": {
+            "type": "object",
+            "nullable": true
+          },
+          "investigators": {
+            "type": "array",
+            "nullable": true
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "Concept": {
@@ -3315,380 +4779,658 @@
             "type": "string",
             "example": "https://openalex.org/C41008148"
           },
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
-          "level": {"type": "integer", "description": "Hierarchy level (0 = top)"},
-          "wikidata": {"type": "string"},
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "level": {
+            "type": "integer",
+            "description": "Hierarchy level (0 = top)"
+          },
+          "wikidata": {
+            "type": "string"
+          },
           "ids": {
             "type": "object",
             "properties": {
-              "openalex": {"type": "string"},
-              "wikidata": {"type": "string"},
-              "wikipedia": {"type": "string"},
-              "mag": {"type": "integer", "nullable": true}
+              "openalex": {
+                "type": "string"
+              },
+              "wikidata": {
+                "type": "string"
+              },
+              "wikipedia": {
+                "type": "string"
+              },
+              "mag": {
+                "type": "integer",
+                "nullable": true
+              }
             }
           },
-          "image_url": {"type": "string", "nullable": true},
-          "image_thumbnail_url": {"type": "string", "nullable": true},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "ancestors": {"type": "array", "nullable": true},
-          "related_concepts": {"type": "array", "nullable": true},
-          "counts_by_year": {"type": "array", "nullable": true},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_thumbnail_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "ancestors": {
+            "type": "array",
+            "nullable": true
+          },
+          "related_concepts": {
+            "type": "array",
+            "nullable": true
+          },
+          "counts_by_year": {
+            "type": "array",
+            "nullable": true
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "WorkType": {
         "type": "object",
         "description": "Type of scholarly work",
         "properties": {
-          "id": {"type": "string", "example": "https://openalex.org/types/article"},
-          "display_name": {"type": "string"},
-          "description": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/types/article"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "SourceType": {
         "type": "object",
         "description": "Type of source",
         "properties": {
-          "id": {"type": "string", "example": "https://openalex.org/source-types/journal"},
-          "display_name": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/source-types/journal"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "InstitutionType": {
         "type": "object",
         "description": "Type of institution",
         "properties": {
-          "id": {"type": "string", "example": "https://openalex.org/institution-types/education"},
-          "display_name": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/institution-types/education"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "License": {
         "type": "object",
         "description": "Open access license",
         "properties": {
-          "id": {"type": "string", "example": "https://openalex.org/licenses/cc-by"},
-          "display_name": {"type": "string"},
-          "url": {"type": "string", "nullable": true},
-          "description": {"type": "string"},
-          "works_count": {"type": "integer"},
-          "cited_by_count": {"type": "integer"},
-          "works_api_url": {"type": "string"},
-          "created_date": {"type": "string", "format": "date"},
-          "updated_date": {"type": "string", "format": "date-time"}
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/licenses/cc-by"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
         }
       },
       "DehydratedAuthor": {
         "type": "object",
-        "description": "Minimal author info (used in authorships)",
+        "description": "[Dehydrated Author](/api-reference/authors#the-dehydratedauthor-object) — reduced-field version used in nested contexts",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "orcid": {"type": "string", "nullable": true}
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "orcid": {
+            "type": "string",
+            "nullable": true
+          }
         }
       },
       "DehydratedInstitution": {
         "type": "object",
-        "description": "Minimal institution info",
+        "description": "[Dehydrated Institution](/api-reference/institutions#the-dehydratedinstitution-object) — reduced-field version used in nested contexts",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "ror": {"type": "string", "nullable": true},
-          "country_code": {"type": "string", "nullable": true},
-          "type": {"type": "string"},
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "ror": {
+            "type": "string",
+            "nullable": true
+          },
+          "country_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "[Country](/api-reference/countries) code"
+          },
+          "type": {
+            "type": "string",
+            "description": "The [institution type](/api-reference/institution-types)"
+          },
           "lineage": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
       "DehydratedSource": {
         "type": "object",
-        "description": "Minimal source info",
+        "description": "[Dehydrated Source](/api-reference/sources#the-dehydratedsource-object) — reduced-field version used in nested contexts",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "issn_l": {"type": "string", "nullable": true},
-          "issn": {
-            "type": "array",
-            "items": {"type": "string"},
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "issn_l": {
+            "type": "string",
             "nullable": true
           },
-          "is_oa": {"type": "boolean"},
-          "is_in_doaj": {"type": "boolean"},
-          "host_organization": {"type": "string", "nullable": true},
-          "host_organization_name": {"type": "string", "nullable": true},
+          "issn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "is_oa": {
+            "type": "boolean"
+          },
+          "is_in_doaj": {
+            "type": "boolean"
+          },
+          "is_core": {
+            "type": "boolean"
+          },
+          "host_organization": {
+            "type": "string",
+            "nullable": true
+          },
+          "host_organization_name": {
+            "type": "string",
+            "nullable": true
+          },
           "host_organization_lineage": {
             "type": "array",
-            "items": {"type": "string"}
+            "items": {
+              "type": "string"
+            }
           },
-          "type": {"type": "string"}
+          "type": {
+            "type": "string",
+            "description": "The [source type](/api-reference/source-types)"
+          }
         }
       },
       "DehydratedFunder": {
         "type": "object",
         "properties": {
-          "id": {"type": "string"},
-          "display_name": {"type": "string"},
-          "ror": {"type": "string", "nullable": true}
-        }
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "ror": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "description": "[Dehydrated Funder](/api-reference/funders) — reduced-field version used in nested contexts"
       },
       "WorksListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Work"}
+            "items": {
+              "$ref": "#/components/schemas/Work"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "AuthorsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Author"}
+            "items": {
+              "$ref": "#/components/schemas/Author"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "SourcesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Source"}
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "InstitutionsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Institution"}
+            "items": {
+              "$ref": "#/components/schemas/Institution"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "TopicsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Topic"}
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "KeywordsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Keyword"}
+            "items": {
+              "$ref": "#/components/schemas/Keyword"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "PublishersListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Publisher"}
+            "items": {
+              "$ref": "#/components/schemas/Publisher"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "FundersListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Funder"}
+            "items": {
+              "$ref": "#/components/schemas/Funder"
+            }
           },
           "group_by": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/GroupByResult"}
+            "items": {
+              "$ref": "#/components/schemas/GroupByResult"
+            }
           }
         }
       },
       "DomainsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Domain"}
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            }
           }
         }
       },
       "FieldsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Field"}
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
           }
         }
       },
       "SubfieldsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Subfield"}
+            "items": {
+              "$ref": "#/components/schemas/Subfield"
+            }
           }
         }
       },
       "SdgsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Sdg"}
+            "items": {
+              "$ref": "#/components/schemas/Sdg"
+            }
           }
         }
       },
       "CountriesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Country"}
+            "items": {
+              "$ref": "#/components/schemas/Country"
+            }
           }
         }
       },
       "ContinentsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Continent"}
+            "items": {
+              "$ref": "#/components/schemas/Continent"
+            }
           }
         }
       },
       "LanguagesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Language"}
+            "items": {
+              "$ref": "#/components/schemas/Language"
+            }
           }
         }
       },
       "AwardsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/AwardFull"}
+            "items": {
+              "$ref": "#/components/schemas/AwardFull"
+            }
           }
         }
       },
       "ConceptsListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/Concept"}
+            "items": {
+              "$ref": "#/components/schemas/Concept"
+            }
           }
         }
       },
       "WorkTypesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/WorkType"}
+            "items": {
+              "$ref": "#/components/schemas/WorkType"
+            }
           }
         }
       },
       "SourceTypesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/SourceType"}
+            "items": {
+              "$ref": "#/components/schemas/SourceType"
+            }
           }
         }
       },
       "InstitutionTypesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/InstitutionType"}
+            "items": {
+              "$ref": "#/components/schemas/InstitutionType"
+            }
           }
         }
       },
       "LicensesListResponse": {
         "type": "object",
         "properties": {
-          "meta": {"$ref": "#/components/schemas/Meta"},
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/License"}
+            "items": {
+              "$ref": "#/components/schemas/License"
+            }
           }
         }
       },
@@ -3698,8 +5440,12 @@
           "meta": {
             "type": "object",
             "properties": {
-              "count": {"type": "integer"},
-              "db_response_time_ms": {"type": "integer"}
+              "count": {
+                "type": "integer"
+              },
+              "db_response_time_ms": {
+                "type": "integer"
+              }
             }
           },
           "results": {
@@ -3707,13 +5453,29 @@
             "items": {
               "type": "object",
               "properties": {
-                "id": {"type": "string"},
-                "display_name": {"type": "string"},
-                "hint": {"type": "string", "nullable": true},
-                "cited_by_count": {"type": "integer"},
-                "works_count": {"type": "integer"},
-                "entity_type": {"type": "string"},
-                "external_id": {"type": "string", "nullable": true}
+                "id": {
+                  "type": "string"
+                },
+                "display_name": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "cited_by_count": {
+                  "type": "integer"
+                },
+                "works_count": {
+                  "type": "integer"
+                },
+                "entity_type": {
+                  "type": "string"
+                },
+                "external_id": {
+                  "type": "string",
+                  "nullable": true
+                }
               }
             }
           }
@@ -3725,35 +5487,62 @@
           "meta": {
             "type": "object",
             "properties": {
-              "count": {"type": "integer"}
+              "count": {
+                "type": "integer"
+              }
             }
           },
           "results": {
             "type": "array",
-            "items": {"$ref": "#/components/schemas/WorkTopic"}
+            "items": {
+              "$ref": "#/components/schemas/WorkTopic"
+            }
           }
         }
       },
       "RateLimitResponse": {
         "type": "object",
         "properties": {
-          "api_key": {"type": "string"},
+          "api_key": {
+            "type": "string"
+          },
           "rate_limit": {
             "type": "object",
             "properties": {
-              "credits_limit": {"type": "integer"},
-              "credits_used": {"type": "integer"},
-              "credits_remaining": {"type": "integer"},
-              "resets_at": {"type": "string", "format": "date-time"},
-              "resets_in_seconds": {"type": "integer"},
+              "credits_limit": {
+                "type": "integer"
+              },
+              "credits_used": {
+                "type": "integer"
+              },
+              "credits_remaining": {
+                "type": "integer"
+              },
+              "resets_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "resets_in_seconds": {
+                "type": "integer"
+              },
               "credit_costs": {
                 "type": "object",
                 "properties": {
-                  "singleton": {"type": "integer"},
-                  "list": {"type": "integer"},
-                  "content": {"type": "integer"},
-                  "vector": {"type": "integer"},
-                  "text": {"type": "integer"}
+                  "singleton": {
+                    "type": "integer"
+                  },
+                  "list": {
+                    "type": "integer"
+                  },
+                  "content": {
+                    "type": "integer"
+                  },
+                  "vector": {
+                    "type": "integer"
+                  },
+                  "text": {
+                    "type": "integer"
+                  }
                 }
               }
             }

@@ -97,3 +97,31 @@ Concepts were a hierarchical taxonomy of research areas derived from Wikidata. T
 <ResponseField name="updated_date" type="string">
   When this concept was last updated (ISO 8601 datetime).
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing concepts.
+All 16 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+<Accordion title="All 16 fields">
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `ancestors.id` | string (ID) | ✓ | ✓ |
+| `cited_by_count` | integer | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `has_wikidata` | boolean | ✓ | ✓ |
+| `ids.openalex` | string | ✓ | ✓ |
+| `level` | integer | ✓ | ✓ |
+| `openalex` | string | ✓ | ✓ |
+| `openalex_id` | string |  | ✓ |
+| `summary_stats.2yr_mean_citedness` | number |  | ✓ |
+| `summary_stats.h_index` | number |  | ✓ |
+| `summary_stats.i10_index` | number |  | ✓ |
+| `wikidata_id` | string |  | ✓ |
+| `works_count` | integer | ✓ | ✓ |
+
+</Accordion>

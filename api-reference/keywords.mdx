@@ -43,3 +43,18 @@ Keywords are short words or phrases assigned to works using an automated system 
 
   `"2024-05-09T05:00:03.798420"`
 </ResponseField>
+
+## Available filter, sort, and group_by fields
+
+These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing keywords.
+All 7 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
+
+| Field | Type | Sort | Group_by |
+|-------|------|:----:|:--------:|
+| `cited_by_count` | integer | ✓ | ✓ |
+| `default.search` | search |  |  |
+| `display_name` | string | ✓ |  |
+| `display_name.search` | search |  |  |
+| `from_created_date` | date | ✓ |  |
+| `id` | string | ✓ | ✓ |
+| `works_count` | integer | ✓ | ✓ |
