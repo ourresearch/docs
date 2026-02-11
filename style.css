@@ -3,7 +3,7 @@
 /* Dark mode - primary theme */
 :root[data-color-scheme="dark"] {
   --background-sidebar: #0D0D0D;
-  --background-content: #171717;
+  --background-content: #252525;
   --text-primary: #ECECEC;
   --text-secondary: #A3A3A3;
   --border-color: #2D2D2D;
@@ -20,15 +20,23 @@
 
 /* Sidebar/Navigation styling */
 #navbar,
+#sidebar-content,
 nav[aria-label="Main navigation"],
 aside {
-  background: var(--background-sidebar, #0D0D0D);
+  background: #0D0D0D;
 }
 
-/* Main content area */
-main,
-article {
-  background: var(--background-content, #171717);
+/* Header — solid background, kill Mintlify's absolute overlay layers */
+.dark #navbar {
+  background-color: #0D0D0D !important;
+}
+.dark #navbar > .absolute {
+  background-color: transparent !important;
+}
+
+/* Content area background — lighter than sidebar/header (#0D0D0D) */
+.dark #content-container {
+  background-color: #252525 !important;
 }
 
 /* Content links - underlined by default, single underline only */
@@ -56,23 +64,23 @@ footer {
 [class*="card"],
 [class*="Card"] {
   border: 1px solid var(--border-color, #2D2D2D);
-  background: var(--background-content, #171717);
+  background: var(--background-content, #252525) !important;
 }
 
 /* API playground path parameter spans — override Mintlify's hardcoded green */
 .text-\[\#2AB673\] {
-  color: #4493F8 !important;
+  color: #2196F3 !important;
 }
 .bg-\[\#2AB673\]\/10 {
-  background-color: rgb(68 147 248 / 0.1) !important;
+  background-color: rgb(33 150 243 / 0.1) !important;
 }
 .border-\[\#2AB673\]\/30 {
-  border-color: rgb(68 147 248 / 0.3) !important;
+  border-color: rgb(33 150 243 / 0.3) !important;
 }
 
 /* API playground "Try it" button */
 .tryit-button.bg-\[\#2AB673\] {
-  background-color: #4493F8 !important;
+  background-color: #2196F3 !important;
 }
 
 /* Code blocks - always dark */
