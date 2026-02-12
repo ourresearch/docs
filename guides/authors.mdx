@@ -3,7 +3,7 @@ title: Authors
 description: Understanding author entities in OpenAlex
 ---
 
-Authors are people who create scholarly works. OpenAlex indexes over 90 million authors.
+Authors are people who create scholarly works. OpenAlex indexes tens of millions of author profiles.
 
 ```bash
 # List all authors
@@ -15,19 +15,32 @@ https://api.openalex.org/authors/A5023888391
 
 ## Author disambiguation
 
-OpenAlex uses machine learning to automatically cluster works by the same person, even when names vary. The system considers:
+OpenAlex uses machine learning to automatically cluster works by the same person, even when names vary. Author data comes from Crossref, PubMed, ORCID, publisher websites, and the legacy Microsoft Academic Graph.
 
-- Name similarity
-- Co-author patterns
-- Institutional affiliations
-- Research topics
-- Citation patterns
+### How it works
+
+The disambiguation algorithm considers:
+
+- **Name similarity** — String matching across name variants
+- **Co-author patterns** — Shared collaborators across papers
+- **Institutional affiliations** — Consistent workplace signals
+- **Research topics** — Topical coherence of the publication record
+- **Citation patterns** — Self-citation and reference overlap
+- **ORCID** — Authoritative identity when available
 
 This means "J. Smith" and "John Smith" at the same institution working on similar topics are likely merged into one author record.
 
-<Note>
-Disambiguation isn't perfect. Some authors may be incorrectly split or merged. If you notice issues, contact support@openalex.org.
-</Note>
+In July 2023, OpenAlex switched to a new, more accurate disambiguation system with a better ML model, smarter assignment strategies for new works, and deeper ORCID integration.
+
+The methods, code, and models are fully open source: [name-disambiguation](https://github.com/ourresearch/openalex-name-disambiguation) on GitHub.
+
+### NULL authors
+
+The special ID `A9999999999` represents authorships that didn't go through disambiguation — typically because no author name was received, the name was too short or too long, or it matched an ignored phrase like "Unknown Author."
+
+### Fixing errors
+
+Disambiguation isn't perfect — some authors may be incorrectly split or merged. Author profile attributes (alternative names, institutions, metrics, topics) are derived from linked publications, so they can't be edited directly. To fix errors, see the [OpenAlex help center](https://help.openalex.org/hc/en-us/articles/27283405287319-How-can-I-fix-errors-in-an-OpenAlex-author-profile).
 
 ## Key properties
 

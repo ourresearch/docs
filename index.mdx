@@ -4,37 +4,37 @@ title: Overview
 
 [**OpenAlex**](https://openalex.org) is a fully open catalog of the global research system. It's named after the [ancient Library of Alexandria](https://en.wikipedia.org/wiki/Library_of_Alexandria) and made by the nonprofit [OurResearch](https://ourresearch.org/).
 
-This is the **technical documentation for OpenAlex**, including the [**OpenAlex API**](/api-reference/overview) and the [**data snapshot**](/download/overview). Here, you can learn how to set up your code to access OpenAlex's data. If you want to explore the data as a human, you may be more interested in [**OpenAlex Web**](https://help.openalex.org).
+This is the **technical documentation for OpenAlex**, including the [**OpenAlex API**](/api-reference/introduction) and the [**data snapshot**](/download/overview). Here, you can learn how to set up your code to access OpenAlex's data. If you want to explore the data as a human, you may be more interested in [**OpenAlex Web**](https://help.openalex.org).
 
 ## Data
 
-The OpenAlex dataset describes scholarly [_entities_](/api-reference/overview) and how those entities are connected to each other. Types of entities include [works](/api-reference/entities/works), [authors](/api-reference/entities/authors), [sources](/api-reference/entities/sources), [institutions](/api-reference/entities/institutions), [topics](/api-reference/entities/topics), [publishers](/api-reference/entities/publishers), and [funders](/api-reference/entities/funders).
+The OpenAlex dataset describes scholarly [_entities_](/api-reference/introduction) and how those entities are connected to each other. Types of entities include [works](/api-reference/works), [authors](/api-reference/authors), [sources](/api-reference/sources), [institutions](/api-reference/institutions), [topics](/api-reference/topics), [publishers](/api-reference/publishers), and [funders](/api-reference/funders).
 
 Together, these make a huge web (or more technically, heterogeneous directed [graph](https://en.wikipedia.org/wiki/Graph_theory)) of hundreds of millions of entities and billions of connections between them all.
 
 <CardGroup cols={4}>
-  <Card title="Works" icon="file-lines" href="/api-reference/entities/works">
+  <Card title="Works" icon="file-lines" href="/api-reference/works">
     Papers, articles, books
   </Card>
-  <Card title="Authors" icon="user" href="/api-reference/entities/authors">
+  <Card title="Authors" icon="user" href="/api-reference/authors">
     Researchers and their profiles
   </Card>
-  <Card title="Sources" icon="book" href="/api-reference/entities/sources">
+  <Card title="Sources" icon="book" href="/api-reference/sources">
     Journals, repositories, conferences
   </Card>
-  <Card title="Institutions" icon="building-columns" href="/api-reference/entities/institutions">
+  <Card title="Institutions" icon="building-columns" href="/api-reference/institutions">
     Universities and research orgs
   </Card>
-  <Card title="Topics" icon="lightbulb" href="/api-reference/entities/topics">
+  <Card title="Topics" icon="lightbulb" href="/api-reference/topics">
     Research areas and fields
   </Card>
-  <Card title="Publishers" icon="building" href="/api-reference/entities/publishers">
+  <Card title="Publishers" icon="building" href="/api-reference/publishers">
     Publishing organizations
   </Card>
-  <Card title="Funders" icon="hand-holding-dollar" href="/api-reference/entities/funders">
+  <Card title="Funders" icon="hand-holding-dollar" href="/api-reference/funders">
     Research funding bodies
   </Card>
-  <Card title="Awards" icon="trophy" href="/api-reference/entities/awards">
+  <Card title="Awards" icon="trophy" href="/api-reference/awards">
     Grants and awards
   </Card>
 </CardGroup>
@@ -42,28 +42,28 @@ Together, these make a huge web (or more technically, heterogeneous directed [gr
 You can access this data through four service types:
 
 <CardGroup cols={2}>
-  <Card title="Get" icon="magnifying-glass" href="/guides/get-single-entity">
+  <Card title="Get" icon="magnifying-glass" href="/guides/key-concepts#using-ids-in-the-api">
     Retrieve a single entity by ID
     ```
     GET /works/W2741809807
     ```
   </Card>
-  <Card title="List" icon="list" href="/guides/list-entities">
+  <Card title="List" icon="list" href="/guides/filtering">
     Query and filter lists of entities
     ```
     GET /works?filter=publication_year:2024
     ```
   </Card>
-  <Card title="Discover" icon="sparkles" href="/guides/discover-similar">
+  <Card title="Discover" icon="sparkles" href="/guides/similar-works">
     Find semantically similar works
     ```
     GET /works?similar_to=W2741809807
     ```
   </Card>
-  <Card title="Download" icon="download" href="/guides/download-data">
+  <Card title="Download" icon="download" href="/download/overview">
     Download the complete dataset
     ```bash
-    openalex-cli download works
+    openalex download works
     ```
   </Card>
 </CardGroup>
@@ -72,13 +72,13 @@ Learn more at our general help center article: [About the data](https://help.ope
 
 ## Access
 
-We offer a fast, modern REST API to get OpenAlex data programmatically. It's free but requires an API key (also free). Get yours at [openalex.org/settings/api](https://openalex.org/settings/api). With your free key, you get 100,000 credits per day. [Learn more](/api-reference/overview)
+We offer a fast, modern REST API to get OpenAlex data programmatically. It's free but requires an API key (also free). Get yours at [openalex.org/settings/api](https://openalex.org/settings/api). With your free key, you get 100,000 credits per day. [Learn more](/api-reference/introduction)
 
-Different API operations consume different amounts of credits. See [rate limits and authentication](/api-reference/rate-limits) for details.
+Different API operations consume different amounts of credits. See [rate limits and authentication](/guides/authentication) for details.
 
 There is also a complete database snapshot available to download. [Learn more about the data snapshot here.](/download/overview)
 
-The API has a limit of 100,000 credits per day, and the snapshot is updated monthly. If you need a higher limit, or more frequent updates, please look into [**OpenAlex Premium**](https://openalex.org/pricing).
+The API has a limit of 100,000 credits per day, and the snapshot is updated monthly. If you need a higher limit, or more frequent updates, please look into a [**paid plan**](https://openalex.org/pricing).
 
 The web interface for OpenAlex, built directly on top of the API, is the quickest and easiest way to [get started with OpenAlex](https://help.openalex.org/getting-started).
 

@@ -11,10 +11,14 @@ Before diving into the API, it helps to understand a few core concepts that unde
 
 OpenAlex describes scholarly research as a graph of interconnected **entities**. There are eight entity types:
 
-| Entity | Description | Count |
+<Note>
+Counts are approximate and change as new data is added. Use `/works?per_page=1` (etc.) for current counts.
+</Note>
+
+| Entity | Description | Approx. Count |
 |--------|-------------|-------|
-| [Works](/guides/works) | Scholarly documents (articles, books, datasets, theses) | 270M+ |
-| [Authors](/guides/authors) | Researchers who create works | 90M+ |
+| [Works](/guides/works) | Scholarly documents (articles, books, datasets, theses) | hundreds of millions |
+| [Authors](/guides/authors) | Researchers who create works | tens of millions |
 | [Sources](/guides/sources) | Where works are hosted (journals, repositories, conferences) | 250K+ |
 | [Institutions](/guides/institutions) | Organizations where authors are affiliated | 110K+ |
 | [Topics](/guides/topics-and-keywords) | Subject classifications (3-level hierarchy) | 4.5K |
@@ -163,10 +167,10 @@ XPAC works have lower data quality on average (improving over time). To avoid su
 Add `include_xpac=true` to any works endpoint:
 
 ```bash
-# Without XPAC: ~278 million works
+# Without XPAC (default)
 curl "https://api.openalex.org/works"
 
-# With XPAC: ~470 million works
+# With XPAC (roughly doubles the count)
 curl "https://api.openalex.org/works?include_xpac=true"
 ```
 
