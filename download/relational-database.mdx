@@ -1,0 +1,153 @@
+---
+title: Load to a relational database
+description: Flatten and load OpenAlex data into PostgreSQL or other relational databases
+---
+
+Loading into a relational database takes more setup than a [data warehouse](/download/data-warehouse), but lets you write simpler queries and run them on less powerful machines.
+
+<Info>
+By using a relational database, you trade flexibility for efficiency. The tables and indexes in this guide represent one of many ways to store the data. Some queries will be fast, others will be slow — it depends on your use case.
+</Info>
+
+<Warning>
+This is a **lot** of data. Exploration will be very slow in most relational databases. Consider a [data warehouse](/download/data-warehouse) if you need to run ad-hoc queries across the full dataset.
+</Warning>
+
+This guide uses [PostgreSQL](https://www.postgresql.org/) (13+) as an example. We assume you have a working installation where you can create schemas, tables, and run queries.
+
+## Overview
+
+<Steps>
+  <Step title="Create the schema">
+    Define tables and relationships by flattening the nested JSON.
+  </Step>
+  <Step title="Convert JSON Lines to CSV">
+    Flatten the downloaded files into CSV format.
+  </Step>
+  <Step title="Load CSV into the database">
+    Copy the CSV files into your tables.
+  </Step>
+  <Step title="Run queries">
+    Query the data using standard SQL.
+  </Step>
+</Steps>
+
+## Step 1: Create the schema
+
+Run the [schema SQL](https://github.com/ourresearch/openalex-documentation-scripts/blob/main/openalex-pg-schema.sql) on your database to initialize all tables:
+
+```bash
+psql $OPENALEX_SNAPSHOT_DB < openalex-pg-schema.sql
+```
+
+The key operation is **flattening** nested JSON. Simple properties map directly to columns:
+
+```sql
+CREATE TABLE openalex.concepts (
+    id TEXT NOT NULL,
+    wikidata TEXT,
+    display_name TEXT,
+    level INTEGER,
+    -- ...
+);
+```
+
+But nested arrays like `related_concepts` need their own tables to preserve query efficiency:
+
+```sql
+CREATE TABLE openalex.concepts_related_concepts (
+    concept_id TEXT,
+    related_concept_id TEXT,
+    score REAL
+);
+```
+
+<Note>
+The SQL excerpts above are just examples to illustrate the pattern. The full schema file handles all entity types and relationships.
+</Note>
+
+## Step 2: Convert JSON Lines to CSV
+
+Use the [flattening script](https://github.com/ourresearch/openalex-documentation-scripts/blob/main/flatten-openalex-jsonl.py) to convert the downloaded JSON Lines files to CSV:
+
+```bash
+mkdir -p csv-files
+python3 flatten-openalex-jsonl.py
+```
+
+<Info>
+Edit `SNAPSHOT_DIR` and `CSV_DIR` at the top of the script if your files are in different locations. The script assumes the snapshot is in `openalex-snapshot/` and outputs to `csv-files/`.
+</Info>
+
+<Warning>
+This step is slow — think hours, not minutes. To speed it up:
+- Run `flatten_authors` and `flatten_works` in parallel (threading or separate processes)
+- Flatten multiple `.gz` files within each entity type concurrently
+</Warning>
+
+You'll end up with flat CSV files:
+
+```
+csv-files/
+├── concepts.csv
+├── concepts_ancestors.csv
+├── concepts_counts_by_year.csv
+├── concepts_ids.csv
+├── concepts_related_concepts.csv
+├── works.csv
+├── works_authorships.csv
+└── ...
+```
+
+## Step 3: Load CSV into the database
+
+Use the [copy script](https://github.com/ourresearch/openalex-documentation-scripts/blob/main/copy-openalex-csv.sql) to load all CSV files:
+
+```bash
+psql $OPENALEX_SNAPSHOT_DB < copy-openalex-csv.sql
+```
+
+Set the `OPENALEX_SNAPSHOT_DB` environment variable to your [PostgreSQL connection URI](https://www.postgresql.org/docs/13/libpq-connect.html#LIBPQ-CONNSTRING). If your CSV files aren't in `csv-files/`, update the paths in the script.
+
+Each command in the script looks like:
+
+```sql
+\copy openalex.concepts_ancestors (concept_id, ancestor_id) FROM csv-files/concepts_ancestors.csv CSV HEADER
+```
+
+## Step 4: Run queries
+
+**Simple: Get work IDs and OA status**
+
+```sql
+SELECT w.id, oa.oa_status
+FROM openalex.works w
+JOIN openalex.works_open_access oa
+    ON w.id = oa.work_id;
+```
+
+**Advanced: Find the author with the most open access works**
+
+```sql
+SELECT
+    author_id,
+    COUNT(DISTINCT work_id) AS num_oa_works
+FROM (
+    SELECT
+        a.id AS author_id,
+        w.id AS work_id,
+        oa.is_oa
+    FROM openalex.authors a
+    JOIN openalex.works_authorships wa ON a.id = wa.author_id
+    JOIN openalex.works w ON wa.work_id = w.id
+    JOIN openalex.works_open_access oa ON w.id = oa.work_id
+) work_authorships_oa
+WHERE is_oa
+GROUP BY author_id
+ORDER BY num_oa_works DESC
+LIMIT 10;
+```
+
+## Schema diagram
+
+See the [schema diagram](/download/schema-diagram) for a visual representation of the table relationships.

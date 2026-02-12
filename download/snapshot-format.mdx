@@ -1,0 +1,156 @@
+---
+title: Snapshot data format
+description: Where the OpenAlex data lives and how it's structured
+---
+
+All OpenAlex data is stored in [Amazon S3](https://aws.amazon.com/s3/) in the [`openalex`](https://openalex.s3.amazonaws.com/browse.html) bucket. The data files are gzip-compressed [JSON Lines](https://jsonlines.org/) — one entity per line.
+
+## Bucket structure
+
+The bucket contains one prefix (folder) for each entity type:
+
+| Entity | S3 prefix | Browse |
+|--------|-----------|--------|
+| Works | `/data/works/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/works/) |
+| Authors | `/data/authors/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/authors/) |
+| Sources | `/data/sources/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/sources/) |
+| Institutions | `/data/institutions/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/institutions/) |
+| Topics | `/data/topics/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/topics/) |
+| Domains | `/data/domains/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/domains/) |
+| Fields | `/data/fields/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/fields/) |
+| Subfields | `/data/subfields/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/subfields/) |
+| Publishers | `/data/publishers/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/publishers/) |
+| Funders | `/data/funders/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/funders/) |
+| Concepts | `/data/concepts/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/concepts/) |
+
+Records are partitioned by `updated_date`. Within each entity type, files are further prefixed by date. For example, an Author with `updated_date` of `2024-01-15` lives under:
+
+```
+/data/authors/updated_date=2024-01-15/
+```
+
+Each partition contains multiple gzip files, each under 2 GB.
+
+## Size
+
+The gzip-compressed snapshot is approximately **330 GB** and decompresses to about **1.6 TB**.
+
+## Entity schemas
+
+The structure of each entity type matches the API response format:
+
+<CardGroup cols={3}>
+  <Card title="Works" href="/api-reference/works" />
+  <Card title="Authors" href="/api-reference/authors" />
+  <Card title="Sources" href="/api-reference/sources" />
+  <Card title="Institutions" href="/api-reference/institutions" />
+  <Card title="Topics" href="/api-reference/topics" />
+  <Card title="Publishers" href="/api-reference/publishers" />
+</CardGroup>
+
+<Info>
+**API-only fields:** Some Work properties are only available through the API and not included in the snapshot. For example, `content_url` — use the [content endpoint](/guides/content-downloads) directly with work IDs from the snapshot.
+</Info>
+
+## Keeping your snapshot up to date
+
+The `updated_date` partitions make incremental updates straightforward. Unlike dated snapshots that each contain the full dataset, each partition contains only the records that **last changed** on that date.
+
+### How partitions work
+
+Imagine launching OpenAlex with 1,000 Authors, all created on 2024-01-01:
+
+```
+/data/authors/
+├── manifest
+└── updated_date=2024-01-01 [1000 Authors]
+    ├── 0000_part_00.gz
+    └── ...
+```
+
+If we update 50 of those Authors on 2024-01-15, they **move out of** the old partition and **into** the new one:
+
+```
+/data/authors/
+├── manifest
+├── updated_date=2024-01-01 [950 Authors]
+│   └── ...
+└── updated_date=2024-01-15 [50 Authors]
+    └── ...
+```
+
+If we also discover 50 new Authors, they go into the same new partition:
+
+```
+/data/authors/
+├── manifest
+├── updated_date=2024-01-01 [950 Authors]
+│   └── ...
+└── updated_date=2024-01-15 [100 Authors]
+    └── ...
+```
+
+So if you made your snapshot copy on 2024-01-01, you only need to download `updated_date=2024-01-15` to get everything that changed or was added since then.
+
+<Tip>
+To update a snapshot copy that you created or updated on date `X`, insert or update the records in partitions where `updated_date` > `X`.
+</Tip>
+
+You never need to re-download a partition you already have. Anything that changed has moved to a newer partition.
+
+## Merged entities
+
+Alongside the entity type folders, you'll find a [`merged_ids`](https://openalex.s3.amazonaws.com/browse.html#data/merged_ids/) folder. This contains the IDs of entities that have been merged, along with the IDs they were merged into.
+
+Merging is a way of deleting an entity while preserving its ID. In practice, you can just delete the entity. You don't need to track the merge date or target.
+
+```
+/data/merged_ids/
+├── authors
+│   └── 2024-01-07.csv.gz
+├── institutions
+│   └── 2024-01-01.csv.gz
+├── sources
+│   └── 2024-01-03.csv.gz
+└── works
+    └── 2024-01-06.csv.gz
+```
+
+Each CSV file lists IDs that were merged on that date:
+
+```csv
+merge_date,id,merge_into_id
+2024-01-07,A2257618939,A2208157607
+```
+
+When processing this file, delete `A2257618939`. The effects of merging (like crediting the target author with works) are already reflected in the affected entities.
+
+Like the `updated_date` partitions, you only need to download `merged_ids` files that are new to you.
+
+## The manifest file
+
+Each entity type has a `manifest` file that lists all data files. When we start writing a new `updated_date` partition, we delete the manifest. When we finish, we recreate it with the new files included. So if the manifest is present, all data files are complete.
+
+The file uses [Redshift manifest](https://docs.aws.amazon.com/redshift/latest/dg/loading-data-files-using-manifest.html) format. To use it for incremental updates:
+
+<Steps>
+  <Step title="Download the manifest">
+    ```bash
+    aws s3 cp s3://openalex/data/authors/manifest ./manifest --no-sign-request
+    ```
+  </Step>
+  <Step title="Check for new partitions">
+    Get the file list from the `url` property of each item in the `entries` list. Identify any `updated_date` partitions you haven't seen before.
+  </Step>
+  <Step title="Download new partitions">
+    Download objects with new `updated_date` values.
+  </Step>
+  <Step title="Verify consistency">
+    Download the manifest again. If it hasn't changed since step 1, no records moved between partitions during your download.
+  </Step>
+  <Step title="Load the data">
+    Decompress the files and parse one JSON entity per line. Insert or update into your database using each entity's ID as the primary key.
+  </Step>
+</Steps>
+
+If you have an existing data pipeline, these details may be all you need. For step-by-step download instructions, see [Download to your machine](/download/download-to-machine).

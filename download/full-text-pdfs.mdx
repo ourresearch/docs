@@ -1,0 +1,122 @@
+---
+title: Full-text PDFs
+description: Download full-text PDFs and TEI XML for millions of works
+---
+
+OpenAlex has cached full-text content for about 60 million works:
+
+| Format | Files | Size |
+|--------|-------|------|
+| PDF | ~60M | ~250 TB |
+| TEI XML | ~43M | ~20 TB |
+
+TEI XML files are machine-readable structured text parsed by [Grobid](https://github.com/kermitt2/grobid).
+
+For downloading individual files via the API, see [Content downloads](/guides/content-downloads).
+
+## Download options
+
+### Option 1: API (up to ~10K files)
+
+Use the [content API](/guides/content-downloads) to download files one at a time. Each download costs **100 credits**.
+
+With a free API key (100K credits/day), you can download about 1,000 files per day. Good for research projects, building small corpora, or sampling.
+
+### Option 2: OpenAlex CLI (up to a few million files)
+
+For larger downloads, use the [OpenAlex CLI](/download/openalex-cli). It handles parallel downloads, retries, checkpointing, and resume automatically.
+
+```bash
+pip install openalex-official
+```
+
+**Download PDFs for a specific topic:**
+
+```bash
+openalex download \
+  --api-key YOUR_KEY \
+  --output ./climate-pdfs \
+  --filter "topics.id:T10325,has_content.pdf:true" \
+  --content pdf
+```
+
+**Download works with Creative Commons licenses:**
+
+```bash
+openalex download \
+  --api-key YOUR_KEY \
+  --output ./cc-pdfs \
+  --filter "best_oa_location.license:cc-by,has_content.pdf:true" \
+  --content pdf
+```
+
+**Download metadata + PDFs + TEI XML:**
+
+```bash
+openalex download \
+  --api-key YOUR_KEY \
+  --output ./my-corpus \
+  --filter "topics.id:T10325,has_content.pdf:true" \
+  --content pdf,xml
+```
+
+Standard credit rates apply (100 credits per content file; metadata is free). At full speed, you can download a few million files in a few days.
+
+### Option 3: Complete archive sync
+
+For the complete archive (all 60M files), we provide direct access to the storage bucket via time-limited credentials. Files are stored on [Cloudflare R2](https://developers.cloudflare.com/r2/), which is fully S3-compatible.
+
+**One-time download:** 30-day R2 read access to sync the complete archive.
+
+**Ongoing sync:** Persistent R2 read access is included with the enterprise subscription.
+
+See the [pricing page](https://openalex.org/pricing) for details, or [contact us](mailto:steve@ourresearch.org) to get started.
+
+**How it works:**
+
+<Steps>
+  <Step title="Get credentials">
+    We generate R2 API credentials with read-only access.
+  </Step>
+  <Step title="Sync with AWS CLI">
+    ```bash
+    aws s3 sync s3://openalex-pdfs ./pdfs \
+      --endpoint-url https://a452eddbbe06eb7d02f4879cee70d29c.r2.cloudflarestorage.com
+    ```
+  </Step>
+  <Step title="Stay current">
+    For ongoing sync, run periodically to get new files.
+  </Step>
+</Steps>
+
+At typical network speeds, expect **1–2 weeks** to download the full archive.
+
+## File naming
+
+Files are named by UUID, not work ID:
+
+```
+openalex-pdfs/
+├── 3a07228e-de2a-4c37-955d-b1411a498328.pdf
+├── 7b12f4a1-8c9d-4e5f-a2b3-c4d5e6f7a8b9.pdf
+└── ...
+
+openalex-grobid-xml/
+├── 3a07228e-de2a-4c37-955d-b1411a498328.xml.gz
+├── 7b12f4a1-8c9d-4e5f-a2b3-c4d5e6f7a8b9.xml.gz
+└── ...
+```
+
+To map work IDs to file UUIDs, use the [snapshot data](/download/snapshot-format). The `locations` array in each work contains `pdf_url` fields that include the UUID.
+
+## Licensing
+
+The PDFs retain their original copyright. OpenAlex does not grant any additional rights to the content.
+
+To check the license for a specific work, use the `best_oa_location.license` field in the API:
+
+```
+https://api.openalex.org/works?filter=has_content.pdf:true,best_oa_location.license:cc-by
+```
+
+This returns works that have downloadable PDFs and are licensed under [CC BY](https://creativecommons.org/licenses/by/4.0/).

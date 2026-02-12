@@ -1,0 +1,106 @@
+---
+title: Download to your machine
+description: Get the OpenAlex snapshot files onto your local machine using the AWS CLI
+---
+
+The OpenAlex snapshot is hosted on [Amazon S3](https://aws.amazon.com/s3/) and is **free to download**. You don't need an AWS account.
+
+<Info>
+Many thanks to the [AWS Open Data program](https://aws.amazon.com/opendata/), which covers the data-transfer fees (about $70 per download) so users don't have to.
+</Info>
+
+## Prerequisites
+
+Install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html). All commands in this guide use it. No account or credentials are needed — the `--no-sign-request` flag provides anonymous access.
+
+You can also browse the snapshot in your browser: [openalex.s3.amazonaws.com/browse.html](https://openalex.s3.amazonaws.com/browse.html)
+
+## Download the full snapshot
+
+This copies everything in the `openalex` S3 bucket to a local folder. It takes about **330 GB** of disk space.
+
+```bash
+aws s3 sync "s3://openalex" "openalex-snapshot" --no-sign-request
+```
+
+<Warning>
+If you're downloading into a folder that already has a previous snapshot, use the `--delete` flag to remove outdated files. Otherwise you'll get duplicate entities that have moved between partitions.
+
+```bash
+aws s3 sync "s3://openalex" "openalex-snapshot" --no-sign-request --delete
+```
+</Warning>
+
+## Check the current size
+
+The snapshot size changes over time. Check before downloading:
+
+```bash
+aws s3 ls --summarize --human-readable --no-sign-request --recursive "s3://openalex/"
+```
+
+## File structure
+
+After downloading, you'll have a structure like this:
+
+```
+openalex-snapshot/
+├── LICENSE.txt
+├── RELEASE_NOTES.txt
+└── data
+    ├── authors
+    │   ├── manifest
+    │   └── updated_date=2024-01-15
+    │       ├── 0000_part_00.gz
+    │       └── 0001_part_00.gz
+    ├── institutions
+    │   ├── manifest
+    │   └── updated_date=2024-01-15
+    │       └── ...
+    ├── sources
+    │   ├── manifest
+    │   └── ...
+    ├── works
+    │   ├── manifest
+    │   └── ...
+    ├── topics
+    │   └── ...
+    ├── publishers
+    │   └── ...
+    ├── funders
+    │   └── ...
+    └── merged_ids
+        └── ...
+```
+
+See [Snapshot data format](/download/snapshot-format) for details on the partition structure and how to keep your copy up to date.
+
+## Download a single entity type
+
+If you only need one entity type, specify the prefix:
+
+```bash
+aws s3 sync "s3://openalex/data/works" "openalex-snapshot/data/works" --no-sign-request
+```
+
+## Alternatives to local download
+
+If you don't want to download files locally, some services can read directly from S3:
+
+- **Amazon Redshift:** [Load from S3](https://docs.aws.amazon.com/redshift/latest/dg/tutorial-loading-data.html) using the manifest files
+- **ETL tools** with S3 connectors (Xplenty, Airbyte, etc.)
+
+For these approaches, the [snapshot data format](/download/snapshot-format) documentation should have enough detail to get started.
+
+## Next steps
+
+Once you have the files, load them into a database:
+
+<CardGroup cols={2}>
+  <Card title="Data warehouse" icon="database" href="/download/data-warehouse">
+    Load JSON directly into BigQuery, Snowflake, or similar
+  </Card>
+  <Card title="Relational database" icon="table" href="/download/relational-database">
+    Flatten to normalized tables in PostgreSQL or MySQL
+  </Card>
+</CardGroup>

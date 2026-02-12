@@ -276,7 +276,19 @@
           {
             "group": "Data Downloads",
             "pages": [
-              "download/overview"
+              "download/overview",
+              "download/snapshot-format",
+              "download/download-to-machine",
+              "download/openalex-cli",
+              "download/full-text-pdfs"
+            ]
+          },
+          {
+            "group": "Load into a Database",
+            "pages": [
+              "download/data-warehouse",
+              "download/relational-database",
+              "download/schema-diagram"
             ]
           }
         ]
