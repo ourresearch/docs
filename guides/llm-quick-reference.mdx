@@ -30,7 +30,7 @@ Rate: 100k credits/day with key, 100 credits/day without
 ## Special Endpoints
 
 ```
-/find/works                         - Semantic search (1000 credits)
+/works?search.semantic=<query>       - Semantic search (100 credits)
 content.openalex.org/works/{id}.pdf - Download PDFs (100 credits)
 /text                               - DEPRECATED, do not use
 ```
@@ -84,7 +84,7 @@ OpenAlex uses **snake_case** for all parameters: `per_page`, `group_by`, `api_ke
 # Multiple filters (AND)
 ?filter=publication_year:2024,is_oa:true
 
-# Multiple values (OR) - up to 50 values
+# Multiple values (OR) - up to 100 values
 ?filter=type:article|book|dataset
 
 # Negation
@@ -136,9 +136,9 @@ cited_by_count                - Total citations
 /works?filter=authorships.institutions.id:I63966007
 ```
 
-### Bulk DOI lookup (up to 50)
+### Bulk DOI lookup (up to 100)
 ```bash
-/works?filter=doi:10.1234/a|10.1234/b|10.1234/c&per_page=50
+/works?filter=doi:10.1234/a|10.1234/b|10.1234/c&per_page=200
 ```
 
 ### Random sample
@@ -157,14 +157,15 @@ cited_by_count                - Total citations
 |----------|---------|
 | Singleton (`/works/W123`) | 0 (free) |
 | List (`/works?filter=...`) | 1 |
+| Search (`?search=` or `.search` filters) | 10 |
 | Content download (PDF) | 100 |
-| Semantic search (`/find/works`) | 1,000 |
+| Semantic search (`?search.semantic=`) | 100 |
 
 ## Query Limits
 
 | Limit | Value |
 |-------|-------|
-| OR values per filter | 50 |
+| OR values per filter | 100 |
 | `per_page` max | 200 |
 | `sample` max | 10,000 |
 | Basic paging limit | 10,000 results |

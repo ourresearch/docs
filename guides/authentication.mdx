@@ -39,8 +39,9 @@ Academic researchers can often get increased limits for free—contact [support@
 |---------------|---------|---------|
 | Singleton | `/works/W123` | 0 (free) |
 | List | `/works?filter=...` | 1 |
+| Search | `/works?search=...` or `filter=display_name.search:...` | 10 |
 | Content download | `content.openalex.org/works/{id}.pdf` | 100 |
-| Semantic search | `/find/works` | 1,000 |
+| Semantic search | `/works?search.semantic=...` | 100 |
 | Text/Aboutness | `/text` (deprecated) | 1,000 |
 
 ### What you can do with 100,000 credits
@@ -48,8 +49,8 @@ Academic researchers can often get increased limits for free—contact [support@
 With a free API key, you can make per day:
 - **Unlimited** singleton requests (they're free)
 - **100,000** list requests, or
-- **1,000** content downloads, or
-- **100** semantic searches, or
+- **10,000** search requests, or
+- **1,000** content downloads or semantic searches, or
 - Any combination that adds up to 100,000 credits
 
 ### High-cost endpoints
@@ -58,8 +59,9 @@ Some endpoints consume significantly more credits:
 
 | Endpoint | Credits | Daily limit (free) | Notes |
 |----------|---------|-------------------|-------|
+| [Search](/guides/searching) | 10 | ~10,000 requests | `?search=` or `.search` filters |
 | [Content downloads](/guides/content-downloads) | 100 | ~1,000 files | PDF or TEI XML |
-| [Semantic search](/guides/similar-works) | 1,000 | ~100 requests | AI embeddings |
+| [Semantic search](/guides/similar-works) | 100 | ~1,000 requests | AI embeddings |
 | Aboutness (`/text`) | 1,000 | ~100 requests | Deprecated |
 
 <Warning>
@@ -97,8 +99,9 @@ curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
     "credit_costs": {
       "singleton": 0,
       "list": 1,
+      "search": 10,
       "content": 100,
-      "vector": 1000,
+      "vector": 100,
       "text": 1000
     }
   }
@@ -111,7 +114,7 @@ If you exceed your daily credits or make more than 100 requests per second, you'
 
 **Best practices:**
 - Use `per_page=200` to reduce the number of requests needed
-- Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 50 values per filter)
+- Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 100 values per filter)
 - Use `select=` to [limit returned fields](/guides/selecting-fields) for faster responses
 - Implement [exponential backoff](/api-reference/errors#retry-logic) when you hit rate limits
 
@@ -121,7 +124,7 @@ Beyond rate limits, individual queries have these constraints:
 
 | Limit | Value |
 |-------|-------|
-| OR values per filter | 50 |
+| OR values per filter | 100 |
 | `per_page` maximum | 200 |
 | `sample` maximum | 10,000 |
 | Basic paging limit | 10,000 results |
@@ -142,7 +145,7 @@ The API uses simple GET requests, so you can test any request in your browser. I
 # Use maximum page size
 requests.get("https://api.openalex.org/works?per_page=200&api_key=YOUR_KEY")
 
-# Batch DOI lookups (up to 50 at once)
+# Batch DOI lookups (up to 100 at once)
 dois = "10.1234/a|10.1234/b|10.1234/c"
 requests.get(f"https://api.openalex.org/works?filter=doi:{dois}&api_key=YOUR_KEY")
 ```

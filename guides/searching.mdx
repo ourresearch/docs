@@ -3,7 +3,7 @@ title: Searching
 description: Find entities using full-text search across titles, abstracts, and more
 ---
 
-The `search` parameter finds results matching a given text search.
+The `search` parameter finds results matching a given text search. Search requests cost **10 credits** each (vs. 1 credit for list/filter requests). See [credit costs](/guides/authentication#credit-costs-by-endpoint).
 
 ```bash
 # Works with "dna" in title, abstract, or fulltext
@@ -77,7 +77,7 @@ https://api.openalex.org/works?search=fierce creatures
 
 ## Search filter
 
-Use `.search` as a filter suffix to search specific fields:
+Use `.search` as a filter suffix to search specific fields. These also cost 10 credits per request.
 
 ```bash
 # Authors with "Einstein" in their name
