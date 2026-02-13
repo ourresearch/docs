@@ -1,226 +1,117 @@
 ---
-title: "The Source object"
-sidebarTitle: "The Source object"
-description: "Schema reference for Source entities"
+title: "Sources Overview"
+sidebarTitle: "Sources Overview"
+description: "Schema reference for Sources entities"
 ---
 
 Sources are where works are hosted: journals, conferences, preprint repositories, and institutional repositories.
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this source.
+The API supports filtering, sorting, and grouping on sources fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/S1983995261"`
-</ResponseField>
 
-<ResponseField name="issn_l" type="string">
-  The ISSN-L (linking ISSN) for this source. This is the Canonical External ID for sources.
+### Top-level
 
-  `"2167-8359"`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `apc_usd` | ✓ | ✓ | ✓ |
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `continent` | ✓ | ✓ | ✓ |
+| `country_code` | ✓ | ✓ | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `first_publication_year` | ✓ |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `has_issn` | ✓ | ✓ | ✓ |
+| `host_organization` | ✓ | ✓ | ✓ |
+| `host_organization_lineage` | ✓ | ✓ | ✓ |
+| `is_core` | ✓ | ✓ | ✓ |
+| `is_global_south` | ✓ | ✓ | ✓ |
+| `is_high_oa_rate` | ✓ | ✓ | ✓ |
+| `is_high_oa_rate_since_year` | ✓ |  | ✓ |
+| `is_in_doaj` | ✓ | ✓ | ✓ |
+| `is_in_doaj_since_year` | ✓ |  | ✓ |
+| `is_in_jstage` |  | ✓ | ✓ |
+| `is_in_jstage_since_year` |  |  | ✓ |
+| `is_oa` | ✓ | ✓ | ✓ |
+| `is_ojs` | ✓ | ✓ | ✓ |
+| `issn` | ✓ | ✓ | ✓ |
+| `issn_l` | ✓ | ✓ | ✓ |
+| `last_publication_year` | ✓ |  | ✓ |
+| `oa_flip_year` | ✓ |  | ✓ |
+| `openalex` | ✓ | ✓ | ✓ |
+| `openalex_id` |  | ✓ | ✓ |
+| `to_created_date` | ✓ |  | ✓ |
+| `to_updated_date` | ✓ |  | ✓ |
+| `type` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |
 
-<ResponseField name="issn" type="array">
-  All ISSNs used by this source. Many publications have multiple ISSNs.
+### Apc Prices
 
-  `["2167-8359"]`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `apc_prices.currency` | ✓ | ✓ | ✓ |
+| `apc_prices.price` | ✓ |  | ✓ |
 
-<ResponseField name="display_name" type="string">
-  The name of the source.
+### Concept
 
-  `"PeerJ"`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `concept.id` | ✓ | ✓ | ✓ |
 
-<ResponseField name="abbreviated_title" type="string">
-  An abbreviated title from the ISSN Centre.
+### Concepts
 
-  `"J. addict. med. ther. sci."`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `concepts.id` | ✓ | ✓ | ✓ |
 
-<ResponseField name="alternate_titles" type="array">
-  Alternate titles (abbreviations or translations).
-</ResponseField>
+### Default
 
-<ResponseField name="type" type="string">
-  The type of source: `journal`, `repository`, `conference`, `ebook platform`, `book series`, `metadata`, or `other`.
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `default.search` |  |  | ✓ |
 
-  `"journal"`
-</ResponseField>
+### Display Name
 
-<ResponseField name="host_organization" type="string">
-  The host organization as an OpenAlex ID. This will be an Institution ID if the source is a repository, or a Publisher ID if it's a journal/conference.
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `display_name.search` |  |  | ✓ |
 
-  `"https://openalex.org/P4310320595"`
-</ResponseField>
+### Host Organization
 
-<ResponseField name="host_organization_name" type="string">
-  The display_name of the host organization.
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `host_organization.id` | ✓ |  | ✓ |
 
-  `"Elsevier BV"`
-</ResponseField>
+### Ids
 
-<ResponseField name="host_organization_lineage" type="array">
-  OpenAlex IDs of parent publishers (only for publisher-hosted sources).
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `ids.mag` | ✓ |  | ✓ |
+| `ids.openalex` | ✓ | ✓ | ✓ |
 
-<ResponseField name="works_count" type="integer">
-  The number of works this source hosts.
+### Summary Stats
 
-  `20184`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `summary_stats.2yr_mean_citedness` | ✓ | ✓ | ✓ |
+| `summary_stats.h_index` | ✓ | ✓ | ✓ |
+| `summary_stats.i10_index` | ✓ | ✓ | ✓ |
 
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works hosted in this source.
+### Topic Share
 
-  `133702`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `topic_share.id` | ✓ | ✓ | ✓ |
 
-<ResponseField name="is_oa" type="boolean">
-  Whether this is currently a fully open-access source.
+### Topics
 
-  `true`
-</ResponseField>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `topics.id` |  |  | ✓ |
 
-<ResponseField name="is_in_doaj" type="boolean">
-  Whether this journal is listed in the Directory of Open Access Journals.
+### X Concepts
 
-  `true`
-</ResponseField>
-
-<ResponseField name="is_core" type="boolean">
-  Whether this source is identified as a "core source" by CWTS for the Open Leiden Ranking.
-</ResponseField>
-
-<ResponseField name="homepage_url" type="string">
-  The homepage URL for this source.
-
-  `"http://www.peerj.com/"`
-</ResponseField>
-
-<ResponseField name="country_code" type="string">
-  ISO two-letter country code where this source is associated.
-
-  `"GB"`
-</ResponseField>
-
-<ResponseField name="societies" type="array">
-  Societies on whose behalf the source is published.
-</ResponseField>
-
-<ResponseField name="apc_prices" type="array">
-  Article processing charge information from DOAJ. Each object has `price` and `currency`.
-</ResponseField>
-
-<ResponseField name="apc_usd" type="integer">
-  The source's article processing charge in USD.
-
-  `5200`
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers:
-  - `openalex`: OpenAlex ID
-  - `issn_l`: ISSN-L
-  - `issn`: List of ISSNs
-  - `mag`: Microsoft Academic Graph ID
-  - `fatcat`: Fatcat ID
-  - `wikidata`: Wikidata ID
-</ResponseField>
-
-<ResponseField name="summary_stats" type="object">
-  Citation metrics:
-  - `2yr_mean_citedness`: Impact factor
-  - `h_index`: h-index
-  - `i10_index`: i-10 index
-</ResponseField>
-
-<ResponseField name="counts_by_year" type="array">
-  `works_count` and `cited_by_count` for each of the last ten years.
-</ResponseField>
-
-<ResponseField name="works_api_url" type="string">
-  A URL that will get you a list of all this source's works.
-
-  `"https://api.openalex.org/works?filter=primary_location.source.id:S1983995261"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this source was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this source was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## The DehydratedSource object
-
-A stripped-down Source object with only:
-- `id`
-- `display_name`
-- `issn_l`
-- `issn`
-- `is_oa`
-- `is_in_doaj`
-- `is_core`
-- `host_organization`
-- `host_organization_name`
-- `host_organization_lineage`
-- `type`
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing sources.
-All 45 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-<Accordion title="All 45 fields">
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `apc_prices.currency` | string | ✓ | ✓ |
-| `apc_prices.price` | number | ✓ |  |
-| `apc_usd` | number | ✓ | ✓ |
-| `cited_by_count` | integer | ✓ | ✓ |
-| `concept.id` | string (ID) | ✓ | ✓ |
-| `concepts.id` | string (ID) | ✓ | ✓ |
-| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
-| `country_code` | [country](/api-reference/countries) | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `first_publication_year` | integer | ✓ |  |
-| `from_created_date` | date | ✓ |  |
-| `has_issn` | boolean | ✓ | ✓ |
-| `host_organization` | string | ✓ | ✓ |
-| `host_organization.id` | string (ID) | ✓ |  |
-| `host_organization_lineage` | string | ✓ | ✓ |
-| `ids.mag` | string | ✓ |  |
-| `ids.openalex` | string | ✓ | ✓ |
-| `is_core` | boolean | ✓ | ✓ |
-| `is_global_south` | boolean | ✓ | ✓ |
-| `is_high_oa_rate` | boolean | ✓ | ✓ |
-| `is_high_oa_rate_since_year` | boolean | ✓ |  |
-| `is_in_doaj` | boolean | ✓ | ✓ |
-| `is_in_doaj_since_year` | boolean | ✓ |  |
-| `is_in_jstage` | boolean |  | ✓ |
-| `is_in_jstage_since_year` | boolean |  |  |
-| `is_oa` | boolean | ✓ | ✓ |
-| `is_ojs` | boolean | ✓ | ✓ |
-| `issn` | string | ✓ | ✓ |
-| `issn_l` | string | ✓ | ✓ |
-| `last_publication_year` | integer | ✓ |  |
-| `oa_flip_year` | integer | ✓ |  |
-| `openalex` | string | ✓ | ✓ |
-| `openalex_id` | string |  | ✓ |
-| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
-| `summary_stats.h_index` | number | ✓ | ✓ |
-| `summary_stats.i10_index` | number | ✓ | ✓ |
-| `to_created_date` | date | ✓ |  |
-| `to_updated_date` | date | ✓ |  |
-| `topic_share.id` | string (ID) | ✓ | ✓ |
-| `topics.id` | string (ID) |  |  |
-| `type` | [source type](/api-reference/source-types) | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
-| `x_concepts.id` | string (ID) | ✓ | ✓ |
-
-</Accordion>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `x_concepts.id` | ✓ | ✓ | ✓ |

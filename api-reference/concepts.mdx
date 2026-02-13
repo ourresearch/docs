@@ -1,7 +1,7 @@
 ---
-title: "The Concept object"
-sidebarTitle: "The Concept object"
-description: "Schema reference for Concept entities (deprecated)"
+title: "Concepts (deprecated) Overview"
+sidebarTitle: "Concepts (deprecated) Overview"
+description: "Schema reference for Concepts (deprecated) entities"
 ---
 
 <Warning>
@@ -10,118 +10,25 @@ Concepts are **deprecated** and have been replaced by [Topics](/api-reference/to
 
 Concepts were a hierarchical taxonomy of research areas derived from Wikidata. They have been replaced by the Topics system, which provides more accurate and comprehensive classification.
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this concept.
+The API supports filtering, sorting, and grouping on concepts fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/C41008148"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The name of the concept.
-
-  `"Computer science"`
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  A description of this concept.
-
-  `"theoretical study of the formal foundation enabling the automated processing or computation of information..."`
-</ResponseField>
-
-<ResponseField name="level" type="integer">
-  The hierarchical level (0 = top level, higher = more specific).
-
-  `0`
-</ResponseField>
-
-<ResponseField name="wikidata" type="string">
-  The Wikidata ID for this concept.
-
-  `"https://www.wikidata.org/wiki/Q21198"`
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers:
-  - `openalex`: OpenAlex ID
-  - `wikidata`: Wikidata ID
-  - `wikipedia`: Wikipedia page URL
-  - `mag`: Microsoft Academic Graph ID (legacy)
-  - `umls_aui`: UMLS Atom Unique Identifier
-  - `umls_cui`: UMLS Concept Unique Identifier
-</ResponseField>
-
-<ResponseField name="image_url" type="string">
-  URL for an image representing this concept.
-</ResponseField>
-
-<ResponseField name="image_thumbnail_url" type="string">
-  Smaller version of `image_url`.
-</ResponseField>
-
-<ResponseField name="works_count" type="integer">
-  The number of works tagged with this concept.
-
-  `105747220`
-</ResponseField>
-
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works tagged with this concept.
-
-  `236381407`
-</ResponseField>
-
-<ResponseField name="ancestors" type="array">
-  Parent concepts in the hierarchy.
-</ResponseField>
-
-<ResponseField name="related_concepts" type="array">
-  Related concepts with similarity scores.
-</ResponseField>
-
-<ResponseField name="counts_by_year" type="array">
-  `works_count` and `cited_by_count` for each of the last ten years.
-</ResponseField>
-
-<ResponseField name="works_api_url" type="string">
-  A URL that returns all works tagged with this concept.
-
-  `"https://api.openalex.org/works?filter=concepts.id:41008148"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this concept was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this concept was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing concepts.
-All 16 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-<Accordion title="All 16 fields">
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `ancestors.id` | string (ID) | ✓ | ✓ |
-| `cited_by_count` | integer | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `from_created_date` | date | ✓ |  |
-| `has_wikidata` | boolean | ✓ | ✓ |
-| `ids.openalex` | string | ✓ | ✓ |
-| `level` | integer | ✓ | ✓ |
-| `openalex` | string | ✓ | ✓ |
-| `openalex_id` | string |  | ✓ |
-| `summary_stats.2yr_mean_citedness` | number |  | ✓ |
-| `summary_stats.h_index` | number |  | ✓ |
-| `summary_stats.i10_index` | number |  | ✓ |
-| `wikidata_id` | string |  | ✓ |
-| `works_count` | integer | ✓ | ✓ |
-
-</Accordion>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `ancestors.id` | ✓ | ✓ | ✓ |
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `has_wikidata` | ✓ | ✓ | ✓ |
+| `ids.openalex` | ✓ | ✓ | ✓ |
+| `level` | ✓ | ✓ | ✓ |
+| `openalex` | ✓ | ✓ | ✓ |
+| `openalex_id` |  | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` |  | ✓ | ✓ |
+| `summary_stats.h_index` |  | ✓ | ✓ |
+| `summary_stats.i10_index` |  | ✓ | ✓ |
+| `wikidata_id` |  | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |

@@ -1,60 +1,21 @@
 ---
-title: "The Language object"
-sidebarTitle: "The Language object"
-description: "Schema reference for Language entities"
+title: "Languages Overview"
+sidebarTitle: "Languages Overview"
+description: "Schema reference for Languages entities"
 ---
 
 Languages represent the languages in which scholarly works are written. OpenAlex automatically detects the language of each work.
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this language (uses ISO 639-1 codes).
+The API supports filtering, sorting, and grouping on languages fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/languages/en"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The name of the language.
-
-  `"English"`
-</ResponseField>
-
-<ResponseField name="works_count" type="integer">
-  The number of works written in this language.
-
-  `329060944`
-</ResponseField>
-
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works in this language.
-</ResponseField>
-
-<ResponseField name="works_api_url" type="string">
-  A URL that returns all works in this language.
-
-  `"https://api.openalex.org/works?filter=language:en"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this language was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this language was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing languages.
-All 7 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `cited_by_count` | integer | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `from_created_date` | date | ✓ |  |
-| `id` | string | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `id` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |

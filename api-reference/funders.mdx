@@ -1,141 +1,40 @@
 ---
-title: "The Funder object"
-sidebarTitle: "The Funder object"
-description: "Schema reference for Funder entities"
+title: "Funders Overview"
+sidebarTitle: "Funders Overview"
+description: "Schema reference for Funders entities"
 ---
 
 Funders are organizations that fund research. OpenAlex indexes about 32,000 funders. Funder data comes from Crossref, and is enhanced with data from Wikidata and ROR.
 
 Funders are connected to works through [grants](/guides/key-concepts#grants).
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this funder.
+The API supports filtering, sorting, and grouping on funders fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/F4320332161"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The primary name of the funder.
-
-  `"National Institutes of Health"`
-</ResponseField>
-
-<ResponseField name="alternate_titles" type="array">
-  A list of alternate titles for this funder.
-
-  `["US National Institutes of Health", "NIH"]`
-</ResponseField>
-
-<ResponseField name="country_code" type="string">
-  ISO two-letter country code where this funder is located.
-
-  `"US"`
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  A short description from Wikidata.
-
-  `"medical research organization in the United States"`
-</ResponseField>
-
-<ResponseField name="homepage_url" type="string">
-  URL for this funder's primary homepage.
-
-  `"http://www.nih.gov/"`
-</ResponseField>
-
-<ResponseField name="image_url" type="string">
-  URL for an image representing this funder (usually from Wikimedia).
-</ResponseField>
-
-<ResponseField name="image_thumbnail_url" type="string">
-  Smaller version of `image_url`.
-</ResponseField>
-
-<ResponseField name="works_count" type="integer">
-  The number of works linked to this funder.
-
-  `260210`
-</ResponseField>
-
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works linked to this funder.
-
-  `7823467`
-</ResponseField>
-
-<ResponseField name="grants_count" type="integer">
-  The number of grants linked to this funder.
-
-  `7109`
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers for this funder:
-  - `openalex`: OpenAlex ID
-  - `crossref`: Crossref Funder ID
-  - `ror`: ROR ID
-  - `wikidata`: Wikidata ID
-  - `doi`: DOI
-</ResponseField>
-
-<ResponseField name="roles" type="array">
-  Links to related entities when an organization has multiple roles (funder, publisher, institution).
-</ResponseField>
-
-<ResponseField name="summary_stats" type="object">
-  Citation metrics:
-  - `2yr_mean_citedness`: Impact factor
-  - `h_index`: h-index
-  - `i10_index`: i-10 index
-</ResponseField>
-
-<ResponseField name="counts_by_year" type="array">
-  `works_count` and `cited_by_count` for each of the last ten years.
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this funder was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this funder was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing funders.
-All 24 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-<Accordion title="All 24 fields">
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `awards_count` | integer | ✓ | ✓ |
-| `cited_by_count` | integer | ✓ | ✓ |
-| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
-| `country_code` | [country](/api-reference/countries) | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `description.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `from_created_date` | date | ✓ |  |
-| `ids.crossref` | string | ✓ | ✓ |
-| `ids.doi` | string | ✓ | ✓ |
-| `ids.openalex` | string | ✓ | ✓ |
-| `ids.ror` | string | ✓ | ✓ |
-| `ids.wikidata` | string | ✓ | ✓ |
-| `is_global_south` | boolean | ✓ | ✓ |
-| `openalex` | string | ✓ | ✓ |
-| `openalex_id` | string |  | ✓ |
-| `roles.id` | string (ID) | ✓ | ✓ |
-| `ror` | string | ✓ | ✓ |
-| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
-| `summary_stats.h_index` | number | ✓ | ✓ |
-| `summary_stats.i10_index` | number | ✓ | ✓ |
-| `wikidata` | string | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
-
-</Accordion>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `awards_count` | ✓ | ✓ | ✓ |
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `continent` | ✓ | ✓ | ✓ |
+| `country_code` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `description.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `ids.crossref` | ✓ | ✓ | ✓ |
+| `ids.doi` | ✓ | ✓ | ✓ |
+| `ids.openalex` | ✓ | ✓ | ✓ |
+| `ids.ror` | ✓ | ✓ | ✓ |
+| `ids.wikidata` | ✓ | ✓ | ✓ |
+| `is_global_south` | ✓ | ✓ | ✓ |
+| `openalex` | ✓ | ✓ | ✓ |
+| `openalex_id` |  | ✓ | ✓ |
+| `roles.id` | ✓ | ✓ | ✓ |
+| `ror` | ✓ | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` | ✓ | ✓ | ✓ |
+| `summary_stats.h_index` | ✓ | ✓ | ✓ |
+| `summary_stats.i10_index` | ✓ | ✓ | ✓ |
+| `wikidata` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |

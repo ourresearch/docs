@@ -1,77 +1,21 @@
 ---
-title: "The Continent object"
-sidebarTitle: "The Continent object"
-description: "Schema reference for Continent entities"
+title: "Continents Overview"
+sidebarTitle: "Continents Overview"
+description: "Schema reference for Continents entities"
 ---
 
 Continents represent the major geographic regions of the world. They are used for filtering works by geographic region and for understanding the global distribution of research.
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this continent (uses Wikidata Q-IDs).
+The API supports filtering, sorting, and grouping on continents fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/continents/Q49"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The name of the continent.
-
-  `"North America"`
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  A brief description of the continent.
-
-  `"continent and northern subcontinent of the Americas"`
-</ResponseField>
-
-<ResponseField name="display_name_alternatives" type="array">
-  Alternate names for this continent.
-</ResponseField>
-
-<ResponseField name="countries" type="array">
-  The countries within this continent. Each object has `id` and `display_name`.
-
-  ```json
-  [
-    {
-      "id": "https://openalex.org/countries/US",
-      "display_name": "United States of America"
-    },
-    {
-      "id": "https://openalex.org/countries/CA",
-      "display_name": "Canada"
-    }
-  ]
-  ```
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers:
-  - `openalex`: OpenAlex ID
-  - `wikidata`: Wikidata Q-ID
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this continent was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this continent was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing continents.
-All 7 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `cited_by_count` | integer | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `from_created_date` | date | ✓ |  |
-| `id` | string | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `id` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |

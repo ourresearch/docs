@@ -1,159 +1,38 @@
 ---
-title: "The Award object"
-sidebarTitle: "The Award object"
-description: "Schema reference for Award entities"
+title: "Awards Overview"
+sidebarTitle: "Awards Overview"
+description: "Schema reference for Awards entities"
 ---
 
 Awards represent research grants and funding awards. They link funders to the works they have funded.
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this award.
+The API supports filtering, sorting, and grouping on awards fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/G5859020988"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The name of the award, if available.
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  A description of the award, if available.
-</ResponseField>
-
-<ResponseField name="funder_award_id" type="string">
-  The funder's internal ID for this award.
-
-  `"001"`
-</ResponseField>
-
-<ResponseField name="funder" type="object">
-  The funder that issued this award.
-
-  ```json
-  {
-    "id": "https://openalex.org/F4320321091",
-    "display_name": "National Institutes of Health",
-    "doi": "10.13039/100000002"
-  }
-  ```
-</ResponseField>
-
-<ResponseField name="funded_outputs" type="array">
-  OpenAlex IDs of works funded by this award (first 100).
-</ResponseField>
-
-<ResponseField name="funded_outputs_count" type="integer">
-  Total number of works funded by this award.
-
-  `16087`
-</ResponseField>
-
-<ResponseField name="amount" type="number">
-  The funding amount, if available.
-</ResponseField>
-
-<ResponseField name="currency" type="string">
-  The currency of the funding amount, if available.
-</ResponseField>
-
-<ResponseField name="funding_type" type="string">
-  The type of funding, if available.
-</ResponseField>
-
-<ResponseField name="funder_scheme" type="string">
-  The funder's scheme or program, if available.
-</ResponseField>
-
-<ResponseField name="start_date" type="string">
-  Start date of the award (ISO 8601), if available.
-</ResponseField>
-
-<ResponseField name="end_date" type="string">
-  End date of the award (ISO 8601), if available.
-</ResponseField>
-
-<ResponseField name="start_year" type="integer">
-  Start year of the award, if available.
-</ResponseField>
-
-<ResponseField name="end_year" type="integer">
-  End year of the award, if available.
-</ResponseField>
-
-<ResponseField name="landing_page_url" type="string">
-  URL to the award's landing page, if available.
-</ResponseField>
-
-<ResponseField name="doi" type="string">
-  DOI for this award, if available.
-</ResponseField>
-
-<ResponseField name="provenance" type="string">
-  The source of this award data.
-
-  `"crossref_work.grants"`
-</ResponseField>
-
-<ResponseField name="lead_investigator" type="object">
-  The lead investigator for this award, if available.
-</ResponseField>
-
-<ResponseField name="co_lead_investigator" type="object">
-  The co-lead investigator, if available.
-</ResponseField>
-
-<ResponseField name="investigators" type="array">
-  List of investigators on this award, if available.
-</ResponseField>
-
-<ResponseField name="works_api_url" type="string">
-  A URL that returns all works funded by this award.
-
-  `"https://api.openalex.org/works?filter=awards.id:G5859020988"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this award was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this award was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing awards.
-All 24 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-<Accordion title="All 24 fields">
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `amount` | number | ✓ |  |
-| `currency` | string | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `description.search` | search |  |  |
-| `display_name.search` | search |  |  |
-| `doi` | string |  |  |
-| `end_year` | integer | ✓ | ✓ |
-| `funded_outputs` | integer | ✓ | ✓ |
-| `funded_outputs_count` | integer | ✓ |  |
-| `funder.doi` | string | ✓ | ✓ |
-| `funder.id` | string (ID) | ✓ | ✓ |
-| `funder.ror` | string | ✓ | ✓ |
-| `funder_award_id` | string | ✓ | ✓ |
-| `funder_name` | string | ✓ | ✓ |
-| `funder_scheme` | string |  |  |
-| `funding_type` | string | ✓ | ✓ |
-| `id` | string | ✓ | ✓ |
-| `lead_investigator.affiliation.country` | string | ✓ | ✓ |
-| `lead_investigator.affiliation.name` | string |  |  |
-| `lead_investigator.family_name` | string |  |  |
-| `lead_investigator.given_name` | string |  |  |
-| `lead_investigator.orcid` | string | ✓ | ✓ |
-| `provenance` | string | ✓ | ✓ |
-| `start_year` | integer | ✓ | ✓ |
-
-</Accordion>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `amount` | ✓ |  | ✓ |
+| `currency` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `description.search` |  |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `doi` |  |  | ✓ |
+| `end_year` | ✓ | ✓ | ✓ |
+| `funded_outputs` | ✓ | ✓ | ✓ |
+| `funded_outputs_count` | ✓ |  | ✓ |
+| `funder.doi` | ✓ | ✓ | ✓ |
+| `funder.id` | ✓ | ✓ | ✓ |
+| `funder.ror` | ✓ | ✓ | ✓ |
+| `funder_award_id` | ✓ | ✓ | ✓ |
+| `funder_name` | ✓ | ✓ | ✓ |
+| `funder_scheme` |  |  | ✓ |
+| `funding_type` | ✓ | ✓ | ✓ |
+| `id` | ✓ | ✓ | ✓ |
+| `lead_investigator.affiliation.country` | ✓ | ✓ | ✓ |
+| `lead_investigator.affiliation.name` |  |  | ✓ |
+| `lead_investigator.family_name` |  |  | ✓ |
+| `lead_investigator.given_name` |  |  | ✓ |
+| `lead_investigator.orcid` | ✓ | ✓ | ✓ |
+| `provenance` | ✓ | ✓ | ✓ |
+| `start_year` | ✓ | ✓ | ✓ |

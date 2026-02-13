@@ -1,118 +1,24 @@
 ---
-title: "The Domain object"
-sidebarTitle: "The Domain object"
-description: "Schema reference for Domain entities"
+title: "Domains Overview"
+sidebarTitle: "Domains Overview"
+description: "Schema reference for Domains entities"
 ---
 
 Domains are the highest level of the OpenAlex topic hierarchy. There are only 4 domains, each containing multiple fields: Life Sciences, Social Sciences, Physical Sciences, and Health Sciences.
 
 The topic hierarchy is: **Domain** → Field → Subfield → Topic
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this domain.
+The API supports filtering, sorting, and grouping on domains fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/domains/1"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The English-language label of the domain.
-
-  `"Life Sciences"`
-</ResponseField>
-
-<ResponseField name="description" type="string">
-  A description of this domain.
-
-  `"branch of science that involve the scientific study of life – such as microorganisms, plants, and animals including human beings"`
-</ResponseField>
-
-<ResponseField name="display_name_alternatives" type="array">
-  Alternate names for this domain.
-
-  `["bioscience", "biological science disciplines"]`
-</ResponseField>
-
-<ResponseField name="fields" type="array">
-  The fields within this domain. Each object has `id` and `display_name`.
-
-  ```json
-  [
-    {
-      "id": "https://openalex.org/fields/13",
-      "display_name": "Biochemistry, Genetics and Molecular Biology"
-    },
-    {
-      "id": "https://openalex.org/fields/28",
-      "display_name": "Neuroscience"
-    }
-  ]
-  ```
-</ResponseField>
-
-<ResponseField name="siblings" type="array">
-  Other domains at the same level. Each object has `id` and `display_name`.
-
-  ```json
-  [
-    {
-      "id": "https://openalex.org/domains/3",
-      "display_name": "Physical Sciences"
-    },
-    {
-      "id": "https://openalex.org/domains/4",
-      "display_name": "Health Sciences"
-    }
-  ]
-  ```
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers:
-  - `openalex`: OpenAlex ID
-  - `wikidata`: Wikidata ID
-  - `wikipedia`: Wikipedia page URL
-</ResponseField>
-
-<ResponseField name="works_count" type="integer">
-  The number of works tagged with topics in this domain.
-
-  `49448011`
-</ResponseField>
-
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works in this domain.
-
-  `579498330`
-</ResponseField>
-
-<ResponseField name="works_api_url" type="string">
-  A URL that returns all works tagged with this domain.
-
-  `"https://api.openalex.org/works?filter=topics.domain.id:1"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this domain was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this domain was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing domains.
-All 8 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `cited_by_count` | integer | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `fields.id` | string (ID) | ✓ | ✓ |
-| `from_created_date` | date | ✓ |  |
-| `id` | string | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `fields.id` | ✓ | ✓ | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `id` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |

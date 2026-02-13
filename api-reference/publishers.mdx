@@ -1,141 +1,36 @@
 ---
-title: "The Publisher object"
-sidebarTitle: "The Publisher object"
-description: "Schema reference for Publisher entities"
+title: "Publishers Overview"
+sidebarTitle: "Publishers Overview"
+description: "Schema reference for Publishers entities"
 ---
 
 Publishers are companies and organizations that distribute works. Publishers can have a hierarchical structure (parent/child relationships).
 
-## Fields
+## Filter, sort, and group_by fields
 
-<ResponseField name="id" type="string">
-  The OpenAlex ID for this publisher.
+The API supports filtering, sorting, and grouping on publishers fields. See [Filtering](/guides/filtering), [Sorting](/guides/sorting-and-paging), and [Grouping](/guides/grouping) for syntax.
 
-  `"https://openalex.org/P4310320990"`
-</ResponseField>
-
-<ResponseField name="display_name" type="string">
-  The primary name of the publisher.
-
-  `"Elsevier BV"`
-</ResponseField>
-
-<ResponseField name="alternate_titles" type="array">
-  Alternate titles for this publisher (including translations).
-
-  `["Elsevier", "Elsevier Science", "爱思唯尔"]`
-</ResponseField>
-
-<ResponseField name="hierarchy_level" type="integer">
-  The hierarchy level for this publisher. Level 0 has no parent publishers.
-
-  `1`
-</ResponseField>
-
-<ResponseField name="parent_publisher" type="string">
-  OpenAlex ID of the direct parent publisher. Null if `hierarchy_level` is 0.
-
-  `"https://openalex.org/P4310311775"`
-</ResponseField>
-
-<ResponseField name="lineage" type="array">
-  OpenAlex IDs including this publisher and any parent publishers.
-
-  `["https://openalex.org/P4310321285", "https://openalex.org/P4310319900"]`
-</ResponseField>
-
-<ResponseField name="country_codes" type="array">
-  ISO two-letter country codes where the publisher is primarily located.
-
-  `["DE"]`
-</ResponseField>
-
-<ResponseField name="works_count" type="integer">
-  The number of works published by this publisher.
-
-  `13789818`
-</ResponseField>
-
-<ResponseField name="cited_by_count" type="integer">
-  Total citations to works linked to this publisher.
-
-  `407508754`
-</ResponseField>
-
-<ResponseField name="image_url" type="string">
-  URL for an image representing this publisher (usually from Wikimedia).
-</ResponseField>
-
-<ResponseField name="image_thumbnail_url" type="string">
-  Smaller version of `image_url`.
-</ResponseField>
-
-<ResponseField name="roles" type="array">
-  Links to related entities when an organization has multiple roles (funder, publisher, institution). Each object has `role`, `id`, and `works_count`.
-</ResponseField>
-
-<ResponseField name="ids" type="object">
-  External identifiers:
-  - `openalex`: OpenAlex ID
-  - `ror`: ROR ID
-  - `wikidata`: Wikidata ID
-</ResponseField>
-
-<ResponseField name="summary_stats" type="object">
-  Citation metrics:
-  - `2yr_mean_citedness`: Impact factor
-  - `h_index`: h-index
-  - `i10_index`: i-10 index
-</ResponseField>
-
-<ResponseField name="counts_by_year" type="array">
-  `works_count` and `cited_by_count` for each of the last ten years.
-</ResponseField>
-
-<ResponseField name="sources_api_url" type="string">
-  A URL that will get you a list of all sources published by this publisher.
-
-  `"https://api.openalex.org/sources?filter=host_organization.id:P4310319965"`
-</ResponseField>
-
-<ResponseField name="created_date" type="string">
-  When this publisher was added to OpenAlex (ISO 8601 date).
-</ResponseField>
-
-<ResponseField name="updated_date" type="string">
-  When this publisher was last updated (ISO 8601 datetime).
-</ResponseField>
-
-## Available filter, sort, and group_by fields
-
-These fields can be used with the `filter`, `sort`, and `group_by` parameters when listing publishers.
-All 22 fields below support `filter`. The **Sort** and **Group_by** columns indicate additional support.
-
-<Accordion title="All 22 fields">
-
-| Field | Type | Sort | Group_by |
-|-------|------|:----:|:--------:|
-| `cited_by_count` | integer | ✓ | ✓ |
-| `continent` | [continent](/api-reference/continents) | ✓ | ✓ |
-| `country_codes` | [country](/api-reference/countries) | ✓ | ✓ |
-| `default.search` | search |  |  |
-| `display_name` | string | ✓ |  |
-| `display_name.search` | search |  |  |
-| `from_created_date` | date | ✓ |  |
-| `hierarchy_level` | integer | ✓ | ✓ |
-| `ids.openalex` | string | ✓ | ✓ |
-| `ids.ror` | string | ✓ | ✓ |
-| `ids.wikidata` | string | ✓ | ✓ |
-| `lineage` | string | ✓ | ✓ |
-| `openalex` | string |  | ✓ |
-| `openalex_id` | string | ✓ | ✓ |
-| `parent_publisher` | string | ✓ | ✓ |
-| `roles.id` | string (ID) | ✓ | ✓ |
-| `ror` | string | ✓ | ✓ |
-| `summary_stats.2yr_mean_citedness` | number | ✓ | ✓ |
-| `summary_stats.h_index` | number | ✓ | ✓ |
-| `summary_stats.i10_index` | number | ✓ | ✓ |
-| `wikidata` | string | ✓ | ✓ |
-| `works_count` | integer | ✓ | ✓ |
-
-</Accordion>
+| Field | Sort | Group_by | Filter |
+|-------|:----:|:--------:|:------:|
+| `cited_by_count` | ✓ | ✓ | ✓ |
+| `continent` | ✓ | ✓ | ✓ |
+| `country_codes` | ✓ | ✓ | ✓ |
+| `default.search` |  |  | ✓ |
+| `display_name` | ✓ |  | ✓ |
+| `display_name.search` |  |  | ✓ |
+| `from_created_date` | ✓ |  | ✓ |
+| `hierarchy_level` | ✓ | ✓ | ✓ |
+| `ids.openalex` | ✓ | ✓ | ✓ |
+| `ids.ror` | ✓ | ✓ | ✓ |
+| `ids.wikidata` | ✓ | ✓ | ✓ |
+| `lineage` | ✓ | ✓ | ✓ |
+| `openalex` |  | ✓ | ✓ |
+| `openalex_id` | ✓ | ✓ | ✓ |
+| `parent_publisher` | ✓ | ✓ | ✓ |
+| `roles.id` | ✓ | ✓ | ✓ |
+| `ror` | ✓ | ✓ | ✓ |
+| `summary_stats.2yr_mean_citedness` | ✓ | ✓ | ✓ |
+| `summary_stats.h_index` | ✓ | ✓ | ✓ |
+| `summary_stats.i10_index` | ✓ | ✓ | ✓ |
+| `wikidata` | ✓ | ✓ | ✓ |
+| `works_count` | ✓ | ✓ | ✓ |
