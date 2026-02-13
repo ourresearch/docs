@@ -2,11 +2,11 @@
 
 /* Dark mode - primary theme */
 :root[data-color-scheme="dark"] {
-  --background-sidebar: #0D0D0D;
+  --background-sidebar: #252525;
   --background-content: #252525;
   --text-primary: #ECECEC;
   --text-secondary: #A3A3A3;
-  --border-color: #2D2D2D;
+  --border-color: #3A3A3A;
 }
 
 /* Light mode */
@@ -23,23 +23,31 @@
 #sidebar-content,
 nav[aria-label="Main navigation"],
 aside {
-  background: #0D0D0D;
+  background: #252525;
 }
 
 /* Header — solid background, kill Mintlify's absolute overlay layers */
 .dark #navbar {
-  background-color: #0D0D0D !important;
+  background-color: #252525 !important;
 }
 .dark #navbar > .absolute {
   background-color: transparent !important;
 }
 
-/* Content area background — lighter than sidebar/header (#0D0D0D) */
+/* Content area — override Mintlify's base background to match sidebar/navbar */
 .dark #content-container {
   background-color: #252525 !important;
 }
 
-/* Mintlify's --gray-800 (38 41 44) is invisible on #252525 — bump for visible borders */
+
+/* Override Mintlify's --background-dark (RGB triplet for bg-background-dark utility).
+   docs.json sets this to 13 13 13 (#0D0D0D) — remap to 37 37 37 (#252525) so all
+   panels, playground wrappers, and page chrome match the unified background. */
+.dark {
+  --background-dark: 37 37 37 !important;
+}
+
+/* Mintlify's --gray-800 (38 41 44) needs a bump for visible borders on #252525 */
 .dark {
   --gray-800: 58 61 64 !important;
 }
@@ -78,7 +86,7 @@ footer {
 /* Card styling - subtle borders */
 [class*="card"],
 [class*="Card"] {
-  border: 1px solid var(--border-color, #2D2D2D);
+  border: 1px solid var(--border-color, #3A3A3A);
   background: var(--background-content, #252525) !important;
 }
 
@@ -98,10 +106,20 @@ footer {
   background-color: #2196F3 !important;
 }
 
-/* Code blocks - always dark */
-pre,
-code {
-  background: #0D0D0D !important;
+/* Code blocks and their wrappers — unified background.
+   Mintlify injects inline style="--shiki-dark-bg:#0B0C0E; background-color:#0B0C0E"
+   on .code-block-background. Override the variable on the element itself. */
+html.dark .code-block-background {
+  --shiki-dark-bg: #252525 !important;
+  background-color: #252525 !important;
+}
+.dark .bg-codeblock,
+.dark .code-group,
+.dark .codeblock-dark,
+.dark pre,
+.dark code {
+  background: #252525 !important;
+  background-color: #252525 !important;
 }
 
 /* Softer headings */
