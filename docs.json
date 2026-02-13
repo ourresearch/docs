@@ -62,6 +62,17 @@
             ]
           },
           {
+            "group": "Tutorials",
+            "pages": [
+              "guides/recipes"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Entity Reference",
+        "groups": [
+          {
             "group": "Entities",
             "pages": [
               "guides/works",
@@ -73,12 +84,6 @@
               "guides/funders-and-awards",
               "guides/geo",
               "guides/concepts-deprecated"
-            ]
-          },
-          {
-            "group": "Tutorials",
-            "pages": [
-              "guides/recipes"
             ]
           }
         ]
