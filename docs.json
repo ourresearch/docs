@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
+  "theme": "maple",
   "name": "OpenAlex Developers",
   "colors": {
     "primary": "#2196F3",
