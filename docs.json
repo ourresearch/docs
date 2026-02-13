@@ -245,24 +245,28 @@
               {
                 "group": "Work Types",
                 "pages": [
+                  "api-reference/work-types",
                   "GET /work-types"
                 ]
               },
               {
                 "group": "Source Types",
                 "pages": [
+                  "api-reference/source-types",
                   "GET /source-types"
                 ]
               },
               {
                 "group": "Institution Types",
                 "pages": [
+                  "api-reference/institution-types",
                   "GET /institution-types"
                 ]
               },
               {
                 "group": "Licenses",
                 "pages": [
+                  "api-reference/licenses",
                   "GET /licenses"
                 ]
               }
