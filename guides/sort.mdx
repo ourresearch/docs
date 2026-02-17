@@ -41,9 +41,9 @@ Sort by multiple properties using commas:
 
 ```bash
 # Sort by year descending, then by relevance score
-https://api.openalex.org/works?filter=display_name.search:bioplastics&sort=publication_year:desc,relevance_score:desc
+https://api.openalex.org/works?search=bioplastics&sort=publication_year:desc,relevance_score:desc
 ```
 
 <Note>
-Sorting by `relevance_score` requires an active search filter. An error is thrown otherwise.
+Sorting by `relevance_score` requires an active search. An error is thrown otherwise.
 </Note>

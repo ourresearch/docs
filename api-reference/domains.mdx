@@ -12,12 +12,14 @@ The topic hierarchy is: **Domain** → Field → Subfield → Topic
 
 The API supports filtering, sorting, and grouping on domains fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `cited_by_count` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
 | `display_name` | ✓ |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `fields.id` | ✓ | ✓ | ✓ |
 | `from_created_date` | ✓ |  | ✓ |
 | `id` | ✓ | ✓ | ✓ |

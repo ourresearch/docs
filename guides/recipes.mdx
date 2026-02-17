@@ -122,7 +122,7 @@ https://api.openalex.org/works?filter=publication_year:2024&sample=100&per_page=
 
 ```bash
 # Highly cited OA articles about cancer from 2023
-https://api.openalex.org/works?filter=publication_year:2023,type:article,open_access.is_oa:true,default.search:cancer,cited_by_count:>50&sort=-cited_by_count
+https://api.openalex.org/works?search=cancer&filter=publication_year:2023,type:article,open_access.is_oa:true,cited_by_count:>50&sort=-cited_by_count
 ```
 
 ## Python example
@@ -228,7 +228,7 @@ Content downloads require an API key and cost **100 credits per file**. See [aut
 
 ```bash
 # Step 1: Find works with downloadable PDFs using the has_content filter
-https://api.openalex.org/works?filter=default.search:CRISPR,has_content.pdf:true,publication_year:2023-2024
+https://api.openalex.org/works?search=CRISPR&filter=has_content.pdf:true,publication_year:2023-2024
 
 # Step 2: Download a single PDF
 curl -L "https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY" -o W2741809807.pdf

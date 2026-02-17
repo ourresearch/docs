@@ -22,32 +22,6 @@ Each entity type searches different fields:
 | Institutions | `display_name`, `display_name_alternatives`, `display_name_acronyms` |
 | Topics/Keywords | `display_name`, `description` |
 
-## Search filter
-
-Use `.search` as a filter suffix to search specific fields. These also cost 10 credits per request.
-
-```bash
-# Authors with "Einstein" in their name
-https://api.openalex.org/authors?filter=display_name.search:einstein
-
-# Works with "cubist" in the title only
-https://api.openalex.org/works?filter=title.search:cubist
-```
-
-The `default.search` filter works the same as the `search` parameter.
-
-<Warning>
-**Don't use search filters for autocomplete.** The [autocomplete endpoint](/guides/autocomplete) is much faster:
-
-```bash
-# Slow
-https://api.openalex.org/institutions?filter=display_name.search:florida
-
-# Fast
-https://api.openalex.org/autocomplete/institutions?q=Florida
-```
-</Warning>
-
 ## Text processing
 
 OpenAlex uses [stemming](https://en.wikipedia.org/wiki/Stemming) and removes [stop words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stop-tokenfilter.html) to improve results:
@@ -58,16 +32,10 @@ OpenAlex uses [stemming](https://en.wikipedia.org/wiki/Stemming) and removes [st
 
 ### Exact (unstemmed) search
 
-Use `search.exact` to search without stemming. This works as a top-level parameter or as a filter suffix:
+Use `search.exact` to search without stemming:
 
 ```bash
-# Top-level unstemmed search
 https://api.openalex.org/works?search.exact=surgery
-
-# As a filter on specific fields
-https://api.openalex.org/works?filter=display_name.search.exact:surgery
-https://api.openalex.org/works?filter=title.search.exact:surgery
-https://api.openalex.org/works?filter=abstract.search.exact:surgery
 ```
 
 <Note>
@@ -110,9 +78,6 @@ Append `~N` to a quoted phrase to find the words within N positions of each othe
 ```bash
 # "climate" and "change" within 5 words of each other
 https://api.openalex.org/works?search="climate change"~5
-
-# Also works as a filter
-https://api.openalex.org/works?filter=title.search:"climate change"~5
 ```
 
 ## Wildcards and fuzzy search
@@ -126,15 +91,9 @@ Use `*` to match zero or more characters and `?` to match exactly one character:
 
 The search term must have at least 3 characters before the wildcard. Leading wildcards (e.g., `*ology`) are not supported.
 
-<CodeGroup>
-```bash Top-level search
+```bash
 https://api.openalex.org/works?search=machin*
 ```
-
-```bash Filter search
-https://api.openalex.org/works?filter=display_name.search:machin*
-```
-</CodeGroup>
 
 ### Fuzzy search
 
@@ -163,3 +122,23 @@ Search results include a `relevance_score` property and are sorted by it (descen
 | You want specific fields | Your query is a sentence or paragraph |
 
 Semantic search uses AI embeddings to find works by meaning. A query about "machine learning in healthcare" finds papers using "AI-driven diagnosis" or "computational medicine."
+
+## Legacy: filter-based search
+
+<Warning>
+**Deprecated.** The `filter=field.search:` syntax still works but is no longer recommended. Use the `search` query parameter instead.
+</Warning>
+
+The `.search` filter suffix searches a specific field rather than all searchable fields at once:
+
+```bash
+# Authors with "Einstein" in their name (deprecated)
+https://api.openalex.org/authors?filter=display_name.search:einstein
+
+# Works with "cubist" in the title only (deprecated)
+https://api.openalex.org/works?filter=title.search:cubist
+```
+
+The `default.search` filter is equivalent to the `search` query parameter. Variants like `.search.exact` (unstemmed) and `.search.no_stem` also exist for some fields.
+
+These filter-based searches cost the same 10 credits per request. For autocomplete use cases, use the [autocomplete endpoint](/guides/autocomplete) instead.

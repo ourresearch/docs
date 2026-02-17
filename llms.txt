@@ -87,7 +87,7 @@ has_fulltext - Has searchable text
 Singleton (/works/W123): 0 (free)
 List (/works?filter=...): 1
 PDF download: 100
-Search (?search= or .search filters): 10
+Search (?search=): 10
 Semantic search (?search.semantic=): 100
 
 ## Limits

@@ -10,6 +10,8 @@ Institutions are universities and other organizations to which authors claim aff
 
 The API supports filtering, sorting, and grouping on institutions fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `cited_by_count` | ✓ | ✓ | ✓ |
@@ -17,9 +19,9 @@ The API supports filtering, sorting, and grouping on institutions fields. See [F
 | `concepts.id` |  | ✓ | ✓ |
 | `continent` | ✓ | ✓ | ✓ |
 | `country_code` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
 | `display_name` | ✓ |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `from_created_date` | ✓ |  | ✓ |
 | `has_ror` | ✓ | ✓ | ✓ |
 | `id` | ✓ | ✓ | ✓ |

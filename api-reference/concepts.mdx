@@ -14,13 +14,15 @@ Concepts were a hierarchical taxonomy of research areas derived from Wikidata. T
 
 The API supports filtering, sorting, and grouping on concepts fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `ancestors.id` | ✓ | ✓ | ✓ |
 | `cited_by_count` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
 | `display_name` | ✓ |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `from_created_date` | ✓ |  | ✓ |
 | `has_wikidata` | ✓ | ✓ | ✓ |
 | `ids.openalex` | ✓ | ✓ | ✓ |

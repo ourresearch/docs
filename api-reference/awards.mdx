@@ -10,13 +10,15 @@ Awards represent research grants and funding awards. They link funders to the wo
 
 The API supports filtering, sorting, and grouping on awards fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `amount` | ✓ |  | ✓ |
 | `currency` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
-| `description.search` |  |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
+| `description.search` **(deprecated)** |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `doi` |  |  | ✓ |
 | `end_year` | ✓ | ✓ | ✓ |
 | `funded_outputs` | ✓ | ✓ | ✓ |

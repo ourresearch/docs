@@ -10,14 +10,16 @@ Publishers are companies and organizations that distribute works. Publishers can
 
 The API supports filtering, sorting, and grouping on publishers fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `cited_by_count` | ✓ | ✓ | ✓ |
 | `continent` | ✓ | ✓ | ✓ |
 | `country_codes` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
 | `display_name` | ✓ |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `from_created_date` | ✓ |  | ✓ |
 | `hierarchy_level` | ✓ | ✓ | ✓ |
 | `ids.openalex` | ✓ | ✓ | ✓ |

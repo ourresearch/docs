@@ -12,16 +12,18 @@ Funders are connected to works through [grants](/guides/key-concepts#grants).
 
 The API supports filtering, sorting, and grouping on funders fields. See [Filtering](/guides/filtering), [Sorting](/guides/sort), and [Grouping](/guides/grouping) for syntax.
 
+Fields marked **(deprecated)** are `.search` filters — use the [`search` parameter](/guides/searching) instead.
+
 | Field | Sort | Group_by | Filter |
 |-------|:----:|:--------:|:------:|
 | `awards_count` | ✓ | ✓ | ✓ |
 | `cited_by_count` | ✓ | ✓ | ✓ |
 | `continent` | ✓ | ✓ | ✓ |
 | `country_code` | ✓ | ✓ | ✓ |
-| `default.search` |  |  | ✓ |
-| `description.search` |  |  | ✓ |
+| `default.search` **(deprecated)** |  |  | ✓ |
+| `description.search` **(deprecated)** |  |  | ✓ |
 | `display_name` | ✓ |  | ✓ |
-| `display_name.search` |  |  | ✓ |
+| `display_name.search` **(deprecated)** |  |  | ✓ |
 | `from_created_date` | ✓ |  | ✓ |
 | `ids.crossref` | ✓ | ✓ | ✓ |
 | `ids.doi` | ✓ | ✓ | ✓ |
