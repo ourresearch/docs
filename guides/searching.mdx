@@ -22,59 +22,6 @@ Each entity type searches different fields:
 | Institutions | `display_name`, `display_name_alternatives`, `display_name_acronyms` |
 | Topics/Keywords | `display_name`, `description` |
 
-## Text processing
-
-OpenAlex uses [stemming](https://en.wikipedia.org/wiki/Stemming) and removes [stop words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stop-tokenfilter.html) to improve results:
-
-- Words like "the" and "an" are removed
-- A search for "possums" also returns "possum"
-- Searches match whole words only ("lun" won't match "lunar")
-
-### Disable stemming
-
-Add `.no_stem` to search without stemming:
-
-```bash
-# Exact match "surgery" without "surgeries"
-https://api.openalex.org/works?filter=display_name.search.no_stem:surgery
-https://api.openalex.org/works?filter=title.search.no_stem:surgery
-https://api.openalex.org/works?filter=abstract.search.no_stem:surgery
-```
-
-## Boolean searches
-
-Use `AND`, `OR`, `NOT` (uppercase) for complex queries. Surround phrases with double quotes for exact matching:
-
-```bash
-# Works about "elmo" AND "sesame street" but NOT "cookie" or "monster"
-https://api.openalex.org/works?search=(elmo AND "sesame street") NOT (cookie OR monster)
-```
-
-<Note>
-Words not separated by boolean operators are treated as `AND`. Wildcard (`*`, `?`) and fuzzy (`~`) searches are not supported.
-</Note>
-
-## Relevance score
-
-Search results include a `relevance_score` property and are sorted by it (descending) by default. The score is based on:
-
-- Text similarity to your search term
-- Citation count (more cited = higher score)
-
-### Phrase matching
-
-Multi-word searches rank results higher when words appear close together. For exact phrase matching, use quotes:
-
-<CodeGroup>
-```bash Exact phrase (few results)
-https://api.openalex.org/works?search="fierce creatures"
-```
-
-```bash Words anywhere (more results)
-https://api.openalex.org/works?search=fierce creatures
-```
-</CodeGroup>
-
 ## Search filter
 
 Use `.search` as a filter suffix to search specific fields. These also cost 10 credits per request.
@@ -100,6 +47,112 @@ https://api.openalex.org/institutions?filter=display_name.search:florida
 https://api.openalex.org/autocomplete/institutions?q=Florida
 ```
 </Warning>
+
+## Text processing
+
+OpenAlex uses [stemming](https://en.wikipedia.org/wiki/Stemming) and removes [stop words](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-stop-tokenfilter.html) to improve results:
+
+- Words like "the" and "an" are removed
+- A search for "possums" also returns "possum"
+- Searches match whole words only ("lun" won't match "lunar")
+
+### Exact (unstemmed) search
+
+Use `search.exact` to search without stemming. This works as a top-level parameter or as a filter suffix:
+
+```bash
+# Top-level unstemmed search
+https://api.openalex.org/works?search.exact=surgery
+
+# As a filter on specific fields
+https://api.openalex.org/works?filter=display_name.search.exact:surgery
+https://api.openalex.org/works?filter=title.search.exact:surgery
+https://api.openalex.org/works?filter=abstract.search.exact:surgery
+```
+
+<Note>
+Only one search parameter is allowed per request: `search`, `search.exact`, or `search.semantic`.
+</Note>
+
+## Boolean search
+
+Use `AND`, `OR`, `NOT` (uppercase) for complex queries. Surround phrases with double quotes for exact matching:
+
+```bash
+# Works about "elmo" AND "sesame street" but NOT "cookie" or "monster"
+https://api.openalex.org/works?search=(elmo AND "sesame street") NOT (cookie OR monster)
+```
+
+<Note>
+Words not separated by boolean operators are treated as `AND`.
+</Note>
+
+## Phrase and proximity search
+
+### Phrase matching
+
+Use double quotes to search for an exact phrase. Multi-word searches without quotes rank results higher when words appear close together.
+
+<CodeGroup>
+```bash Exact phrase (few results)
+https://api.openalex.org/works?search="fierce creatures"
+```
+
+```bash Words anywhere (more results)
+https://api.openalex.org/works?search=fierce creatures
+```
+</CodeGroup>
+
+### Proximity search
+
+Append `~N` to a quoted phrase to find the words within N positions of each other, without requiring an exact match:
+
+```bash
+# "climate" and "change" within 5 words of each other
+https://api.openalex.org/works?search="climate change"~5
+
+# Also works as a filter
+https://api.openalex.org/works?filter=title.search:"climate change"~5
+```
+
+## Wildcards and fuzzy search
+
+### Wildcards
+
+Use `*` to match zero or more characters and `?` to match exactly one character:
+
+- **Trailing wildcard:** `machin*` matches "machine", "machines", "machinery"
+- **Single-character wildcard:** `wom?n` matches "woman" and "women"
+
+The search term must have at least 3 characters before the wildcard. Leading wildcards (e.g., `*ology`) are not supported.
+
+<CodeGroup>
+```bash Top-level search
+https://api.openalex.org/works?search=machin*
+```
+
+```bash Filter search
+https://api.openalex.org/works?filter=display_name.search:machin*
+```
+</CodeGroup>
+
+### Fuzzy search
+
+Append `~N` to a term to allow up to N character edits (insertions, deletions, or substitutions). The edit distance N can be 0, 1, or 2:
+
+```bash
+# Matches "machine", "machin", and other close variants
+https://api.openalex.org/works?search=machin~1
+```
+
+The search term must have at least 3 characters before the `~`. This is useful for catching typos and spelling variations.
+
+## Relevance score
+
+Search results include a `relevance_score` property and are sorted by it (descending) by default. The score is based on:
+
+- Text similarity to your search term
+- Citation count (more cited = higher score)
 
 ## Keyword vs. semantic search
 
