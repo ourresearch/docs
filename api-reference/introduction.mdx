@@ -1,5 +1,5 @@
 ---
-title: API Overview
+title: Overview
 description: OpenAlex REST API fundamentals
 ---
 
@@ -74,7 +74,7 @@ All list endpoints return the same structure:
 |-------|-------------|
 | `meta.count` | Total results matching your query |
 | `meta.page` | Current page number |
-| `meta.per_page` | Results per page (default 25, max 200) |
+| `meta.per_page` | Results per page (default 25, max 100) |
 | `results` | Array of entity objects |
 | `group_by` | Aggregation results (when using `group_by`) |
 
@@ -94,7 +94,7 @@ curl "https://api.openalex.org/works?filter=publication_year:2024,is_oa:true,cit
 | `filter` | Filter by field values |
 | `search` | Full-text search |
 | `sort` | Sort results |
-| `per_page` | Results per page (1-200) |
+| `per_page` | Results per page (1-100) |
 | `page` | Page number |
 | `cursor` | Deep pagination cursor |
 | `sample` | Random sample size |

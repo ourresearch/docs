@@ -113,7 +113,7 @@ curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
 If you exceed your daily credits or make more than 100 requests per second, you'll get `429 Too Many Requests` errors.
 
 **Best practices:**
-- Use `per_page=200` to reduce the number of requests needed
+- Use `per_page=100` to reduce the number of requests needed
 - Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 100 values per filter)
 - Use `select=` to [limit returned fields](/guides/selecting-fields) for faster responses
 - Implement [exponential backoff](/api-reference/errors#retry-logic) when you hit rate limits
@@ -125,7 +125,7 @@ Beyond rate limits, individual queries have these constraints:
 | Limit | Value |
 |-------|-------|
 | OR values per filter | 100 |
-| `per_page` maximum | 200 |
+| `per_page` maximum | 100 |
 | `sample` maximum | 10,000 |
 | Basic paging limit | 10,000 results |
 
@@ -143,7 +143,7 @@ The API uses simple GET requests, so you can test any request in your browser. I
 
 ```python
 # Use maximum page size
-requests.get("https://api.openalex.org/works?per_page=200&api_key=YOUR_KEY")
+requests.get("https://api.openalex.org/works?per_page=100&api_key=YOUR_KEY")
 
 # Batch DOI lookups (up to 100 at once)
 dois = "10.1234/a|10.1234/b|10.1234/c"
