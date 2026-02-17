@@ -1,58 +1,9 @@
 ---
-title: Sorting and paging
-description: Order results and navigate through large result sets
+title: Page through Results
+description: Navigate through large result sets
 ---
 
-## Sorting
-
-Use the `sort` parameter to order results by a property:
-
-```bash
-# Works sorted by citation count (highest first)
-https://api.openalex.org/works?sort=cited_by_count:desc
-
-# Sources in alphabetical order
-https://api.openalex.org/sources?sort=display_name
-```
-
-### Common sortable fields
-
-| Field | Description |
-|-------|-------------|
-| `display_name` | Alphabetical order |
-| `cited_by_count` | Number of citations |
-| `works_count` | Number of works |
-| `publication_date` | Publication date (works only) |
-| `relevance_score` | Search relevance (requires search filter) |
-
-### Sort direction
-
-By default, sort is ascending. Append `:desc` for descending:
-
-```bash
-# Ascending (default)
-https://api.openalex.org/works?sort=publication_date
-
-# Descending
-https://api.openalex.org/works?sort=publication_date:desc
-```
-
-### Multiple sort keys
-
-Sort by multiple properties using commas:
-
-```bash
-# Sort by year descending, then by relevance score
-https://api.openalex.org/works?filter=display_name.search:bioplastics&sort=publication_year:desc,relevance_score:desc
-```
-
-<Note>
-Sorting by `relevance_score` requires an active search filter. An error is thrown otherwise.
-</Note>
-
-## Paging
-
-### Basic paging
+## Basic paging
 
 Use `page` and `per_page` to navigate results:
 
@@ -70,7 +21,7 @@ https://api.openalex.org/works?page=2&per_page=100
 **Basic paging limit:** You can only access the first 10,000 results (page * per_page <= 10,000). Use cursor paging for more.
 </Warning>
 
-### Cursor paging
+## Cursor paging
 
 Cursor paging lets you access any number of results:
 
@@ -110,6 +61,6 @@ Repeat until `next_cursor` is `null` and `results` is empty.
 Instead, use the [OpenAlex snapshot](/download/overview) for bulk downloads. It's free, fast, and gives you the same data format.
 </Warning>
 
-## Example: Jupyter notebook
+## Jupyter notebook
 
 See [this community notebook](https://github.com/ourresearch/openalex-api-tutorials/blob/main/notebooks/getting-started/paging.ipynb) for executable paging examples.

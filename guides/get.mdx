@@ -1,0 +1,94 @@
+---
+title: Get
+description: Retrieve a single entity by ID
+---
+
+Use `GET /{entity_type}/{id}` to retrieve a single entity. The response is the full entity object.
+
+```bash
+curl "https://api.openalex.org/works/W2741809807"
+```
+
+**Cost:** 0 credits (free)
+
+## OpenAlex IDs
+
+Every entity has a unique OpenAlex ID with a letter prefix indicating the type:
+
+| Prefix | Entity |
+|--------|--------|
+| W | Work |
+| A | Author |
+| S | Source |
+| I | Institution |
+| T | Topic |
+| K | Keyword |
+| P | Publisher |
+| F | Funder |
+
+You can use the full URL or just the key:
+
+```bash
+# Full URL
+curl "https://api.openalex.org/works/https://openalex.org/W2741809807"
+
+# Key only (recommended)
+curl "https://api.openalex.org/works/W2741809807"
+```
+
+IDs are case-insensitive: `W2741809807` and `w2741809807` are equivalent.
+
+## External ID lookups
+
+You can look up entities using external identifiers. Pass the full external ID URL or use shorthand notation.
+
+```bash
+# DOI
+curl "https://api.openalex.org/works/https://doi.org/10.7717/peerj.4375"
+
+# ORCID
+curl "https://api.openalex.org/authors/https://orcid.org/0000-0001-6187-6610"
+
+# ROR
+curl "https://api.openalex.org/institutions/https://ror.org/02y3ad647"
+
+# ISSN
+curl "https://api.openalex.org/sources/issn:0028-0836"
+
+# PMID
+curl "https://api.openalex.org/works/pmid:29456894"
+```
+
+### Short-form IDs
+
+For convenience, you can use prefix notation instead of full URLs:
+
+```bash
+curl "https://api.openalex.org/works/doi:10.7717/peerj.4375"
+curl "https://api.openalex.org/works/pmid:29456894"
+```
+
+### Canonical external IDs
+
+Each entity type has a primary external identifier:
+
+| Entity | Canonical ID |
+|--------|--------------|
+| Works | DOI |
+| Authors | ORCID |
+| Sources | ISSN-L |
+| Institutions | ROR |
+| Topics | Wikidata ID |
+| Publishers | Wikidata ID |
+
+## Merged entities
+
+When duplicate entities are merged, requesting the old ID returns a `301` redirect to the new one:
+
+```bash
+$ curl -i https://api.openalex.org/authors/A5092938886
+HTTP/1.1 301 MOVED PERMANENTLY
+Location: https://api.openalex.org/authors/A5006060960
+```
+
+Most HTTP clients follow redirects automatically, so you will receive the merged entity's data without extra handling.

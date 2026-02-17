@@ -37,7 +37,7 @@ api_key=YOUR_KEY - Required for rate limits
 filter= - Filter results (field:value)
 search= - Full-text search
 sort= - Sort field (e.g., cited_by_count:desc)
-per_page= - Results per page (max 200)
+per_page= - Results per page (max 100)
 page= - Page number
 cursor= - Deep pagination (use cursor=* to start)
 sample= - Random sample (max 10000)
@@ -48,7 +48,7 @@ group_by= - Aggregate by field
 
 Single: ?filter=publication_year:2024
 AND: ?filter=publication_year:2024,is_oa:true
-OR: ?filter=type:article|book|dataset (max 50 values)
+OR: ?filter=type:article|book|dataset (max 100 values)
 NOT: ?filter=type:!paratext
 Range: ?filter=publication_year:2020-2024
 Comparison: ?filter=cited_by_count:>100
@@ -71,7 +71,7 @@ has_fulltext - Has searchable text
 /works?filter=publication_year:2024,type:article,cited_by_count:>50&sort=cited_by_count:desc&per_page=100
 
 # Get open access works from an institution
-/works?filter=authorships.institutions.id:I27837315,is_oa:true&per_page=200
+/works?filter=authorships.institutions.id:I27837315,is_oa:true&per_page=100
 
 # Bulk DOI lookup (up to 50)
 /works?filter=doi:10.1234/a|10.1234/b|10.1234/c&per_page=50
@@ -93,7 +93,7 @@ Semantic search (?search.semantic=): 100
 ## Limits
 
 OR values per filter: 100
-per_page max: 200
+per_page max: 100
 sample max: 10,000
 Basic paging: 10,000 results (use cursor for more)
 

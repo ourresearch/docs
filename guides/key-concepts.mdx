@@ -15,16 +15,29 @@ Counts are approximate and change as new data is added. Use `/works?per_page=1` 
 
 | Entity | Description | Approx. Count |
 |--------|-------------|-------|
-| [Works](/guides/works) | Scholarly documents (articles, books, datasets, theses) | hundreds of millions |
-| [Authors](/guides/authors) | Researchers who create works | tens of millions |
-| [Sources](/guides/sources) | Where works are hosted (journals, repositories, conferences) | 250K+ |
-| [Institutions](/guides/institutions) | Organizations where authors are affiliated | 110K+ |
-| [Topics](/guides/topics-and-keywords) | Subject classifications (3-level hierarchy) | 4.5K |
-| [Publishers](/guides/publishers) | Organizations that distribute works | 10K+ |
-| [Funders](/guides/funders-and-awards) | Organizations that fund research | 35K+ |
-| [Geo](/guides/geo) | Geographic information (countries, continents) | — |
+| [Works](/api-reference/works) | Scholarly documents (articles, books, datasets, theses) | hundreds of millions |
+| [Authors](/api-reference/authors) | Researchers who create works | tens of millions |
+| [Sources](/api-reference/sources) | Where works are hosted (journals, repositories, conferences) | 250K+ |
+| [Institutions](/api-reference/institutions) | Organizations where authors are affiliated | 110K+ |
+| [Topics](/api-reference/topics) | Subject classifications (4-level hierarchy) | 4.5K |
+| [Publishers](/api-reference/publishers) | Organizations that distribute works | 10K+ |
+| [Funders](/api-reference/funders) | Organizations that fund research | 35K+ |
+| [Countries](/api-reference/countries) | Geographic information (countries, continents) | — |
 
 Each entity type has its own API endpoint (e.g., `/works`, `/authors`).
+
+### Topic Hierarchy
+
+Topics are organized in a four-level hierarchy:
+
+| Level | Name | Count | Example |
+|-------|------|-------|---------|
+| 1 | [Domain](/api-reference/domains) | 4 | Physical Sciences |
+| 2 | [Field](/api-reference/fields) | 26 | Computer Science |
+| 3 | [Subfield](/api-reference/subfields) | 254 | Artificial Intelligence |
+| 4 | [Topic](/api-reference/topics) | ~4,500 | Natural Language Processing |
+
+Every work is assigned a `primary_topic` which includes the full hierarchy path. You can filter by any level: `filter=primary_topic.domain.id:1`, `filter=primary_topic.field.id:17`, etc.
 
 ## OpenAlex IDs
 

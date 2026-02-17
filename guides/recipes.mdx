@@ -155,3 +155,112 @@ def get_works(filter_str, per_page=100):
 # Get all 2024 works about AI
 works = get_works("publication_year:2024,default.search:artificial intelligence")
 ```
+
+## Find funded works
+
+Discover research funded by a specific organization or grant.
+
+```bash
+# Step 1: Find a funder by name
+https://api.openalex.org/funders?search=national+institutes+of+health
+
+# Step 2: Filter works funded by that funder (NIH = F4320306076)
+https://api.openalex.org/works?filter=grants.funder:F4320306076&sort=-publication_date
+
+# Step 3: Narrow to works acknowledging a specific grant number
+https://api.openalex.org/works?filter=grants.funder:F4320306076,grants.award_id:R01-GM123456
+
+# Step 4: Combine with other filters — e.g., funded OA works from 2024
+https://api.openalex.org/works?filter=grants.funder:F4320306076,publication_year:2024,open_access.is_oa:true&sort=-cited_by_count
+```
+
+## Explore publisher hierarchy
+
+Navigate the parent-subsidiary structure of publishers.
+
+```bash
+# Step 1: Search for a publisher by name
+https://api.openalex.org/publishers?search=elsevier
+
+# Step 2: Get the publisher and check hierarchy_level and lineage
+# (hierarchy_level 0 = top-level parent, 1+ = subsidiary)
+https://api.openalex.org/publishers/P4310319965
+
+# Step 3: List all subsidiaries of a parent publisher
+https://api.openalex.org/publishers?filter=parent_publisher:P4310319965&sort=-works_count
+
+# Step 4: Get only top-level publishers, sorted by output
+https://api.openalex.org/publishers?filter=hierarchy_level:0&sort=-works_count&per_page=20
+```
+
+## Explore citation links
+
+Trace the citation network around a single work using its `referenced_works`, `cited_by_api_url`, and `related_works` fields.
+
+```bash
+# Step 1: Get a work and inspect its citation fields
+https://api.openalex.org/works/W2741809807
+# Response includes:
+#   "referenced_works": ["https://openalex.org/W...", ...]   ← outgoing citations
+#   "cited_by_api_url": "https://api.openalex.org/works?filter=cites:W2741809807"
+#   "related_works": ["https://openalex.org/W...", ...]      ← semantically similar
+
+# Step 2: Follow outgoing citations (referenced_works)
+# Batch-fetch the works this paper cites using the OR operator
+https://api.openalex.org/works?filter=openalex:W2100837269|W2134720587&per_page=100
+
+# Step 3: Follow incoming citations (cited_by_api_url)
+# Use the cites filter to find all works that cite this one
+https://api.openalex.org/works?filter=cites:W2741809807&sort=-publication_date
+
+# Step 4: Explore related works
+# Fetch semantically similar works returned in the related_works field
+https://api.openalex.org/works?filter=openalex:W2052533833|W1982351946&per_page=100
+```
+
+## Build a text corpus
+
+Assemble a collection of full-text PDFs for analysis or AI synthesis.
+
+<Warning>
+Content downloads require an API key and cost **100 credits per file**. See [authentication](/guides/authentication) for details.
+</Warning>
+
+```bash
+# Step 1: Find works with downloadable PDFs using the has_content filter
+https://api.openalex.org/works?filter=default.search:CRISPR,has_content.pdf:true,publication_year:2023-2024
+
+# Step 2: Download a single PDF
+curl -L "https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY" -o W2741809807.pdf
+
+# Step 3: For bulk downloads, use the CLI tool
+pip install openalex-content-downloader
+
+openalex-content download \
+  --api-key YOUR_KEY \
+  --output ./pdfs \
+  --filter "default.search:CRISPR,has_content.pdf:true,publication_year:2023-2024"
+```
+
+Download programmatically in Python:
+
+```python
+import requests
+
+# List of work IDs from Step 1
+work_ids = ["W4388482763", "W4386073691", ...]
+
+for work_id in work_ids:
+    r = requests.get(
+        f"https://content.openalex.org/works/{work_id}.pdf",
+        params={"api_key": "YOUR_KEY"},
+        allow_redirects=True
+    )
+
+    with open(f"{work_id}.pdf", "wb") as f:
+        f.write(r.content)
+```
+
+<Info>
+**Downloading more than a few thousand files?** Use the [CLI tool](/download/full-text-pdfs#option-2-command-line-tool-up-to-a-few-million-files) for parallel downloads and automatic retries.
+</Info>

@@ -41,17 +41,16 @@
           {
             "group": "Working with the API",
             "pages": [
+              "guides/get",
               "guides/filtering",
               "guides/searching",
-              "guides/sorting-and-paging",
+              "guides/sort",
+              "guides/page-through-results",
               "guides/grouping",
               "guides/selecting-fields",
-              "guides/sampling",
               "guides/autocomplete",
-              "guides/content-downloads",
               "guides/aboutness",
-              "guides/resolve-ids",
-              "guides/similar-works"
+              "guides/resolve-ids"
             ]
           },
           {
@@ -62,28 +61,9 @@
             ]
           },
           {
-            "group": "Tutorials",
+            "group": "Recipes",
             "pages": [
               "guides/recipes"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Entity Reference",
-        "groups": [
-          {
-            "group": "Entities",
-            "pages": [
-              "guides/works",
-              "guides/authors",
-              "guides/sources",
-              "guides/institutions",
-              "guides/topics-and-keywords",
-              "guides/publishers",
-              "guides/funders-and-awards",
-              "guides/geo",
-              "guides/concepts-deprecated"
             ]
           }
         ]
@@ -289,26 +269,8 @@
               "download/snapshot-format",
               "download/download-to-machine",
               "download/openalex-cli",
-              "download/full-text-pdfs"
-            ]
-          },
-          {
-            "group": "Load into a Database",
-            "pages": [
-              "download/data-warehouse",
-              "download/relational-database",
-              "download/schema-diagram"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Changelog",
-        "groups": [
-          {
-            "group": "Changelog",
-            "pages": [
-              "changelog/overview"
+              "download/full-text-pdfs",
+              "download/changefiles"
             ]
           }
         ]

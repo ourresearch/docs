@@ -12,13 +12,44 @@ OpenAlex has cached full-text content for about 60 million works:
 
 TEI XML files are machine-readable structured text parsed by [Grobid](https://github.com/kermitt2/grobid).
 
-For downloading individual files via the API, see [Content downloads](/guides/content-downloads).
-
 ## Download options
 
 ### Option 1: API (up to ~10K files)
 
-Use the [content API](/guides/content-downloads) to download files one at a time. Each download costs **100 credits**.
+Download files one at a time from the content API. Each download costs **100 credits**.
+
+```
+https://content.openalex.org/works/{work_id}.pdf?api_key=YOUR_KEY
+```
+
+| Extension | Format |
+|-----------|--------|
+| `.pdf` | PDF (default) |
+| `.grobid-xml` | TEI XML |
+
+<CodeGroup>
+```bash PDF
+curl "https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY"
+```
+
+```bash TEI XML
+curl "https://content.openalex.org/works/W2741809807.grobid-xml?api_key=YOUR_KEY"
+```
+</CodeGroup>
+
+**Finding downloadable works:**
+
+Use the `has_content` filter to find works with available content:
+
+```bash
+# Works with PDFs from 2024
+https://api.openalex.org/works?filter=has_content.pdf:true,publication_year:2024
+
+# CC-BY works with PDFs
+https://api.openalex.org/works?filter=has_content.pdf:true,best_oa_location.license:cc-by
+```
+
+You can also check the `content_url` field on any work object to see if content is available.
 
 With a free API key (100K credits/day), you can download about 1,000 files per day. Good for research projects, building small corpora, or sampling.
 
