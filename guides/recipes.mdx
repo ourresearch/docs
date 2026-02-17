@@ -165,13 +165,13 @@ Discover research funded by a specific organization or grant.
 https://api.openalex.org/funders?search=national+institutes+of+health
 
 # Step 2: Filter works funded by that funder (NIH = F4320306076)
-https://api.openalex.org/works?filter=grants.funder:F4320306076&sort=-publication_date
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076&sort=-publication_date
 
 # Step 3: Narrow to works acknowledging a specific grant number
-https://api.openalex.org/works?filter=grants.funder:F4320306076,grants.award_id:R01-GM123456
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,awards.funder_award_id:R01-GM123456
 
 # Step 4: Combine with other filters — e.g., funded OA works from 2024
-https://api.openalex.org/works?filter=grants.funder:F4320306076,publication_year:2024,open_access.is_oa:true&sort=-cited_by_count
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,publication_year:2024,open_access.is_oa:true&sort=-cited_by_count
 ```
 
 ## Explore publisher hierarchy
