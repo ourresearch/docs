@@ -26,7 +26,7 @@ Counts are approximate and change as new data is added. Use `/works?per_page=1` 
 
 Each entity type has its own API endpoint (e.g., `/works`, `/authors`).
 
-### Topic Hierarchy
+## Topic Hierarchy
 
 Topics are organized in a four-level hierarchy:
 
@@ -81,6 +81,198 @@ curl "https://api.openalex.org/works/https://openalex.org/W2741809807"
 
 # Just the key (recommended)
 curl "https://api.openalex.org/works/W2741809807"
+```
+
+### Resolve IDs
+
+<Warning>
+**Don't filter by names directly.** Entity names are ambiguous—"MIT" could match multiple institutions, "Smith" matches thousands of authors. Always resolve names to IDs first.
+</Warning>
+
+When you want to find works by a specific author, institution, journal, or topic, use the **two-step pattern**:
+
+1. **Search** for the entity to get its OpenAlex ID
+2. **Filter** works using that ID
+
+This avoids hallucinated filters and ensures you get the right entity.
+
+#### The Two-Step Pattern
+
+**Step 1: Search for the Entity**
+
+Use the search endpoint for the entity type:
+
+```bash
+# Find an author
+curl "https://api.openalex.org/authors?search=Albert+Einstein"
+
+# Find an institution
+curl "https://api.openalex.org/institutions?search=MIT"
+
+# Find a journal
+curl "https://api.openalex.org/sources?search=Nature"
+
+# Find a topic
+curl "https://api.openalex.org/topics?search=machine+learning"
+```
+
+The response includes IDs you can use:
+
+```json
+{
+  "results": [
+    {
+      "id": "https://openalex.org/A5012345678",
+      "display_name": "Albert Einstein",
+      "works_count": 272
+    }
+  ]
+}
+```
+
+**Step 2: Filter Works by ID**
+
+Use the ID to filter works:
+
+```bash
+# Works by this author
+curl "https://api.openalex.org/works?filter=authorships.author.id:A5012345678"
+
+# Works from this institution
+curl "https://api.openalex.org/works?filter=authorships.institutions.id:I136199984"
+
+# Works in this journal
+curl "https://api.openalex.org/works?filter=primary_location.source.id:S137773608"
+
+# Works on this topic
+curl "https://api.openalex.org/works?filter=topics.id:T12345"
+```
+
+#### Common Lookups
+
+**Find Works by Author Name**
+
+```bash
+# Step 1: Search for the author
+curl "https://api.openalex.org/authors?search=Heather+Piwowar"
+# Response: id = "https://openalex.org/A5023888391"
+
+# Step 2: Get their works
+curl "https://api.openalex.org/works?filter=authorships.author.id:A5023888391"
+```
+
+**Find Works by Institution Name**
+
+```bash
+# Step 1: Search for the institution
+curl "https://api.openalex.org/institutions?search=Stanford+University"
+# Response: id = "https://openalex.org/I97018004"
+
+# Step 2: Get works from that institution
+curl "https://api.openalex.org/works?filter=authorships.institutions.id:I97018004"
+```
+
+**Find Works by Journal Name**
+
+```bash
+# Step 1: Search for the journal (source)
+curl "https://api.openalex.org/sources?search=Nature"
+# Response: id = "https://openalex.org/S137773608"
+
+# Step 2: Get works published there
+curl "https://api.openalex.org/works?filter=primary_location.source.id:S137773608"
+```
+
+**Find Works by Topic**
+
+```bash
+# Step 1: Search for the topic
+curl "https://api.openalex.org/topics?search=CRISPR"
+# Response: id = "https://openalex.org/T10234"
+
+# Step 2: Get works on that topic
+curl "https://api.openalex.org/works?filter=topics.id:T10234"
+```
+
+#### When You Have External IDs
+
+If you already have an external identifier (DOI, ORCID, ROR, ISSN), you can skip the search step and use the ID directly:
+
+```bash
+# By ORCID (author)
+curl "https://api.openalex.org/works?filter=authorships.author.id:https://orcid.org/0000-0003-1613-5981"
+
+# By ROR (institution)
+curl "https://api.openalex.org/works?filter=authorships.institutions.id:https://ror.org/042nb2s44"
+
+# By ISSN (source/journal)
+curl "https://api.openalex.org/sources/issn:0028-0836"
+# Then use the returned OpenAlex ID
+```
+
+#### Decision Guide
+
+| Input Type | What to Do |
+|------------|------------|
+| Name (ambiguous) | Search first, then filter by ID |
+| ORCID | Use directly: `authorships.author.id:https://orcid.org/...` |
+| ROR | Use directly: `authorships.institutions.id:https://ror.org/...` |
+| DOI | Get work directly: `/works/https://doi.org/...` |
+| ISSN | Get source by ISSN, then filter by source ID |
+| OpenAlex ID | Use directly: `authorships.author.id:A123456` |
+
+#### Handling Ambiguous Results
+
+When searching returns multiple matches, you need to pick the right one:
+
+**Use Additional Filters**
+
+Narrow down the search:
+
+```bash
+# Author named "Smith" affiliated with MIT
+curl "https://api.openalex.org/authors?search=Smith&filter=last_known_institution.id:I63966007"
+```
+
+**Check Display Name and Metadata**
+
+Look at `display_name`, `works_count`, `cited_by_count`, and institutional affiliations to identify the right entity.
+
+**Use Autocomplete for Interactive UIs**
+
+The autocomplete endpoint is fast and returns ranked results:
+
+```bash
+curl "https://api.openalex.org/autocomplete/authors?q=einst"
+```
+
+#### Filter Field Reference
+
+| To find works by... | Filter field |
+|--------------------|--------------|
+| Author | `authorships.author.id` |
+| Author's institution | `authorships.institutions.id` |
+| Primary source (journal) | `primary_location.source.id` |
+| Any source | `locations.source.id` |
+| Topic | `topics.id` or `primary_topic.id` |
+| Publisher | `primary_location.source.host_organization` |
+| Funder | `funders.id` |
+
+#### Example: Complete Workflow
+
+Find highly-cited papers about machine learning from MIT in the last 3 years:
+
+```bash
+# 1. Get MIT's ID
+curl "https://api.openalex.org/institutions?search=MIT"
+# Result: I63966007
+
+# 2. Get machine learning topic ID
+curl "https://api.openalex.org/topics?search=machine+learning"
+# Result: T154945302
+
+# 3. Filter works with all criteria
+curl "https://api.openalex.org/works?filter=authorships.institutions.id:I63966007,topics.id:T154945302,publication_year:>2022&sort=cited_by_count:desc"
 ```
 
 ### External IDs
@@ -202,6 +394,6 @@ OpenAlex uses **snake_case** for all query parameters: `filter`, `sort`, `group_
 
 ## What's Next?
 
-- [Resolve IDs](/guides/resolve-ids) — How to look up entity IDs by name
 - [Filtering](/guides/filtering) — Filter results by any field
+- [Searching](/guides/searching) — Full-text and semantic search
 - [Authentication](/guides/authentication) — API keys and rate limits

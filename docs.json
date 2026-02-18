@@ -49,8 +49,7 @@
               "guides/grouping",
               "guides/selecting-fields",
               "guides/autocomplete",
-              "guides/aboutness",
-              "guides/resolve-ids"
+              "guides/aboutness"
             ]
           },
           {
@@ -75,6 +74,7 @@
             "group": "Overview",
             "pages": [
               "api-reference/introduction",
+              "api-reference/authentication",
               "api-reference/errors"
             ]
           },
@@ -281,19 +281,6 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Help",
-        "href": "https://openalex.org/help"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Get API Key",
-      "href": "https://openalex.org/settings/api"
-    }
-  },
   "contextual": {
     "options": [
       "copy",
@@ -362,7 +349,8 @@
     { "source": "/download-all-data/upload-to-your-database/:path*", "destination": "/download/overview" },
 
     { "source": "/additional-help/:path*", "destination": "/" },
-    { "source": "/known-issues", "destination": "/guides/deprecations" }
+    { "source": "/known-issues", "destination": "/guides/deprecations" },
+    { "source": "/guides/resolve-ids", "destination": "/guides/key-concepts#resolve-ids" }
   ],
   "footer": {
     "socials": {

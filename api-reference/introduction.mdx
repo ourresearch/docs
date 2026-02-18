@@ -1,9 +1,13 @@
 ---
-title: Overview
+title: API Overview
 description: OpenAlex REST API fundamentals
 ---
 
 The OpenAlex API provides access to a comprehensive catalog of scholarly works, authors, sources, institutions, topics, and more.
+
+<Note>
+**New to OpenAlex?** Start with the [Guides](/index) for tutorials and walkthroughs. This API Reference is for detailed endpoint documentation.
+</Note>
 
 ## Base URL
 
@@ -25,18 +29,31 @@ API keys are free. [Get yours here](https://openalex.org/settings/api). See [Aut
 
 ## Entities
 
-The API is organized around eight entity types:
+The API is organized around these entity types:
 
-| Entity | Endpoint | Description | Count |
-|--------|----------|-------------|-------|
-| Works | `/works` | Scholarly documents (articles, books, datasets) | hundreds of millions |
-| Authors | `/authors` | Researchers with disambiguated identities | tens of millions |
-| Sources | `/sources` | Journals, repositories, conferences | 250K+ |
-| Institutions | `/institutions` | Universities, research organizations | 110K+ |
-| Topics | `/topics` | Research area classifications | 4,500 |
-| Keywords | `/keywords` | Short phrases from works | 26K+ |
-| Publishers | `/publishers` | Publishing organizations | 10K+ |
-| Funders | `/funders` | Funding agencies | 35K+ |
+| Entity | Endpoint | Description |
+|--------|----------|-------------|
+| [Works](/api-reference/works) | `/works` | Scholarly documents (articles, books, datasets) |
+| [Authors](/api-reference/authors) | `/authors` | Researchers with disambiguated identities |
+| [Sources](/api-reference/sources) | `/sources` | Journals, repositories, conferences |
+| [Institutions](/api-reference/institutions) | `/institutions` | Universities, research organizations |
+| [Topics](/api-reference/topics) | `/topics` | Research area classifications |
+| [Keywords](/api-reference/keywords) | `/keywords` | Short phrases from works |
+| [Publishers](/api-reference/publishers) | `/publishers` | Publishing organizations |
+| [Funders](/api-reference/funders) | `/funders` | Funding agencies |
+| [Awards](/api-reference/awards) | `/awards` | Research grants |
+| [Domains](/api-reference/domains) | `/domains` | Top-level topic hierarchy |
+| [Fields](/api-reference/fields) | `/fields` | Second-level topic hierarchy |
+| [Subfields](/api-reference/subfields) | `/subfields` | Third-level topic hierarchy |
+| [SDGs](/api-reference/sdgs) | `/sdgs` | UN Sustainable Development Goals |
+| [Countries](/api-reference/countries) | `/countries` | Geographic entities |
+| [Continents](/api-reference/continents) | `/continents` | Geographic entities |
+| [Languages](/api-reference/languages) | `/languages` | Language classifications |
+| [Work Types](/api-reference/work-types) | `/work-types` | Enumeration of work types |
+| [Source Types](/api-reference/source-types) | `/source-types` | Enumeration of source types |
+| [Institution Types](/api-reference/institution-types) | `/institution-types` | Enumeration of institution types |
+| [Licenses](/api-reference/licenses) | `/licenses` | Enumeration of licenses |
+| [Concepts](/api-reference/concepts) | `/concepts` | Legacy taxonomy (deprecated) |
 
 ## Operations
 
@@ -45,10 +62,10 @@ Each entity supports these operations:
 | Operation | Pattern | Example |
 |-----------|---------|---------|
 | List | `GET /{entities}` | `GET /works` |
-| Get | `GET /{entities}/{id}` | `GET /works/W2741809807` |
-| Filter | `GET /{entities}?filter=` | `GET /works?filter=publication_year:2024` |
-| Search | `GET /{entities}?search=` | `GET /works?search=machine+learning` |
-| Aggregate | `GET /{entities}?group_by=` | `GET /works?group_by=type` |
+| [Get](/guides/get) | `GET /{entities}/{id}` | `GET /works/W2741809807` |
+| [Filter](/guides/filtering) | `GET /{entities}?filter=` | `GET /works?filter=publication_year:2024` |
+| [Search](/guides/searching) | `GET /{entities}?search=` | `GET /works?search=machine+learning` |
+| [Aggregate](/guides/grouping) | `GET /{entities}?group_by=` | `GET /works?group_by=type` |
 
 ## Response Format
 

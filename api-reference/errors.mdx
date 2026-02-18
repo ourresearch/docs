@@ -46,7 +46,7 @@ Error responses include a message explaining what went wrong:
 "Unknown filter field: author_name"
 ```
 
-**Fix:** Use the correct filter field. For authors, use `authorships.author.id` with an ID, not a name. See [Resolve IDs](/guides/resolve-ids).
+**Fix:** Use the correct filter field. For authors, use `authorships.author.id` with an ID, not a name. See [Resolve IDs](/guides/key-concepts#resolve-ids).
 
 ### Rate Limit Exceeded
 
@@ -115,8 +115,8 @@ def fetch_with_retry(url, max_retries=5):
 Every response includes headers showing your current status:
 
 ```
-X-RateLimit-Limit: 100000
-X-RateLimit-Remaining: 98766
+X-RateLimit-Limit: 10000
+X-RateLimit-Remaining: 8766
 X-RateLimit-Credits-Used: 1
 X-RateLimit-Reset: 43200
 ```

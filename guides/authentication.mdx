@@ -23,128 +23,15 @@ curl "https://api.openalex.org/works?api_key=YOUR_KEY"
 
 Without an API key, you're limited to 100 credits per day—enough for quick tests, but not for real work.
 
-## Rate Limits
+## What you can do for free every day
 
-| Plan | Daily Credits | Requests/Second |
-|------|---------------|-----------------|
-| No API key | 100 | 100 |
-| Free API key | 100,000 | 100 |
-| [Paid plan](https://openalex.org/pricing) | Higher limits | 100 |
-
-Academic researchers can often get increased limits for free—contact [support@openalex.org](mailto:support@openalex.org).
-
-## Credit Costs by Endpoint
-
-| Endpoint Type | Example | Credits |
-|---------------|---------|---------|
-| Singleton | `/works/W123` | 0 (free) |
-| List | `/works?filter=...` | 1 |
-| Search | `/works?search=...` | 10 |
-| Content download | `content.openalex.org/works/{id}.pdf` | 100 |
-| Semantic search | `/works?search.semantic=...` | 100 |
-| Text/Aboutness | `/text` (deprecated) | 1,000 |
-
-### What you can do with 100,000 credits
-
-With a free API key, you can make per day:
+With a free API key (10,000 credits/day), you can make per day:
 - **Unlimited** singleton requests (they're free)
-- **100,000** list requests, or
-- **10,000** search requests, or
-- **1,000** content downloads or semantic searches, or
-- Any combination that adds up to 100,000 credits
+- **10,000** list/filter requests, or
+- **1,000** search requests, or
+- **100** content downloads, or
+- Any combination that adds up to 10,000 credits
 
-### High-cost endpoints
+All plans can purchase additional credits at **$1 per 10,000 credits**.
 
-Some endpoints consume significantly more credits:
-
-| Endpoint | Credits | Daily limit (free) | Notes |
-|----------|---------|-------------------|-------|
-| [Search](/guides/searching) | 10 | ~10,000 requests | `?search=` or `.search` filters |
-| [Content downloads](/download/full-text-pdfs) | 100 | ~1,000 files | PDF or TEI XML |
-| Aboutness (`/text`) | 1,000 | ~100 requests | Deprecated |
-
-<Warning>
-**Planning bulk content downloads?** Downloading all 60M available PDFs would require 6 billion credits. [Contact us](mailto:steve@ourresearch.org) about enterprise credit packs for large-scale projects.
-</Warning>
-
-## Rate Limit Headers
-
-Every API response includes headers showing your current status:
-
-| Header | Description |
-|--------|-------------|
-| `X-RateLimit-Limit` | Your total daily credit limit |
-| `X-RateLimit-Remaining` | Credits remaining for today |
-| `X-RateLimit-Credits-Used` | Credits consumed by this request |
-| `X-RateLimit-Reset` | Seconds until your credits reset (midnight UTC) |
-
-## Check Your Status
-
-Check your current rate limit status using the `/rate-limit` endpoint:
-
-```bash
-curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
-```
-
-```json
-{
-  "api_key": "abc...xyz",
-  "rate_limit": {
-    "credits_limit": 100000,
-    "credits_used": 1234,
-    "credits_remaining": 98766,
-    "resets_at": "2026-01-02T00:00:00.000Z",
-    "resets_in_seconds": 43200,
-    "credit_costs": {
-      "singleton": 0,
-      "list": 1,
-      "search": 10,
-      "content": 100,
-      "vector": 100,
-      "text": 1000
-    }
-  }
-}
-```
-
-## Exceeding Limits
-
-If you exceed your daily credits or make more than 100 requests per second, you'll get `429 Too Many Requests` errors.
-
-**Best practices:**
-- Use `per_page=100` to reduce the number of requests needed
-- Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 100 values per filter)
-- Use `select=` to [limit returned fields](/guides/selecting-fields) for faster responses
-- Implement [exponential backoff](/api-reference/errors#retry-logic) when you hit rate limits
-
-## Query Limits
-
-Beyond rate limits, individual queries have these constraints:
-
-| Limit | Value |
-|-------|-------|
-| OR values per filter | 100 |
-| `per_page` maximum | 100 |
-| `sample` maximum | 10,000 |
-| Basic paging limit | 10,000 results |
-
-To retrieve more than 10,000 results, use [cursor paging](/guides/page-through-results#cursor-paging).
-
-## Usage Tips
-
-### Browser Testing
-
-The API uses simple GET requests, so you can test any request in your browser. Install a JSON formatter extension for a better experience:
-- [JSONVue (Chrome)](https://chrome.google.com/webstore/detail/jsonvue/chklaanhfefbnpoihckbnefhakgolnmc)
-- [JSONView (Firefox)](https://addons.mozilla.org/en-US/firefox/addon/jsonview)
-
-### Efficient Bulk Extraction
-
-```python
-# Use maximum page size
-requests.get("https://api.openalex.org/works?per_page=100&api_key=YOUR_KEY")
-
-# Batch DOI lookups (up to 100 at once)
-dois = "10.1234/a|10.1234/b|10.1234/c"
-requests.get(f"https://api.openalex.org/works?filter=doi:{dois}&api_key=YOUR_KEY")
-```
+For full details on credit costs, rate limit headers, query limits, and usage tips, see [Authentication & Rate Limits](/api-reference/authentication) in the API Reference.
