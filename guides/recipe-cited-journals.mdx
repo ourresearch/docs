@@ -1,0 +1,132 @@
+---
+title: Which Journals Does Your Institution Cite?
+description: Map the journals your researchers reference most by walking their citation lists
+---
+
+There's no single API call that answers "which journals does institution X cite most?" — the `referenced_works` field on each work contains outgoing citations as raw IDs, not journal names. But with cursor paging and batching, you can build the full picture. We'll use the Santa Fe Institute (496 works in 2024) as the example.
+
+## The approach
+
+1. Cursor through your institution's works, collecting every `referenced_works` ID (with duplicates — if 5 papers cite the same work, that's 5 references)
+2. Batch-fetch the *unique* IDs to build a work-to-journal lookup
+3. Count journals against the full reference list
+
+## Step 1: Collect referenced work IDs
+
+Page through works with `select=id,referenced_works` to minimize payload:
+
+```bash
+https://api.openalex.org/works?filter=authorships.institutions.id:I1308548392,publication_year:2024&select=id,referenced_works&per_page=100&cursor=*
+```
+
+Each work's `referenced_works` is an array of OpenAlex IDs:
+
+```json
+{
+  "id": "https://openalex.org/W4392028279",
+  "referenced_works": [
+    "https://openalex.org/W1583139675",
+    "https://openalex.org/W2001771035",
+    "https://openalex.org/W2025849425"
+  ]
+}
+```
+
+Follow `meta.next_cursor` until it returns `null` — for 496 works that's 5 pages.
+
+## Step 2: Batch and count by journal
+
+Batch-fetch the *unique* IDs with `select=id,primary_location` to build a lookup from work ID to journal:
+
+```bash
+https://api.openalex.org/works?filter=openalex:W1583139675|W2001771035|W2025849425|...&select=id,primary_location&per_page=100
+```
+
+Then iterate over the full (non-deduplicated) reference list, look up each work's journal, and count.
+
+## Full script
+
+```python
+import requests
+from collections import Counter
+
+BASE = "https://api.openalex.org"
+INST = "I1308548392"  # Santa Fe Institute
+YEARS = "2024"
+
+def api(endpoint, params):
+    return requests.get(f"{BASE}/{endpoint}", params=params).json()
+
+# Step 1: collect ALL referenced work IDs (keeping duplicates)
+all_refs = []
+cursor = "*"
+while cursor:
+    resp = api("works", {
+        "filter": f"authorships.institutions.id:{INST},publication_year:{YEARS}",
+        "select": "id,referenced_works",
+        "per_page": 100,
+        "cursor": cursor,
+    })
+    for work in resp["results"]:
+        for ref in work.get("referenced_works", []):
+            all_refs.append(ref.split("/")[-1])
+    cursor = resp["meta"].get("next_cursor")
+
+unique_refs = list(set(all_refs))
+print(f"{len(all_refs)} total references, {len(unique_refs)} unique works")
+
+# Step 2: build work → journal lookup (fetch unique IDs only)
+work_to_journal = {}
+for i in range(0, len(unique_refs), 100):
+    batch = "|".join(unique_refs[i:i+100])
+    results = api("works", {
+        "filter": f"openalex:{batch}",
+        "select": "id,primary_location",
+        "per_page": 100,
+    })["results"]
+    for w in results:
+        loc = w.get("primary_location") or {}
+        source = (loc.get("source") or {}).get("display_name")
+        if source:
+            work_to_journal[w["id"].split("/")[-1]] = source
+
+# Step 3: count journals against the FULL reference list (with duplicates)
+journal_counts = Counter()
+for ref_id in all_refs:
+    journal = work_to_journal.get(ref_id)
+    if journal:
+        journal_counts[journal] += 1
+
+print(f"\n{'Journal':<55} {'Refs':>5}")
+print("-" * 62)
+for journal, count in journal_counts.most_common(15):
+    print(f"  {journal:<53} {count:>5}")
+```
+
+## Example results
+
+Top journals cited by Santa Fe Institute authors in 2024 (from a sample of references):
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<table style={{width: 'auto', borderLeft: '3px solid var(--primary)', paddingLeft: '1rem'}}>
+  <thead>
+    <tr><th>Journal</th><th style={{textAlign: 'right'}}>References</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Proceedings of the National Academy of Sciences</td><td style={{textAlign: 'right'}}>14</td></tr>
+    <tr><td>Science</td><td style={{textAlign: 'right'}}>13</td></tr>
+    <tr><td>PLoS ONE</td><td style={{textAlign: 'right'}}>12</td></tr>
+    <tr><td>Nature</td><td style={{textAlign: 'right'}}>7</td></tr>
+    <tr><td>Environmental Science &amp; Technology</td><td style={{textAlign: 'right'}}>4</td></tr>
+    <tr><td>Nature Plants</td><td style={{textAlign: 'right'}}>3</td></tr>
+    <tr><td>Forest Ecology and Management</td><td style={{textAlign: 'right'}}>3</td></tr>
+    <tr><td>Frontiers in Ecology and Evolution</td><td style={{textAlign: 'right'}}>3</td></tr>
+  </tbody>
+</table>
+</div>
+
+These counts are from a small sample — running the full script produces a complete ranking across all 496 works and their thousands of outgoing references. The interdisciplinary spread (PNAS, Science, Nature alongside ecology journals) is characteristic of SFI's research.
+
+<Note>
+This recipe requires many API calls — roughly one per 100 referenced works. For an institution with 500 works averaging 30 references each, expect ~150 calls. Add an `api_key` parameter and a brief `time.sleep(0.1)` between batches to stay within [rate limits](/guides/authentication).
+</Note>
