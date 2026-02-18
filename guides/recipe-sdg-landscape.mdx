@@ -1,0 +1,139 @@
+---
+title: Map the SDG Research Landscape
+description: Compare how countries contribute to the UN Sustainable Development Goals and find who leads each one
+---
+
+The [UN Sustainable Development Goals](https://sdgs.un.org/goals) give a shared framework for classifying research by societal impact. OpenAlex tags works with SDGs automatically, so you can map the global landscape with a handful of `group_by` calls. We'll compare India and Brazil to show how national research priorities diverge.
+
+## Step 1: See the global distribution
+
+Group all works by SDG to see where the world's research effort goes:
+
+```bash
+https://api.openalex.org/works?group_by=sustainable_development_goals.id&per_page=5
+```
+
+```json
+[
+  {"key": "https://openalex.org/sdgs/3", "key_display_name": "Good health and well-being", "count": 22709013},
+  {"key": "https://openalex.org/sdgs/2", "key_display_name": "Zero hunger", "count": 13933476},
+  {"key": "https://openalex.org/sdgs/4", "key_display_name": "Quality education", "count": 11897329},
+  {"key": "https://openalex.org/sdgs/7", "key_display_name": "Affordable and clean energy", "count": 11005161},
+  {"key": "https://openalex.org/sdgs/10", "key_display_name": "Reduced inequalities", "count": 9476374}
+]
+```
+
+Health dominates globally — SDG 3 accounts for more tagged works than the next two combined.
+
+## Step 2: Compare two countries
+
+Filter by country code and group by SDG. Run one call per country:
+
+```bash
+# India
+https://api.openalex.org/works?filter=authorships.institutions.country_code:IN&group_by=sustainable_development_goals.id&per_page=10
+
+# Brazil
+https://api.openalex.org/works?filter=authorships.institutions.country_code:BR&group_by=sustainable_development_goals.id&per_page=10
+```
+
+Each call returns the same shape — SDGs ranked by output. The rankings reveal different national priorities:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<table style={{width: 'auto', borderLeft: '3px solid var(--primary)', paddingLeft: '1rem'}}>
+  <thead>
+    <tr><th style={{textAlign: 'right'}}>#</th><th>India</th><th>Brazil</th></tr>
+  </thead>
+  <tbody>
+    <tr><td style={{textAlign: 'right'}}>1</td><td>Good health and well-being</td><td>Good health and well-being</td></tr>
+    <tr><td style={{textAlign: 'right'}}>2</td><td><strong>Affordable and clean energy</strong></td><td><strong>Quality education</strong></td></tr>
+    <tr><td style={{textAlign: 'right'}}>3</td><td><strong>Zero hunger</strong></td><td><strong>Zero hunger</strong></td></tr>
+    <tr><td style={{textAlign: 'right'}}>4</td><td><strong>Clean water and sanitation</strong></td><td><strong>Life on land</strong></td></tr>
+    <tr><td style={{textAlign: 'right'}}>5</td><td>Life on land</td><td>Peace, justice, and strong institutions</td></tr>
+  </tbody>
+</table>
+</div>
+
+Both countries lead with health and food security, but India's #2 is energy while Brazil's is education. Brazil's emphasis on "Life on land" (#4) reflects its Amazon-related research.
+
+## Step 3: Track a specific SDG over time
+
+Pick an SDG and group by year to see growth trends. Here's SDG 13 (Climate Action):
+
+```bash
+https://api.openalex.org/works?filter=sustainable_development_goals.id:https://metadata.un.org/sdg/13,publication_year:2015-2025&group_by=publication_year
+```
+
+```json
+[
+  {"key": "2015", "key_display_name": "2015", "count": 163264},
+  {"key": "2018", "key_display_name": "2018", "count": 179558},
+  {"key": "2021", "key_display_name": "2021", "count": 156949},
+  {"key": "2024", "key_display_name": "2024", "count": 208595}
+]
+```
+
+Climate research output grew steadily from 2015 to 2019, dipped briefly, then surged to a new high in 2024.
+
+## Step 4: Find leading institutions
+
+Group by institution within an SDG to find who's producing the most research:
+
+```bash
+https://api.openalex.org/works?filter=sustainable_development_goals.id:https://metadata.un.org/sdg/13&group_by=authorships.institutions.id&per_page=5
+```
+
+```json
+[
+  {"key": "https://openalex.org/I19820366", "key_display_name": "Chinese Academy of Sciences", "count": 34901},
+  {"key": "https://openalex.org/I1294671590", "key_display_name": "Centre National de la Recherche Scientifique", "count": 24791},
+  {"key": "https://openalex.org/I4210165038", "key_display_name": "University of Chinese Academy of Sciences", "count": 11505},
+  {"key": "https://openalex.org/I74801974", "key_display_name": "The University of Tokyo", "count": 9228},
+  {"key": "https://openalex.org/I4210164339", "key_display_name": "Oldham Council", "count": 8833}
+]
+```
+
+## Full script
+
+This script compares any two countries' SDG profiles side by side:
+
+```python
+import requests
+
+BASE = "https://api.openalex.org"
+
+def api(endpoint, params):
+    return requests.get(f"{BASE}/{endpoint}", params=params).json()
+
+def sdg_profile(country_code):
+    """Get a country's SDG distribution as {sdg_name: count}."""
+    data = api("works", {
+        "filter": f"authorships.institutions.country_code:{country_code}",
+        "group_by": "sustainable_development_goals.id",
+        "per_page": 17,
+    })
+    return {g["key_display_name"]: g["count"] for g in data["group_by"]}
+
+# Compare two countries
+country_a, country_b = "IN", "BR"
+profile_a = sdg_profile(country_a)
+profile_b = sdg_profile(country_b)
+
+all_sdgs = sorted(set(profile_a) | set(profile_b),
+                  key=lambda s: profile_a.get(s, 0) + profile_b.get(s, 0),
+                  reverse=True)
+
+total_a = sum(profile_a.values())
+total_b = sum(profile_b.values())
+
+print(f"{'SDG':<45} {country_a:>8} {country_b:>8}")
+print("-" * 63)
+for sdg in all_sdgs:
+    share_a = profile_a.get(sdg, 0) / total_a
+    share_b = profile_b.get(sdg, 0) / total_b
+    print(f"  {sdg:<43} {share_a:>7.1%} {share_b:>7.1%}")
+```
+
+<Note>
+Works can be tagged with multiple SDGs, so percentages across all goals will sum to more than 100%. The shares still show relative emphasis — a country with 15% in energy vs. 5% is investing proportionally more research effort there.
+</Note>
