@@ -64,26 +64,34 @@ oa_by_year = {g["key"]: g["count"] for g in oa_resp["group_by"]}
 for year in sorted(total_by_year):
     total = total_by_year[year]
     oa = oa_by_year.get(year, 0)
+    closed = total - oa
     pct = 100 * oa / total
-    print(f"{year}: {total:>12,} total | {oa:>12,} OA | {pct:.1f}%")
+    print(f"{year}: {total:>12,} total | {oa:>12,} OA | {closed:>12,} closed | {pct:.1f}%")
 ```
 
 ## Results
 
 Data retrieved February 2026. Counts are approximate and will shift as OpenAlex continues indexing.
 
-| Year | Total | Open Access | Closed | OA % |
-|------|------:|------------:|-------:|-----:|
-| 2015 | 9,949,715 | 3,066,358 | 6,883,357 | 30.8% |
-| 2016 | 10,262,596 | 3,383,207 | 6,879,389 | 33.0% |
-| 2017 | 10,109,865 | 3,564,129 | 6,545,736 | 35.3% |
-| 2018 | 10,108,715 | 4,005,694 | 6,103,021 | 39.6% |
-| 2019 | 10,450,545 | 4,443,271 | 6,007,274 | 42.5% |
-| 2020 | 11,170,634 | 5,401,409 | 5,769,225 | 48.4% |
-| 2021 | 10,245,183 | 5,550,323 | 4,694,860 | 54.2% |
-| 2022 | 9,848,360 | 6,024,699 | 3,823,661 | 61.2% |
-| 2023 | 10,424,813 | 6,457,754 | 3,967,059 | 62.0% |
-| 2024 | 10,221,658 | 6,213,783 | 4,007,875 | 60.8% |
-| 2025 | 13,991,991 | 9,510,756 | 4,481,235 | 67.9% |
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<table style={{width: 'auto', borderLeft: '3px solid var(--primary)', paddingLeft: '1rem'}}>
+  <thead>
+    <tr><th>Year</th><th style={{textAlign: 'right'}}>Total</th><th style={{textAlign: 'right'}}>OA</th><th style={{textAlign: 'right'}}>Closed</th><th style={{textAlign: 'right'}}>OA %</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2015</td><td style={{textAlign: 'right'}}>9.9M</td><td style={{textAlign: 'right'}}>3.1M</td><td style={{textAlign: 'right'}}>6.9M</td><td style={{textAlign: 'right'}}>30.8%</td></tr>
+    <tr><td>2016</td><td style={{textAlign: 'right'}}>10.3M</td><td style={{textAlign: 'right'}}>3.4M</td><td style={{textAlign: 'right'}}>6.9M</td><td style={{textAlign: 'right'}}>33.0%</td></tr>
+    <tr><td>2017</td><td style={{textAlign: 'right'}}>10.1M</td><td style={{textAlign: 'right'}}>3.6M</td><td style={{textAlign: 'right'}}>6.5M</td><td style={{textAlign: 'right'}}>35.3%</td></tr>
+    <tr><td>2018</td><td style={{textAlign: 'right'}}>10.1M</td><td style={{textAlign: 'right'}}>4.0M</td><td style={{textAlign: 'right'}}>6.1M</td><td style={{textAlign: 'right'}}>39.6%</td></tr>
+    <tr><td>2019</td><td style={{textAlign: 'right'}}>10.5M</td><td style={{textAlign: 'right'}}>4.4M</td><td style={{textAlign: 'right'}}>6.0M</td><td style={{textAlign: 'right'}}>42.5%</td></tr>
+    <tr><td>2020</td><td style={{textAlign: 'right'}}>11.2M</td><td style={{textAlign: 'right'}}>5.4M</td><td style={{textAlign: 'right'}}>5.8M</td><td style={{textAlign: 'right'}}>48.4%</td></tr>
+    <tr><td>2021</td><td style={{textAlign: 'right'}}>10.2M</td><td style={{textAlign: 'right'}}>5.6M</td><td style={{textAlign: 'right'}}>4.7M</td><td style={{textAlign: 'right'}}><strong>54.2%</strong></td></tr>
+    <tr><td>2022</td><td style={{textAlign: 'right'}}>9.8M</td><td style={{textAlign: 'right'}}>6.0M</td><td style={{textAlign: 'right'}}>3.8M</td><td style={{textAlign: 'right'}}>61.2%</td></tr>
+    <tr><td>2023</td><td style={{textAlign: 'right'}}>10.4M</td><td style={{textAlign: 'right'}}>6.5M</td><td style={{textAlign: 'right'}}>4.0M</td><td style={{textAlign: 'right'}}>62.0%</td></tr>
+    <tr><td>2024</td><td style={{textAlign: 'right'}}>10.2M</td><td style={{textAlign: 'right'}}>6.2M</td><td style={{textAlign: 'right'}}>4.0M</td><td style={{textAlign: 'right'}}>60.8%</td></tr>
+    <tr><td>2025</td><td style={{textAlign: 'right'}}>14.0M</td><td style={{textAlign: 'right'}}>9.5M</td><td style={{textAlign: 'right'}}>4.5M</td><td style={{textAlign: 'right'}}>67.9%</td></tr>
+  </tbody>
+</table>
+</div>
 
 Open access has grown from roughly 31% to 68% of indexed works over the last decade. The crossover point — where OA works first outnumbered closed — was around 2021.
