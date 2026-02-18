@@ -1,0 +1,156 @@
+---
+title: Find Collaboration Opportunities
+description: Discover institutions you should be working with based on shared research topics
+---
+
+Which institutions are leaders in your fields that you haven't yet collaborated with? This recipe identifies who publishes in your top research areas, checks how much you already co-author with them, and flags rising stars. We'll use MIT as the example throughout.
+
+## Part 1: Topic-based discovery
+
+Find institutions publishing heavily in your research areas that you have few co-authored works with.
+
+### Step 1: Find your top research topics
+
+Group your institution's works by primary topic to see where you publish most:
+
+```bash
+https://api.openalex.org/works?filter=authorships.institutions.id:I63966007&group_by=primary_topic.id&per_page=5
+```
+
+```json
+[
+  {"key": "https://openalex.org/T10048", "key_display_name": "Particle physics theoretical and experimental studies", "count": 2753},
+  {"key": "https://openalex.org/T10346", "key_display_name": "Magnetic confinement fusion research", "count": 1994},
+  {"key": "https://openalex.org/T10299", "key_display_name": "Photonic and Optical Devices", "count": 1888},
+  {"key": "https://openalex.org/T10039", "key_display_name": "Stellar, planetary, and galactic studies", "count": 1820},
+  {"key": "https://openalex.org/T10037", "key_display_name": "Physics of Superconductivity and Magnetism", "count": 1680}
+]
+```
+
+### Step 2: Find who else publishes in those topics
+
+For each topic, find the top institutions by output:
+
+```bash
+https://api.openalex.org/works?filter=primary_topic.id:T10048&group_by=authorships.institutions.id&per_page=10
+```
+
+```json
+[
+  {"key": "https://openalex.org/I67311998", "key_display_name": "European Organization for Nuclear Research", "count": 14034},
+  {"key": "https://openalex.org/I1294671590", "key_display_name": "Centre National de la Recherche Scientifique", "count": 7824},
+  {"key": "https://openalex.org/I1314696892", "key_display_name": "Fermi National Accelerator Laboratory", "count": 6823}
+]
+```
+
+### Step 3: Check existing collaboration levels
+
+Use the `+` operator to count co-authored works between two institutions. The `meta.count` in the response is all you need:
+
+```bash
+https://api.openalex.org/works?filter=authorships.institutions.id:I63966007+I1294671590&per_page=1
+```
+
+```json
+{"meta": {"count": 4970}}
+```
+
+MIT and CNRS share 4,970 co-authored works — a strong existing relationship.
+
+### Step 4: Spot rising institutions
+
+Compare who's publishing in a topic now versus five years ago. Run the same `group_by` query for two time windows:
+
+```bash
+# Recent (2023–2025)
+https://api.openalex.org/works?filter=primary_topic.id:T10048,publication_year:2023-2025&group_by=authorships.institutions.id&per_page=10
+
+# Historical (2018–2020)
+https://api.openalex.org/works?filter=primary_topic.id:T10048,publication_year:2018-2020&group_by=authorships.institutions.id&per_page=10
+```
+
+Institutions that appear in the recent top 10 but not in the historical list are rising fast. For particle physics, the University of Chinese Academy of Sciences jumped into the recent top 10 with 672 works but didn't appear in the 2018–2020 list at all.
+
+## Part 2: Find the gaps
+
+Now compare who you *do* work with against who you *could* work with. A single call gives you all your co-authoring institutions at once:
+
+```bash
+https://api.openalex.org/works?filter=authorships.institutions.id:I63966007,publication_year:2020-2025&group_by=authorships.institutions.id&per_page=100
+```
+
+```json
+[
+  {"key": "https://openalex.org/I136199984", "key_display_name": "Harvard University", "count": 7525},
+  {"key": "https://openalex.org/I107606265", "key_display_name": "Broad Institute", "count": 3122},
+  {"key": "https://openalex.org/I97018004", "key_display_name": "Stanford University", "count": 2319}
+]
+```
+
+Institutions that rank highly in your topics (Part 1) but don't appear in your co-authorship list — or appear with low counts — are your biggest opportunities.
+
+### Full script
+
+This script combines both parts: finds your top topics, identifies who leads in each, pulls your co-authorship list in one call, and highlights the gaps.
+
+```python
+import requests
+
+BASE = "https://api.openalex.org"
+MY_INST = "I63966007"  # MIT
+
+def api(endpoint, params):
+    return requests.get(f"{BASE}/{endpoint}", params=params).json()
+
+# Get all co-authoring institutions in one call
+collab_data = api("works", {
+    "filter": f"authorships.institutions.id:{MY_INST},publication_year:2020-2025",
+    "group_by": "authorships.institutions.id",
+    "per_page": 100,
+})["group_by"]
+
+collabs = {g["key"].split("/")[-1]: g["count"] for g in collab_data}
+
+# Get top 5 topics
+topics = api("works", {
+    "filter": f"authorships.institutions.id:{MY_INST}",
+    "group_by": "primary_topic.id",
+    "per_page": 5,
+})["group_by"]
+
+for topic in topics:
+    tid = topic["key"].split("/")[-1]
+    print(f"\n=== {topic['key_display_name']} ({topic['count']} works) ===")
+
+    # Top institutions in this topic
+    top_insts = api("works", {
+        "filter": f"primary_topic.id:{tid}",
+        "group_by": "authorships.institutions.id",
+        "per_page": 15,
+    })["group_by"]
+
+    # Recent vs. historical for rising star detection
+    recent = {g["key"].split("/")[-1] for g in api("works", {
+        "filter": f"primary_topic.id:{tid},publication_year:2023-2025",
+        "group_by": "authorships.institutions.id",
+        "per_page": 15,
+    })["group_by"]}
+
+    historical = {g["key"].split("/")[-1] for g in api("works", {
+        "filter": f"primary_topic.id:{tid},publication_year:2018-2020",
+        "group_by": "authorships.institutions.id",
+        "per_page": 15,
+    })["group_by"]}
+
+    rising = recent - historical
+
+    for inst in top_insts:
+        iid = inst["key"].split("/")[-1]
+        if iid == MY_INST:
+            continue
+
+        coauthored = collabs.get(iid, 0)
+        tag = " ** RISING **" if iid in rising else ""
+        print(f"  {inst['key_display_name']}: "
+              f"{inst['count']} topic works, {coauthored} co-authored{tag}")
+```

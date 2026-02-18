@@ -60,7 +60,9 @@
             "group": "Recipes",
             "pages": [
               "guides/recipes",
-              "guides/recipe-oa-trends"
+              "guides/recipe-oa-trends",
+              "guides/recipe-find-collaborators",
+              "guides/recipe-funder-portfolio"
             ]
           },
           {

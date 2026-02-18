@@ -1,0 +1,164 @@
+---
+title: Analyze a Funder's Research Portfolio
+description: Map what a funding agency invests in by field, track shifts over time, and find top recipient institutions
+---
+
+What does a funder actually invest in? How has their portfolio shifted over the past decade? This recipe maps a funder's research output by field, detects shifting priorities, and identifies the top institutions receiving funding. We'll use the US National Science Foundation as the example.
+
+## Step 1: Find the funder
+
+Search by name to get the funder ID:
+
+```bash
+https://api.openalex.org/funders?search=national+science+foundation&per_page=3&select=id,display_name,works_count,awards_count
+```
+
+```json
+[
+  {"id": "https://openalex.org/F4320306076", "display_name": "National Science Foundation", "works_count": 1483062, "awards_count": 812094},
+  {"id": "https://openalex.org/F4320332161", "display_name": "National Natural Science Foundation of China", "works_count": 3567561, "awards_count": 840334}
+]
+```
+
+NSF is `F4320306076` — 1.5M funded works and 812K awards.
+
+## Step 2: Map the portfolio by field
+
+Group funded works by research field to see where the money goes:
+
+```bash
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076&group_by=primary_topic.field.id&per_page=10
+```
+
+```json
+[
+  {"key": "https://openalex.org/fields/22", "key_display_name": "Engineering", "count": 54753},
+  {"key": "https://openalex.org/fields/31", "key_display_name": "Physics and Astronomy", "count": 45894},
+  {"key": "https://openalex.org/fields/17", "key_display_name": "Computer Science", "count": 36559},
+  {"key": "https://openalex.org/fields/13", "key_display_name": "Biochemistry, Genetics and Molecular Biology", "count": 27962},
+  {"key": "https://openalex.org/fields/23", "key_display_name": "Environmental Science", "count": 27954}
+]
+```
+
+## Step 3: Track output over time
+
+Group by year to see overall funding trends:
+
+```bash
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,publication_year:2015-2025&group_by=publication_year
+```
+
+```json
+[
+  {"key": "2015", "key_display_name": "2015", "count": 19636},
+  {"key": "2018", "key_display_name": "2018", "count": 28959},
+  {"key": "2021", "key_display_name": "2021", "count": 30387},
+  {"key": "2023", "key_display_name": "2023", "count": 31144}
+]
+```
+
+NSF-funded output grew from ~20K works in 2015 to ~31K in 2023.
+
+## Step 4: Detect shifting priorities
+
+Run the same field breakdown for two time windows and compare the shares:
+
+```bash
+# Recent (2023–2025): 75,728 funded works
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,publication_year:2023-2025&group_by=primary_topic.field.id&per_page=10
+
+# Historical (2015–2017): 74,214 funded works
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,publication_year:2015-2017&group_by=primary_topic.field.id&per_page=10
+```
+
+<Note>
+Award dollar amounts aren't available at this grouping level, so shares are by funded work count — still a strong signal of where a funder directs effort.
+</Note>
+
+Compare each field's share of total output across the two periods:
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+<table style={{width: 'auto', borderLeft: '3px solid var(--primary)', paddingLeft: '1rem'}}>
+  <thead>
+    <tr><th>Field</th><th style={{textAlign: 'right'}}>2015–17</th><th style={{textAlign: 'right'}}>2023–25</th><th style={{textAlign: 'right'}}>Change</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Engineering</td><td style={{textAlign: 'right'}}>16.9%</td><td style={{textAlign: 'right'}}>18.0%</td><td style={{textAlign: 'right'}}>+1.1%</td></tr>
+    <tr><td>Physics and Astronomy</td><td style={{textAlign: 'right'}}>13.9%</td><td style={{textAlign: 'right'}}>15.4%</td><td style={{textAlign: 'right'}}>+1.5%</td></tr>
+    <tr><td>Computer Science</td><td style={{textAlign: 'right'}}>11.9%</td><td style={{textAlign: 'right'}}>12.1%</td><td style={{textAlign: 'right'}}>+0.2%</td></tr>
+    <tr><td>Environmental Science</td><td style={{textAlign: 'right'}}>9.1%</td><td style={{textAlign: 'right'}}>8.3%</td><td style={{textAlign: 'right'}}>-0.8%</td></tr>
+    <tr><td>Materials Science</td><td style={{textAlign: 'right'}}>8.2%</td><td style={{textAlign: 'right'}}>7.1%</td><td style={{textAlign: 'right'}}>-1.1%</td></tr>
+    <tr><td>Biochemistry / Mol. Bio.</td><td style={{textAlign: 'right'}}>8.2%</td><td style={{textAlign: 'right'}}>7.4%</td><td style={{textAlign: 'right'}}>-0.8%</td></tr>
+    <tr><td>Earth and Planetary Sciences</td><td style={{textAlign: 'right'}}>6.7%</td><td style={{textAlign: 'right'}}>5.8%</td><td style={{textAlign: 'right'}}>-0.9%</td></tr>
+    <tr><td>Mathematics</td><td style={{textAlign: 'right'}}>3.1%</td><td style={{textAlign: 'right'}}>3.8%</td><td style={{textAlign: 'right'}}>+0.7%</td></tr>
+    <tr><td>Social Sciences</td><td style={{textAlign: 'right'}}>—</td><td style={{textAlign: 'right'}}>3.5%</td><td style={{textAlign: 'right'}}><strong>new</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+Physics and Engineering grew their share while Materials Science and Earth Sciences shrank. Social Sciences entered the top 10 — consistent with NSF's expanding investment in human-centered research.
+
+## Step 5: Find top recipient institutions
+
+Drill into a specific field to see which institutions receive the most funding:
+
+```bash
+https://api.openalex.org/works?filter=awards.funder_id:F4320306076,primary_topic.field.id:22&group_by=authorships.institutions.id&per_page=5
+```
+
+```json
+[
+  {"key": "https://openalex.org/I130701444", "key_display_name": "Georgia Institute of Technology", "count": 1902},
+  {"key": "https://openalex.org/I27837315", "key_display_name": "University of Michigan", "count": 1436},
+  {"key": "https://openalex.org/I219193219", "key_display_name": "Purdue University West Lafayette", "count": 1410},
+  {"key": "https://openalex.org/I157725225", "key_display_name": "University of Illinois Urbana-Champaign", "count": 1343},
+  {"key": "https://openalex.org/I63966007", "key_display_name": "Massachusetts Institute of Technology", "count": 1230}
+]
+```
+
+## Full script
+
+This script maps any funder's portfolio, computes field share shifts, and identifies top institutions per field.
+
+```python
+import requests
+
+BASE = "https://api.openalex.org"
+FUNDER = "F4320306076"  # NSF
+
+def api(endpoint, params):
+    return requests.get(f"{BASE}/{endpoint}", params=params).json()
+
+# Portfolio by field — recent vs. historical
+recent = api("works", {
+    "filter": f"awards.funder_id:{FUNDER},publication_year:2023-2025",
+    "group_by": "primary_topic.field.id",
+    "per_page": 15,
+})
+historical = api("works", {
+    "filter": f"awards.funder_id:{FUNDER},publication_year:2015-2017",
+    "group_by": "primary_topic.field.id",
+    "per_page": 15,
+})
+
+recent_total = recent["meta"]["count"]
+historical_total = historical["meta"]["count"]
+
+recent_shares = {g["key_display_name"]: g["count"] / recent_total
+                 for g in recent["group_by"]}
+historical_shares = {g["key_display_name"]: g["count"] / historical_total
+                     for g in historical["group_by"]}
+
+all_fields = sorted(set(recent_shares) | set(historical_shares),
+                    key=lambda f: recent_shares.get(f, 0), reverse=True)
+
+print(f"{'Field':<45} {'2015–17':>8} {'2023–25':>8} {'Change':>8}")
+print("-" * 71)
+for field in all_fields:
+    old = historical_shares.get(field, 0)
+    new = recent_shares.get(field, 0)
+    delta = new - old
+    sign = "+" if delta > 0 else ""
+    print(f"  {field:<43} {old:>7.1%} {new:>7.1%} {sign}{delta:>6.1%}")
+```
+
