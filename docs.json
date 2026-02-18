@@ -17,6 +17,7 @@
   "styling": {
     "codeblocks": "dark"
   },
+  "css": "/style.css",
   "favicon": "/favicon.svg",
   "api": {
     "openapi": "api-reference/openapi.json",
