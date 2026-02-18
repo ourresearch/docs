@@ -1,5 +1,6 @@
 .prose :where(a) {
   font-weight: inherit;
+  color: inherit;
   border-bottom: none;
   text-decoration: underline;
 }
