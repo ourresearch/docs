@@ -4,3 +4,7 @@
   border-bottom: none;
   text-decoration: underline;
 }
+
+.prose a:is(.dark *) {
+  color: inherit;
+}
