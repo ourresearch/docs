@@ -1,0 +1,89 @@
+---
+title: Open Access Trends by Year
+description: Track the growth of open access publishing over the last decade
+---
+
+How has open access publishing changed over the last decade? Two API calls and some simple subtraction give you a year-by-year breakdown.
+
+## Step 1: Get total works by year
+
+Use `group_by=publication_year` to count all works per year:
+
+```bash
+https://api.openalex.org/works?filter=publication_year:2015-2025&group_by=publication_year
+```
+
+The response `group_by` array contains one entry per year:
+
+```json
+[
+  {"key": "2015", "key_display_name": "2015", "count": 9949715},
+  {"key": "2016", "key_display_name": "2016", "count": 10262596},
+  {"key": "2017", "key_display_name": "2017", "count": 10109865}
+]
+```
+
+## Step 2: Get open access works by year
+
+Add `open_access.is_oa:true` to the filter to count only OA works:
+
+```bash
+https://api.openalex.org/works?filter=publication_year:2015-2025,open_access.is_oa:true&group_by=publication_year
+```
+
+Same shape, smaller counts:
+
+```json
+[
+  {"key": "2015", "key_display_name": "2015", "count": 3066358},
+  {"key": "2016", "key_display_name": "2016", "count": 3383207},
+  {"key": "2017", "key_display_name": "2017", "count": 3564129}
+]
+```
+
+## Step 3: Combine the results
+
+Match up the two responses by year and compute the OA percentage.
+
+```python
+import requests
+
+total_resp = requests.get(
+    "https://api.openalex.org/works",
+    params={"filter": "publication_year:2015-2025", "group_by": "publication_year"}
+).json()
+
+oa_resp = requests.get(
+    "https://api.openalex.org/works",
+    params={"filter": "publication_year:2015-2025,open_access.is_oa:true", "group_by": "publication_year"}
+).json()
+
+total_by_year = {g["key"]: g["count"] for g in total_resp["group_by"]}
+oa_by_year = {g["key"]: g["count"] for g in oa_resp["group_by"]}
+
+for year in sorted(total_by_year):
+    total = total_by_year[year]
+    oa = oa_by_year.get(year, 0)
+    pct = 100 * oa / total
+    print(f"{year}: {total:>12,} total | {oa:>12,} OA | {pct:.1f}%")
+```
+
+## Results
+
+Data retrieved February 2026. Counts are approximate and will shift as OpenAlex continues indexing.
+
+| Year | Total | Open Access | Closed | OA % |
+|------|------:|------------:|-------:|-----:|
+| 2015 | 9,949,715 | 3,066,358 | 6,883,357 | 30.8% |
+| 2016 | 10,262,596 | 3,383,207 | 6,879,389 | 33.0% |
+| 2017 | 10,109,865 | 3,564,129 | 6,545,736 | 35.3% |
+| 2018 | 10,108,715 | 4,005,694 | 6,103,021 | 39.6% |
+| 2019 | 10,450,545 | 4,443,271 | 6,007,274 | 42.5% |
+| 2020 | 11,170,634 | 5,401,409 | 5,769,225 | 48.4% |
+| 2021 | 10,245,183 | 5,550,323 | 4,694,860 | 54.2% |
+| 2022 | 9,848,360 | 6,024,699 | 3,823,661 | 61.2% |
+| 2023 | 10,424,813 | 6,457,754 | 3,967,059 | 62.0% |
+| 2024 | 10,221,658 | 6,213,783 | 4,007,875 | 60.8% |
+| 2025 | 13,991,991 | 9,510,756 | 4,481,235 | 67.9% |
+
+Open access has grown from roughly 31% to 68% of indexed works over the last decade. The crossover point — where OA works first outnumbered closed — was around 2021.

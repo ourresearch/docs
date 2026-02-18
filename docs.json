@@ -55,7 +55,8 @@
           {
             "group": "Recipes",
             "pages": [
-              "guides/recipes"
+              "guides/recipes",
+              "guides/recipe-oa-trends"
             ]
           },
           {
