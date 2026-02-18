@@ -53,16 +53,16 @@
             ]
           },
           {
+            "group": "Recipes",
+            "pages": [
+              "guides/recipes"
+            ]
+          },
+          {
             "group": "For AI Agents",
             "pages": [
               "guides/llm-quick-reference",
               "guides/deprecations"
-            ]
-          },
-          {
-            "group": "Recipes",
-            "pages": [
-              "guides/recipes"
             ]
           }
         ]
