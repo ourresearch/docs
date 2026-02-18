@@ -18,6 +18,9 @@
     "codeblocks": "dark"
   },
   "css": "/style.css",
+  "fonts": {
+    "family": "Inter"
+  },
   "favicon": "/favicon.svg",
   "api": {
     "openapi": "api-reference/openapi.json",
