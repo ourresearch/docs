@@ -2869,6 +2869,10 @@
             "type": "integer",
             "nullable": true,
             "description": "Number of groups when using group_by"
+          },
+          "cost_usd": {
+            "type": "number",
+            "description": "Cost of this request in USD"
           }
         }
       },
