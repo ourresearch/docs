@@ -14,7 +14,7 @@ The OpenAlex API uses standard HTTP status codes to indicate success or failure.
 | `400` | Bad Request | Check your filter syntax or parameters |
 | `403` | Forbidden | Rate limit exceeded; slow down |
 | `404` | Not Found | Entity doesn't exist |
-| `429` | Too Many Requests | Daily credit limit exceeded |
+| `429` | Too Many Requests | Daily limit exceeded |
 | `500` | Server Error | Temporary issue; retry with backoff |
 
 ## Error Response Format
@@ -56,7 +56,7 @@ Error responses include a message explaining what went wrong:
 ```
 
 **Fix:**
-- Check rate limit headers to see your remaining credits
+- Check rate limit headers to see your remaining allowance
 - Add delays between requests
 - Use `per_page=100` to reduce total requests
 - Consider a [paid plan](https://openalex.org/pricing) for higher limits
@@ -122,7 +122,7 @@ X-RateLimit-Reset: 43200
 ```
 
 Use these to:
-- Monitor your credit usage
+- Monitor your usage
 - Pause before hitting limits
 - Calculate when limits reset (seconds until midnight UTC)
 

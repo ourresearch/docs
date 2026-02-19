@@ -12,7 +12,7 @@ This page is optimized for LLM agents and AI applications. For human-readable gu
 ```
 Base: https://api.openalex.org
 Auth: API key required (free at openalex.org/settings/api)
-Rate: 10k credits/day with key, 100 credits/day without ($1 per 10k additional)
+Rate: $1/day free usage with key, $0.01/day without
 ```
 
 ## Entity Endpoints
@@ -30,7 +30,7 @@ Rate: 10k credits/day with key, 100 credits/day without ($1 per 10k additional)
 ## Special Endpoints
 
 ```
-content.openalex.org/works/{id}.pdf - Download PDFs (100 credits)
+content.openalex.org/works/{id}.pdf - Download PDFs ($0.01 each)
 /text                               - DEPRECATED, do not use
 ```
 
@@ -150,14 +150,14 @@ cited_by_count                - Total citations
 /works?filter=publication_year:2024&group_by=topics.id
 ```
 
-## Credit Costs
+## Pricing
 
-| Endpoint | Credits |
-|----------|---------|
-| Singleton (`/works/W123`) | 0 (free) |
-| List (`/works?filter=...`) | 1 |
-| Search (`?search=`) | 10 |
-| Content download (PDF) | 100 |
+| Endpoint | Cost |
+|----------|------|
+| Singleton (`/works/W123`) | Free |
+| List (`/works?filter=...`) | $0.0001 |
+| Search (`?search=`) | $0.001 |
+| Content download (PDF) | $0.01 |
 
 ## Query Limits
 

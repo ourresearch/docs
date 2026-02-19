@@ -1,9 +1,9 @@
 ---
 title: Authentication & Rate Limits
-description: API keys, credit costs, and rate limiting
+description: API keys, pricing, and rate limiting
 ---
 
-The OpenAlex API uses a credit-based rate limiting system. Different endpoint types consume different amounts of credits per request.
+The OpenAlex API uses a usage-based rate limiting system. Different endpoint types have different costs per request.
 
 <Warning>
 **API key required starting February 13, 2026.** API keys are free—[get yours here](https://openalex.org/settings/api). See the [announcement](https://groups.google.com/g/openalex-users/c/rI1GIAySpVQ) for details.
@@ -21,17 +21,15 @@ API keys are free. Here's how to get one:
 curl "https://api.openalex.org/works?api_key=YOUR_KEY"
 ```
 
-Without an API key, you're limited to 100 credits per day—enough for quick tests, but not for real work.
+Without an API key, you're limited to $0.01/day of usage—enough for quick tests, but not for real work.
 
 ## What you can do for free every day
 
-With a free API key (10,000 credits/day), you can make per day:
+With a free API key ($1/day), you can make per day:
 - **Unlimited** singleton requests (they're free)
 - **10,000** list/filter requests, or
 - **1,000** search requests, or
 - **100** content downloads, or
-- Any combination that adds up to 10,000 credits
+- Any mix totaling $1
 
-All plans can purchase additional credits at **$1 per 10,000 credits**.
-
-For full details on credit costs, rate limit headers, query limits, and usage tips, see [Authentication & Rate Limits](/api-reference/authentication) in the API Reference.
+For full details on endpoint pricing, rate limit headers, query limits, and usage tips, see [Authentication & Rate Limits](/api-reference/authentication) in the API Reference.

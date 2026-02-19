@@ -6,7 +6,7 @@ OpenAlex is an open catalog of the global research system with 270M+ works, 90M+
 
 Base URL: https://api.openalex.org
 Auth: api_key parameter (free at openalex.org/settings/api)
-Rate limit: 10k credits/day with key ($1 per 10k additional)
+Rate limit: $1/day free usage with key, $0.01/day without
 
 ## Entity Endpoints
 
@@ -82,12 +82,12 @@ has_fulltext - Has searchable text
 # Count works by topic
 /works?filter=publication_year:2024&group_by=topics.id
 
-## Credit Costs
+## Pricing
 
-Singleton (/works/W123): 0 (free)
-List (/works?filter=...): 1
-Search (?search=): 10
-Content download (PDF): 100
+Singleton (/works/W123): Free
+List (/works?filter=...): $0.0001
+Search (?search=): $0.001
+Content download (PDF): $0.01
 
 ## Limits
 

@@ -1191,7 +1191,7 @@
       "get": {
         "operationId": "classifyText",
         "summary": "Classify text (Aboutness)",
-        "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs 1,000 credits per request.",
+        "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs $0.10 per request.",
         "deprecated": true,
         "tags": [
           "Topics"
@@ -1241,7 +1241,7 @@
       "get": {
         "operationId": "getRateLimit",
         "summary": "Check rate limit status",
-        "description": "Check your current rate limit status including credits used and remaining.",
+        "description": "Check your current rate limit status including usage and remaining allowance.",
         "tags": [
           "Rate Limits"
         ],

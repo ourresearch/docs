@@ -3,7 +3,7 @@ title: Search
 description: Find entities using full-text search across titles, abstracts, and more
 ---
 
-The `search` parameter finds results matching a given text search. Search requests cost **10 credits** each (vs. 1 credit for list/filter requests). See [credit costs](/guides/authentication#credit-costs-by-endpoint).
+The `search` parameter finds results matching a given text search. Search requests cost **$1 per 1,000 calls** (vs. $0.10 per 1,000 for list/filter requests). See [pricing](/api-reference/authentication#pricing-by-endpoint).
 
 ```bash
 # Works with "dna" in title, abstract, or fulltext
@@ -141,4 +141,4 @@ https://api.openalex.org/works?filter=title.search:cubist
 
 The `default.search` filter is equivalent to the `search` query parameter. Variants like `.search.exact` (unstemmed) and `.search.no_stem` also exist for some fields.
 
-These filter-based searches cost the same 10 credits per request. For autocomplete use cases, use the [autocomplete endpoint](/guides/autocomplete) instead.
+These filter-based searches cost the same $1 per 1,000 requests. For autocomplete use cases, use the [autocomplete endpoint](/guides/autocomplete) instead.
