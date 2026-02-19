@@ -138,7 +138,7 @@ Academic researchers can often get increased limits for free—contact [support@
 #### Special Endpoints
 
 ```
-/find/works                         - Semantic search using AI embeddings
+/works?search.semantic=              - Semantic search using AI embeddings
 content.openalex.org/works/{id}.pdf - Download PDFs and TEI XML
 /text                               - (Deprecated) Tag text with topics/keywords
 ```
@@ -382,23 +382,17 @@ Typically returns in ~200ms
 ```
 Find conceptually related works using AI embeddings:
 
-GET:
-https://api.openalex.org/find/works?query=machine+learning+for+drug+discovery&api_key=YOUR_KEY
-
-POST (for longer queries up to 10,000 chars):
-curl -X POST "https://api.openalex.org/find/works?api_key=YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "Your long query text here..."}'
+https://api.openalex.org/works?search.semantic=machine+learning+for+drug+discovery&api_key=YOUR_KEY
 
 With filters:
-https://api.openalex.org/find/works?query=climate+change&filter=publication_year:>2020,is_oa:true&count=50&api_key=YOUR_KEY
+https://api.openalex.org/works?search.semantic=climate+change&filter=publication_year:>2020,is_oa:true&per-page=50&api_key=YOUR_KEY
 
 Parameters:
-- query: Text to find similar works for (required, max 10,000 chars)
-- count: Number of results (1-100, default 25)
+- search.semantic: Text to find similar works for (required)
+- per-page: Number of results (1-200, default 25)
 - filter: Narrow by publication_year, is_oa, has_abstract, etc.
 
-Costs 1000 credits per request. Returns works ranked by similarity score (0-1).
+Costs 100 credits per request. Returns works ranked by similarity score (0-1).
 Only works with abstracts are indexed (~217M works). English-optimized.
 ```
 
@@ -693,7 +687,7 @@ NOT:  ?search=climate+NOT+politics
 * Singleton requests (e.g., `/works/W123`): 1 credit
 * List requests (e.g., `/works?filter=...`): 10 credits
 * Content downloads (e.g., `content.openalex.org/works/{id}.pdf`): 100 credits
-* Semantic search (`/find/works`): 1,000 credits
+* Semantic search (`?search.semantic=`): 100 credits
 * Text/Aboutness requests (deprecated): 1,000 credits
 
 #### Concurrent Requests Strategy

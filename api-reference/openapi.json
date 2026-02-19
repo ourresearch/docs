@@ -5752,7 +5752,7 @@
                   "content": {
                     "type": "number"
                   },
-                  "vector": {
+                  "semantic": {
                     "type": "number"
                   },
                   "text": {

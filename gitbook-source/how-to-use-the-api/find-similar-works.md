@@ -6,10 +6,10 @@ description: Find semantically similar works using vector search
 
 OpenAlex's standard [search](get-lists-of-entities/search-entities.md) uses keyword matching—it finds works containing the words you type. But sometimes you want to find works that are *about* the same thing, even if they use different terminology.
 
-That's what `/find/works` does. It uses AI embeddings to find semantically similar works based on meaning, not just keywords. Search for "machine learning applications in drug discovery" and you'll find relevant papers even if they say "AI-driven pharmaceutical research" or "computational approaches to medicine."
+That's what semantic search does. It uses AI embeddings to find semantically similar works based on meaning, not just keywords. Search for "machine learning applications in drug discovery" and you'll find relevant papers even if they say "AI-driven pharmaceutical research" or "computational approaches to medicine."
 
 {% hint style="warning" %}
-Semantic search requires an API key and costs **1,000 credits per query**. See [rate limits](rate-limits-and-authentication.md) for details.
+Semantic search requires an API key and costs **100 credits per query**. See [rate limits](rate-limits-and-authentication.md) for details.
 {% endhint %}
 
 ## How it works
@@ -24,28 +24,18 @@ The embedding model ([GTE-Large](https://huggingface.co/thenlper/gte-large)) cap
 
 ## Basic usage
 
-### GET request
+Add `search.semantic=` to any `/works` query:
 
 ```
-https://api.openalex.org/find/works?query=machine%20learning%20for%20drug%20discovery&api_key=YOUR_KEY
-```
-
-### POST request
-
-For longer queries (up to 10,000 characters), use POST:
-
-```bash
-curl -X POST "https://api.openalex.org/find/works?api_key=YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "Your long query text here..."}'
+https://api.openalex.org/works?search.semantic=machine%20learning%20for%20drug%20discovery&api_key=YOUR_KEY
 ```
 
 ## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `query` | The text to find similar works for (required, max 10,000 chars) | — |
-| `count` | Number of results to return (1-100) | 25 |
+| `search.semantic` | The text to find similar works for (required) | — |
+| `per-page` | Number of results to return (1-200) | 25 |
 | `filter` | Metadata filters (see below) | — |
 
 ### Filters
@@ -60,25 +50,10 @@ You can narrow results using these filters:
 | `has_content.pdf` | `true`, `false` | Has downloadable PDF |
 | `has_content.grobid_xml` | `true`, `false` | Has parsed XML |
 
-**GET with filters:**
+**With filters:**
 
 ```
-https://api.openalex.org/find/works?query=climate%20change%20adaptation&filter=publication_year:>2020,is_oa:true&count=50&api_key=YOUR_KEY
-```
-
-**POST with filters:**
-
-```bash
-curl -X POST "https://api.openalex.org/find/works?api_key=YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "query": "climate change adaptation strategies",
-    "count": 50,
-    "filter": {
-      "publication_year": ">2020",
-      "is_oa": true
-    }
-  }'
+https://api.openalex.org/works?search.semantic=climate%20change%20adaptation&filter=publication_year:>2020,is_oa:true&per-page=50&api_key=YOUR_KEY
 ```
 
 ## Response format
@@ -125,11 +100,11 @@ Say you're starting a literature review on CRISPR applications in agriculture. Y
 import requests
 
 response = requests.get(
-    "https://api.openalex.org/find/works",
+    "https://api.openalex.org/works",
     params={
-        "query": "CRISPR gene editing applications in agriculture and crop improvement",
+        "search.semantic": "CRISPR gene editing applications in agriculture and crop improvement",
         "filter": "publication_year:>2020,is_oa:true",
-        "count": 100,
+        "per-page": 100,
         "api_key": "YOUR_KEY"
     }
 )
@@ -163,7 +138,7 @@ You'll find works about plant genome modification, agricultural biotechnology, a
 
 ## When to use semantic search vs keyword search
 
-| Use semantic search (`/find/works`) when... | Use keyword search (`/works?search=`) when... |
+| Use semantic search (`?search.semantic=`) when... | Use keyword search (`/works?search=`) when... |
 |---------------------------------------------|-----------------------------------------------|
 | You want conceptually related works | You need exact term matches |
 | You're exploring a new research area | You know the specific terminology |
@@ -174,4 +149,4 @@ You'll find works about plant genome modification, agricultural biotechnology, a
 
 | Action | Credits |
 |--------|---------|
-| Semantic search query | 1,000 |
+| Semantic search query | 100 |
