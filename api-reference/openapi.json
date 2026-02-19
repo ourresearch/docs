@@ -1191,7 +1191,7 @@
       "get": {
         "operationId": "classifyText",
         "summary": "Classify text (Aboutness)",
-        "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs $0.10 per request.",
+        "description": "**DEPRECATED:** This endpoint is deprecated and not recommended for new projects. It will not receive updates or support.\n\nClassify arbitrary text to find relevant OpenAlex topics. Costs $0.01 per request.",
         "deprecated": true,
         "tags": [
           "Topics"
@@ -5699,14 +5699,31 @@
           "rate_limit": {
             "type": "object",
             "properties": {
-              "credits_limit": {
-                "type": "integer"
+              "daily_budget_usd": {
+                "type": "number",
+                "description": "Your daily usage allowance in USD"
               },
-              "credits_used": {
-                "type": "integer"
+              "daily_used_usd": {
+                "type": "number",
+                "description": "Amount used today in USD"
               },
-              "credits_remaining": {
-                "type": "integer"
+              "daily_remaining_usd": {
+                "type": "number",
+                "description": "Remaining daily allowance in USD"
+              },
+              "prepaid_balance_usd": {
+                "type": "number",
+                "description": "Total prepaid balance in USD"
+              },
+              "prepaid_remaining_usd": {
+                "type": "number",
+                "description": "Remaining prepaid balance in USD"
+              },
+              "prepaid_expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true,
+                "description": "When prepaid balance expires"
               },
               "resets_at": {
                 "type": "string",
@@ -5715,25 +5732,49 @@
               "resets_in_seconds": {
                 "type": "integer"
               },
-              "credit_costs": {
+              "endpoint_costs_usd": {
                 "type": "object",
+                "description": "Cost per request in USD for each endpoint type",
                 "properties": {
                   "singleton": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "list": {
-                    "type": "integer"
+                    "type": "number"
+                  },
+                  "search": {
+                    "type": "number"
                   },
                   "content": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "vector": {
-                    "type": "integer"
+                    "type": "number"
                   },
                   "text": {
-                    "type": "integer"
+                    "type": "number"
                   }
                 }
+              },
+              "credits_limit": {
+                "type": "integer",
+                "deprecated": true,
+                "description": "Deprecated. Use daily_budget_usd instead."
+              },
+              "credits_used": {
+                "type": "integer",
+                "deprecated": true,
+                "description": "Deprecated. Use daily_used_usd instead."
+              },
+              "credits_remaining": {
+                "type": "integer",
+                "deprecated": true,
+                "description": "Deprecated. Use daily_remaining_usd instead."
+              },
+              "credit_costs": {
+                "type": "object",
+                "deprecated": true,
+                "description": "Deprecated. Use endpoint_costs_usd instead."
               }
             }
           }

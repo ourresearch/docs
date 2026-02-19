@@ -41,7 +41,7 @@ Academic researchers can often get increased limits for free—contact [support@
 | **List / Filter** — Query and filter entities | `/works?filter=institution.id:I123` | $0.10 / 1,000 calls |
 | **Search** — Full-text and semantic search | `/works?search=climate+change` | $1 / 1,000 calls |
 | **Content Download** — Cached PDF via content API | `content.openalex.org/works/{id}.pdf` | $10 / 1,000 downloads |
-| **Text/Aboutness** *(deprecated)* | `/text/topics` | $0.10 / call |
+| **Text/Aboutness** *(deprecated)* | `/text/topics` | $0.01 / call |
 
 ### What you can do for free every day
 
@@ -70,7 +70,7 @@ Some endpoints cost significantly more:
 |----------|------|-------------------|-------|
 | [Search](/guides/searching) | $1 / 1,000 calls | ~1,000 requests | `?search=` query parameter |
 | [Content downloads](/download/full-text-pdfs) | $10 / 1,000 files | ~100 files | PDF or TEI XML |
-| Aboutness (`/text`) | $0.10 / call | ~10 requests | Deprecated |
+| Aboutness (`/text`) | $0.01 / call | ~100 requests | Deprecated |
 
 <Warning>
 **Planning bulk content downloads?** Downloading all 60M available PDFs would cost ~$600,000. [Contact us](mailto:steve@ourresearch.org) about enterprise pricing for large-scale projects.
@@ -99,25 +99,25 @@ curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
 {
   "api_key": "abc...xyz",
   "rate_limit": {
-    "credits_limit": 10000,
-    "credits_used": 1234,
-    "credits_remaining": 8766,
-    "resets_at": "2026-01-02T00:00:00.000Z",
+    "daily_budget_usd": 1,
+    "daily_used_usd": 0.05,
+    "daily_remaining_usd": 0.95,
+    "prepaid_balance_usd": 0,
+    "prepaid_remaining_usd": 0,
+    "prepaid_expires_at": null,
+    "resets_at": "2026-02-20T00:00:00.000Z",
     "resets_in_seconds": 43200,
-    "credit_costs": {
+    "endpoint_costs_usd": {
       "singleton": 0,
-      "list": 1,
-      "search": 10,
-      "content": 100,
-      "text": 1000
+      "list": 0.0001,
+      "search": 0.001,
+      "content": 0.01,
+      "vector": 0.001,
+      "text": 0.01
     }
   }
 }
 ```
-
-<Note>
-The `/rate-limit` response uses internal units where $1 = 10,000 units.
-</Note>
 
 ## Exceeding Limits
 
