@@ -687,7 +687,7 @@ NOT:  ?search=climate+NOT+politics
 * Singleton requests (e.g., `/works/W123`): 1 credit
 * List requests (e.g., `/works?filter=...`): 10 credits
 * Content downloads (e.g., `content.openalex.org/works/{id}.pdf`): 100 credits
-* Semantic search (`?search.semantic=`): 100 credits
+* Semantic search (`?search.semantic=`): 10 credits
 * Text/Aboutness requests (deprecated): 1,000 credits
 
 #### Concurrent Requests Strategy

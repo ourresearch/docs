@@ -9,7 +9,7 @@ The API uses a credit-based rate limiting system. Different endpoint types consu
 | Singleton | `/works/W123`, `/works/W123/ngrams` | 0 (free) |
 | List | `/works?filter=...`, `/autocomplete/works` | 1 |
 | Content | [`content.openalex.org/works/{id}.pdf`](get-content.md) | 100 |
-| Semantic | `?search.semantic=` queries | 100 |
+| Semantic | `?search.semantic=` queries | 10 |
 | Text (Aboutness) | `/text/topics?title=...` | 1,000 |
 
 ### High-cost endpoints
@@ -20,7 +20,7 @@ Some endpoints consume significantly more credits than standard queries:
 |----------|---------|-------------------|-------|
 | [Content downloads](get-content.md) | 100 | \~1,000 files | PDF or TEI XML |
 | Aboutness (`/text`) | 1,000 | \~100 requests | Topic classification |
-| Semantic search | 100 | \~100 requests | `?search.semantic=` |
+| Semantic search | 10 | \~1,000 requests | `?search.semantic=` |
 
 {% hint style="warning" %}
 **Planning bulk content downloads?** Downloading all 60M available PDFs would require 6 billion credits. [Contact us](mailto:steve@ourresearch.org) about enterprise credit packs for large-scale projects.
@@ -84,7 +84,7 @@ Response:
       "singleton": 0,
       "list": 1,
       "content": 100,
-      "semantic": 100,
+      "semantic": 10,
       "text": 1000
     }
   }
