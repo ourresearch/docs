@@ -1,13 +1,9 @@
 ---
-title: Authentication & Rate Limits
-description: API keys, pricing, and rate limiting
+title: Authentication & Pricing
+description: API keys, pricing tiers, and usage limits
 ---
 
-The OpenAlex API uses a usage-based rate limiting system. Different endpoint types have different costs per request.
-
-<Warning>
-**API key required starting February 13, 2026.** API keys are free—[get yours here](https://openalex.org/settings/api). See the [announcement](https://groups.google.com/g/openalex-users/c/rI1GIAySpVQ) for details.
-</Warning>
+The OpenAlex API uses usage-based pricing on a freemium model. Different types of usage have different costs per request. A free API key is required.
 
 ## Getting an API Key
 
@@ -23,61 +19,50 @@ curl "https://api.openalex.org/works?api_key=YOUR_KEY"
 
 Without an API key, you're limited to $0.01/day of usage—enough for quick tests, but not for real work.
 
-## Rate Limits
+## Pricing by Endpoint
+
+<Tip>
+Use `per_page=100` to load many results per query--it makes your query budget go much further.
+</Tip>
+
+| Operation | Description | **Cost per 1,000 calls** |
+|-----------|-------------|--------------------------|
+| [Get singleton](/guides/get) | Retrieve a single entity by ID or DOI | **Free** |
+| [List+Filter](/guides/filtering) | Query and filter entities | **$0.10** |
+| [Search](/guides/searching) | Full-text keyword search | **$1** |
+| [Semantic search](/guides/searching) | AI-powered semantic search | **$1** |
+| [Content download](/download/full-text-pdfs) | Cached PDF via content API | **$10** |
+| [Text/Aboutness](/guides/deprecations) *(deprecated)* | Topic classification | **$10** |
+
+## Common Activity Costs
+
+| Activity | Endpoint | Calls | Results | Cost |
+|----------|----------|-------|---------|------|
+| Search "climate change AND kelp" | Search | 103 | 10,205 | $0.10 |
+| All works from Harvard | List+Filter | 8,707 | 870,627 | $0.87 |
+| Retrieve works by DOI from a list | Singleton | 1,000,000 | 1,000,000 | Free |
+| Daily research (20 searches, 200 filters, 50 lookups) | Mixed | 270 | ~27,000 | $0.04 |
+| Download 1,000 PDFs | Content | 1,000 | 1,000 PDFs | $10.00 |
+
+## What You Can Do for Free Every Day
+
+With a free API key ($1/day allowance), you can make per day:
+- **Unlimited** singleton requests (they're free)
+- **10,000** list+filter requests (1M results at 100/page)
+- **1,000** search requests (100K results at 100/page)
+- **100** content downloads
+- Any mix totaling $1
+
+## Usage Limits
 
 | Plan | Daily Allowance | Requests/Second |
 |------|-----------------|-----------------|
 | No API key | $0.01 | 100 |
 | Free API key | $1 | 100 |
 | [Paid plan](https://openalex.org/pricing) | Higher limits | 100 |
+| [Prepaid usage](https://openalex.org/pricing#prepaid-usage) | Based on balance | 100 |
 
 Academic researchers can often get increased limits for free—contact [support@openalex.org](mailto:support@openalex.org).
-
-## Pricing by Endpoint
-
-| Tier | Example | Cost |
-|------|---------|------|
-| **Singleton** — Retrieve by ID or DOI | `/works/W123` or `/works/doi:10.1234/foo` | Free |
-| **List / Filter** — Query and filter entities | `/works?filter=institution.id:I123` | $0.10 / 1,000 calls |
-| **Search** — Full-text keyword search | `/works?search=climate+change` | $1 / 1,000 calls |
-| **Semantic** — AI-powered semantic search | `/works?search.semantic=climate+change` | $10 / 1,000 calls |
-| **Content Download** — Cached PDF via content API | `content.openalex.org/works/{id}.pdf` | $10 / 1,000 downloads |
-| **Text/Aboutness** *(deprecated)* | `/text/topics` | $0.01 / call |
-
-### What you can do for free every day
-
-With a free API key ($1/day), you can make per day:
-- **Unlimited** singleton requests (they're free)
-- **10,000** list/filter requests, or
-- **1,000** search requests, or
-- **1,000** semantic searches, or
-- **100** content downloads, or
-- Any mix totaling $1
-
-### Common Activity Costs
-
-| Activity | Calls | Cost |
-|----------|-------|------|
-| Download 1,000 PDFs | 1,000 content downloads | $10 |
-| Retrieve 1M Works about "Climate Change AND Kelp" | ~5,000 paginated search calls | $5 |
-| Retrieve 1M Works by DOI from a list | 1M singleton calls | Free |
-| Filter all Works from an Institution (1M results) | ~5,000 list calls | $0.50 |
-| Daily research (20 searches, 200 filters, 50 lookups) | 270 calls | Free |
-
-### High-cost endpoints
-
-Some endpoints cost significantly more:
-
-| Endpoint | Cost | Daily limit (free) | Notes |
-|----------|------|-------------------|-------|
-| [Search](/guides/searching) | $1 / 1,000 calls | ~1,000 requests | `?search=` query parameter |
-| [Semantic search](/guides/searching#keyword-vs-semantic-search) | $1 / 1,000 calls | ~1,000 requests | `?search.semantic=` |
-| [Content downloads](/download/full-text-pdfs) | $10 / 1,000 files | ~100 files | PDF or TEI XML |
-| Aboutness (`/text`) | $0.01 / call | ~100 requests | Deprecated |
-
-<Warning>
-**Planning bulk content downloads?** Downloading all 60M available PDFs would cost ~$600,000. [Contact us](mailto:steve@ourresearch.org) about enterprise pricing for large-scale projects.
-</Warning>
 
 ## Rate Limit Headers
 
@@ -92,7 +77,7 @@ Every API response includes headers showing your current status:
 
 ## Check Your Status
 
-Check your current rate limit status using the `/rate-limit` endpoint:
+Check your current usage status using the `/rate-limit` endpoint:
 
 ```bash
 curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
@@ -134,7 +119,7 @@ If you exceed your daily limit or make more than 100 requests per second, you'll
 
 ## Query Limits
 
-Beyond rate limits, individual queries have these constraints:
+Beyond usage limits, individual queries have these constraints:
 
 | Limit | Value |
 |-------|-------|
