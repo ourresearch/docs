@@ -92,7 +92,9 @@
             "openapi": "api-reference/openapi.json",
             "pages": [
               "GET /autocomplete/{entity_type}",
-              "GET /rate-limit"
+              "GET /rate-limit",
+              "GET /changefiles",
+              "GET /changefiles/{date}"
             ]
           },
           {

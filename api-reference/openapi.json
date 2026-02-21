@@ -1267,6 +1267,179 @@
         }
       }
     },
+    "/changefiles": {
+      "get": {
+        "operationId": "listChangefiles",
+        "summary": "List changefile dates",
+        "description": "List all available changefile dates. Each date has downloadable files containing every entity record that was created or modified on that day. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles).",
+        "tags": [
+          "Changefiles"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of available changefile dates"
+                        }
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "The changefile date (YYYY-MM-DD)"
+                          },
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "URL to get details and download links for this date"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/changefiles/{date}": {
+      "get": {
+        "operationId": "getChangefile",
+        "summary": "Get changefile for a date",
+        "description": "Get details for a specific date's changefile, including which entity types changed, how many records, and download links in JSONL and Parquet formats. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles).",
+        "tags": [
+          "Changefiles"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "description": "The changefile date in YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2026-02-19"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of entity types with changes"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date",
+                          "description": "The changefile date"
+                        }
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "entity": {
+                            "type": "string",
+                            "description": "The entity type (e.g., works, authors, institutions)"
+                          },
+                          "records": {
+                            "type": "integer",
+                            "description": "Number of created or modified records"
+                          },
+                          "formats": {
+                            "type": "object",
+                            "properties": {
+                              "jsonl": {
+                                "type": "object",
+                                "properties": {
+                                  "size_bytes": {
+                                    "type": "integer",
+                                    "description": "File size in bytes"
+                                  },
+                                  "size_display": {
+                                    "type": "string",
+                                    "description": "Human-readable file size"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "description": "Download URL for gzipped JSONL file"
+                                  }
+                                }
+                              },
+                              "parquet": {
+                                "type": "object",
+                                "properties": {
+                                  "size_bytes": {
+                                    "type": "integer",
+                                    "description": "File size in bytes"
+                                  },
+                                  "size_display": {
+                                    "type": "string",
+                                    "description": "Human-readable file size"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "description": "Download URL for Parquet file"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
     "/domains": {
       "get": {
         "operationId": "listDomains",

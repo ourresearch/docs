@@ -3,6 +3,159 @@ title: Download Changefiles
 description: Download incremental updates to keep your local data current
 ---
 
-<Note>
-This page is coming soon. Changefiles let you download only what's changed since your last snapshot, keeping your local copy up to date without re-downloading the full dataset.
-</Note>
+Changefiles let you download only what's changed since your last snapshot, so you can keep a local copy of OpenAlex up to date without re-downloading the full dataset. Each day's changefile contains every entity that was created or modified on that date. The API keeps the last 60 days of changefiles available.
+
+## List Available Dates
+
+The `/changefiles` endpoint returns all available changefile dates:
+
+```bash
+curl "https://api.openalex.org/changefiles?api_key=YOUR_KEY"
+```
+
+```json
+{
+  "meta": {
+    "count": 9
+  },
+  "results": [
+    {
+      "date": "2026-02-20",
+      "url": "https://api.openalex.org/changefiles/2026-02-20?api_key=YOUR_KEY"
+    },
+    {
+      "date": "2026-02-19",
+      "url": "https://api.openalex.org/changefiles/2026-02-19?api_key=YOUR_KEY"
+    },
+    {
+      "date": "2026-02-18",
+      "url": "https://api.openalex.org/changefiles/2026-02-18?api_key=YOUR_KEY"
+    }
+  ]
+}
+```
+
+## Get a Day's Changes
+
+Follow a date's URL to see which entities changed or were created - and how many of each - and download links in both [JSONL](https://jsonlines.org/) and Parquet:
+
+```bash
+curl "https://api.openalex.org/changefiles/2026-02-19?api_key=YOUR_KEY"
+```
+
+```json
+{
+  "meta": {
+    "count": 19,
+    "date": "2026-02-19"
+  },
+  "results": [
+    {
+      "entity": "works",
+      "records": 3171968,
+      "formats": {
+        "jsonl": {
+          "size_bytes": 10842055680,
+          "size_display": "10.1 GB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/works_2026-02-19.jsonl.gz?api_key=YOUR_KEY"
+        },
+        "parquet": {
+          "size_bytes": 12130148352,
+          "size_display": "11.3 GB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/works_2026-02-19.parquet?api_key=YOUR_KEY"
+        }
+      }
+    },
+    {
+      "entity": "authors",
+      "records": 3124690,
+      "formats": {
+        "jsonl": {
+          "size_bytes": 9664790758,
+          "size_display": "9.0 GB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/authors_2026-02-19.jsonl.gz?api_key=YOUR_KEY"
+        },
+        "parquet": {
+          "size_bytes": 6938735872,
+          "size_display": "6.5 GB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/authors_2026-02-19.parquet?api_key=YOUR_KEY"
+        }
+      }
+    },
+    {
+      "entity": "institutions",
+      "records": 48857,
+      "formats": {
+        "jsonl": {
+          "size_bytes": 95621065,
+          "size_display": "91.2 MB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/institutions_2026-02-19.jsonl.gz?api_key=YOUR_KEY"
+        },
+        "parquet": {
+          "size_bytes": 40703645,
+          "size_display": "38.8 MB",
+          "url": "https://content.openalex.org/changefiles/2026-02-19/institutions_2026-02-19.parquet?api_key=YOUR_KEY"
+        }
+      }
+    }
+  ]
+}
+```
+
+Each entry includes:
+- **entity** — the entity type (works, authors, institutions, etc.)
+- **records** — total number of created or modified records
+- **formats** — download URLs and file sizes for JSONL (gzipped) and Parquet
+
+## What's in a Changefile
+
+A day's changefile contains every entity record that was **created or modified** on that date. This includes:
+
+- Newly created entities (e.g., a paper published today)
+- Existing entities with updated metadata (e.g., a work that gained new citations)
+
+Each record is a complete entity object — the same format you'd get from the API. To apply the update, upsert into your local data using the entity's `id` as the primary key.
+
+## Incremental Update Workflow
+
+1. Note the date of your last full snapshot or changefile download
+2. List available changefiles and identify dates after your last update
+3. For each new date, download the entity files you need
+4. Upsert records into your local copy using `id` as the primary key
+
+```python
+import requests
+
+API_KEY = "YOUR_KEY"
+
+# 1. List available changefiles
+dates = requests.get(
+    f"https://api.openalex.org/changefiles?api_key={API_KEY}"
+).json()["results"]
+
+# 2. Pick dates after your last update
+last_update = "2026-02-17"
+new_dates = [d for d in dates if d["date"] > last_update]
+
+# 3. Download each day's changes
+for date_info in new_dates:
+    day = requests.get(date_info["url"]).json()
+
+    for entity in day["results"]:
+        if entity["entity"] == "works":
+            download_url = entity["formats"]["jsonl"]["url"]
+            print(f"{date_info['date']}: {entity['records']:,} works "
+                  f"({entity['formats']['jsonl']['size_display']})")
+            # download and upsert...
+```
+
+## Formats
+
+Changefiles are available in two formats:
+
+| Format | Extension | Best for |
+|--------|-----------|----------|
+| JSONL (gzipped) | `.jsonl.gz` | Streaming ingestion, line-by-line processing |
+| Parquet | `.parquet` | Analytics, loading into data warehouses (BigQuery, Spark, DuckDB) |
+
+Both contain the same data — choose whichever fits your pipeline.
