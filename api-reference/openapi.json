@@ -3614,6 +3614,36 @@
             },
             "description": "Other ways this author's name has been displayed."
           },
+          "longest_name": {
+            "type": "string",
+            "description": "The longest name variant found for this author across all their works."
+          },
+          "parsed_longest_name": {
+            "type": "object",
+            "description": "The longest name parsed into its component parts.",
+            "properties": {
+              "first": {
+                "type": "string",
+                "description": "First name (lowercased)."
+              },
+              "middle": {
+                "type": "string",
+                "description": "Middle name or initial (lowercased)."
+              },
+              "last": {
+                "type": "string",
+                "description": "Last name (lowercased)."
+              },
+              "suffix": {
+                "type": "string",
+                "description": "Name suffix (e.g., Jr., III)."
+              },
+              "nickname": {
+                "type": "string",
+                "description": "Nickname, if any."
+              }
+            }
+          },
           "works_count": {
             "type": "integer",
             "description": "The number of works this author has created."
