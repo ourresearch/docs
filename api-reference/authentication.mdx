@@ -3,21 +3,19 @@ title: Authentication & Pricing
 description: API keys, pricing tiers, and usage limits
 ---
 
-OpenAlex data is and will remain free — the [full dataset](/download/overview) is available for bulk download at no cost. Running the API, however, costs money, and [paid plans](https://openalex.org/pricing) allow us to keep it running sustainably. This follows the [POSI](https://openscholarlyinfrastructure.org/) principle of *"revenue generated from services, not data."*
-
-The OpenAlex API uses usage-based pricing on a freemium model. Different types of usage have different costs per request. A free API key is required.
+OpenAlex data is and will remain available at no cost. Our [data snapshot](/download/overview#openalex-snapshot) is totally free for bulk download. The API is a freemium service: you get $1 free every day, and after that you pay for what you use. [We sell services, not data.](https://openscholarlyinfrastructure.org/)
 
 ## Getting an API Key
 
-Create a free account at [openalex.org](https://openalex.org) and grab your key from [openalex.org/settings/api](https://openalex.org/settings/api). Then add `api_key=YOUR_KEY` to your API calls:
+To use the API at scale, you need a key. It's free—just [make an account](https://openalex.org/) (takes 30 seconds) and copy your key from [openalex.org/settings/api](https://openalex.org/settings/api). Then add `api_key=YOUR_KEY` to your API calls:
 
 ```bash
 curl "https://api.openalex.org/works?api_key=YOUR_KEY"
 ```
 
-Without an API key, you're limited to $0.01/day of usage—enough for quick tests, but not for real work.
+## Costs
 
-## Pricing by Endpoint
+### Pricing by Endpoint
 
 <Tip>
 Use `per_page=100` to load many results per query--it makes your query budget go much further.
@@ -32,7 +30,7 @@ Use `per_page=100` to load many results per query--it makes your query budget go
 | [Content download](/download/full-text-pdfs) | Cached PDF via content API | **$10** |
 | [Text/Aboutness](/guides/deprecations) *(deprecated)* | Topic classification | **$10** |
 
-## Common Activity Costs
+### Common Activity Costs
 
 | Activity | Endpoint | Calls | Results | Cost |
 |----------|----------|-------|---------|------|
@@ -42,27 +40,26 @@ Use `per_page=100` to load many results per query--it makes your query budget go
 | Daily research (20 searches, 200 filters, 50 lookups) | Mixed | 270 | ~27,000 | $0.04 |
 | Download 1,000 PDFs | Content | 1,000 | 1,000 PDFs | $10.00 |
 
-## What You Can Do for Free Every Day
+### What You Can Do for Free Every Day
 
-With a free API key ($1/day allowance), you can make per day:
-- **Unlimited** singleton requests (they're free)
-- **10,000** list+filter requests (1M results at 100/page)
-- **1,000** search requests (100K results at 100/page)
-- **100** content downloads
-- Any mix totaling $1
+Your free API key gives you $1 of free usage every day. With that, you can do a mix of:
 
-## Usage Limits
+| Action | Calls | Results | Example |
+|--------|-------|---------|---------|
+| Get a single entity | Unlimited | Unlimited | Look up a work by DOI |
+| List+filter | 10,000 | 1,000,000 | All works from MIT in 2024 |
+| Search | 1,000 | 100,000 | Full-text search for "CRISPR" |
+| Content download | 100 | 100 PDFs | Download a paper's full text |
 
-| Plan | Daily Allowance | Requests/Second |
-|------|-----------------|-----------------|
-| No API key | $0.01 | 100 |
-| Free API key | $1 | 100 |
-| [Paid plan](https://openalex.org/pricing) | Higher limits | 100 |
-| [Prepaid usage](https://openalex.org/pricing#prepaid-usage) | Based on balance | 100 |
+### Increased Limits
 
-Academic researchers can often get increased limits for free—contact [support@openalex.org](mailto:support@openalex.org).
+Need more than $1/day? [Paid plans](https://openalex.org/pricing) give you higher daily allowances and prepaid usage.
 
-## Rate Limit Headers
+## Keeping Tabs on Costs
+
+### Per Call
+
+#### Rate Limit Headers
 
 Every API response includes headers showing your current status:
 
@@ -73,9 +70,32 @@ Every API response includes headers showing your current status:
 | `X-RateLimit-Credits-Used` | Cost of this request |
 | `X-RateLimit-Reset` | Seconds until reset (midnight UTC) |
 
-## Check Your Status
+#### Response Meta
 
-Check your current usage status using the `/rate-limit` endpoint:
+Every response includes a `meta` object (see [Response Format](/api-reference/introduction#response-format)) with the cost of that request and the total result count, so you can estimate the cost of paginating through all results before committing:
+
+```json
+"meta": {
+  "count": 870627,
+  "db_response_time_ms": 19,
+  "page": 1,
+  "per_page": 100,
+  "groups_count": null,
+  "cost_usd": 0.0001
+}
+```
+
+Here, `cost_usd` tells you this call cost \$0.0001 (list+filter calls are \$0.10 per 1,000), and `count` tells you 870,627 results at 100 per page = 8,707 calls = \$0.87 total.
+
+### Overall
+
+#### Usage Dashboard
+
+Check your usage anytime at [openalex.org/settings/usage](https://openalex.org/settings/usage)—accessible from the battery icon in the lower left of [openalex.org](https://openalex.org).
+
+#### Rate Limit Endpoint
+
+You can also check programmatically via the [`/rate-limit`](/api-reference/rate-limits/check-rate-limit-status) endpoint:
 
 ```bash
 curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
@@ -105,19 +125,13 @@ curl "https://api.openalex.org/rate-limit?api_key=YOUR_KEY"
 }
 ```
 
-## Exceeding Limits
+### Tips
+
+#### Exceeding Limits
 
 If you exceed your daily limit or make more than 100 requests per second, you'll get `429 Too Many Requests` errors.
 
-**Best practices:**
-- Use `per_page=100` to reduce the number of requests needed
-- Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 100 values per filter)
-- Use `select=` to [limit returned fields](/guides/selecting-fields) for faster responses
-- Implement [exponential backoff](/api-reference/errors#retry-logic) when you hit rate limits
-
-## Query Limits
-
-Beyond usage limits, individual queries have these constraints:
+Individual queries also have these constraints:
 
 | Limit | Value |
 |-------|-------|
@@ -128,15 +142,19 @@ Beyond usage limits, individual queries have these constraints:
 
 To retrieve more than 10,000 results, use [cursor paging](/guides/page-through-results#cursor-paging).
 
-## Usage Tips
+#### Usage Tips
 
-### Browser Testing
+**Best practices:**
+- Use `per_page=100` to reduce the number of requests needed
+- Batch ID lookups using the [OR syntax](/guides/filtering#or-operator) (up to 100 values per filter)
+- Use `select=` to [limit returned fields](/guides/selecting-fields) for faster responses
+- Implement [exponential backoff](/api-reference/errors#retry-logic) when you hit rate limits
 
-The API uses simple GET requests, so you can test any request in your browser. Install a JSON formatter extension for a better experience:
+**Browser testing:** The API uses simple GET requests, so you can test any request in your browser. Install a JSON formatter extension for a better experience:
 - [JSONVue (Chrome)](https://chrome.google.com/webstore/detail/jsonvue/chklaanhfefbnpoihckbnefhakgolnmc)
 - [JSONView (Firefox)](https://addons.mozilla.org/en-US/firefox/addon/jsonview)
 
-### Efficient Bulk Extraction
+**Efficient bulk extraction:**
 
 ```python
 # Use maximum page size

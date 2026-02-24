@@ -113,13 +113,17 @@ Search results include a `relevance_score` property and are sorted by it (descen
 - Text similarity to your search term
 - Citation count (more cited = higher score)
 
-## Semantic search
+## Semantic search (beta)
 
 Semantic search uses AI embeddings to find works by meaning. A query about "machine learning in healthcare" finds papers using "AI-driven diagnosis" or "computational medicine."
 
 ```bash
 https://api.openalex.org/works?search.semantic=machine learning in healthcare
 ```
+
+<Note>
+Semantic search is limited to **1 request per second**.
+</Note>
 
 Semantic search returns a maximum of **50 results** per query. Because every work relates to every query to some degree, the engine evaluates a pool of candidates and returns only the top 50 by similarity.
 
