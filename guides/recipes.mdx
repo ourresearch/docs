@@ -5,7 +5,7 @@ description: Common API patterns and use cases
 
 Quick solutions for common OpenAlex tasks.
 
-## Find works by an author
+## Find works by an author <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Get all works by a specific author
@@ -15,7 +15,7 @@ https://api.openalex.org/works?filter=author.id:A5023888391&sort=-publication_da
 https://api.openalex.org/works?filter=author.id:A5023888391,cited_by_count:>10&sort=-cited_by_count
 ```
 
-## Find works from an institution
+## Find works from an institution <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Works from Harvard
@@ -25,7 +25,7 @@ https://api.openalex.org/works?filter=institutions.id:I136199984&sort=-publicati
 https://api.openalex.org/works?filter=institutions.id:I63966007,open_access.is_oa:true,publication_year:>2019
 ```
 
-## Find works on a topic
+## Find works on a topic <Tooltip headline="Under 1¢" tip="List+Filter at $0.10/1,000 · Search at $1/1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Works about machine learning
@@ -35,21 +35,21 @@ https://api.openalex.org/works?filter=topics.id:T10000&sort=-cited_by_count
 https://api.openalex.org/works?search=CRISPR&sort=-relevance_score
 ```
 
-## Find citations to a work
+## Find citations to a work <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Works that cite a specific paper
 https://api.openalex.org/works?filter=cites:W2741809807&sort=-publication_date
 ```
 
-## Find co-authors
+## Find co-authors <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Other authors who published with a specific author
 https://api.openalex.org/authors?filter=x_concepts.id:C41008148&sort=-works_count
 ```
 
-## Get publication trends
+## Get publication trends <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Count works per year (2020-2024)
@@ -59,7 +59,7 @@ https://api.openalex.org/works?filter=publication_year:2020-2024&group_by=public
 https://api.openalex.org/works?filter=publication_year:2020-2024,open_access.is_oa:true&group_by=publication_year
 ```
 
-## Find open access works
+## Find open access works <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # All OA works from 2024
@@ -72,7 +72,7 @@ https://api.openalex.org/works?filter=open_access.oa_status:gold
 https://api.openalex.org/works?filter=best_oa_location.license:cc-by
 ```
 
-## Find works with full text
+## Find works with full text <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Works with downloadable PDFs
@@ -82,14 +82,14 @@ https://api.openalex.org/works?filter=has_content.pdf:true
 https://api.openalex.org/works?filter=has_abstract:true
 ```
 
-## Get institution rankings
+## Get institution rankings <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Top US universities by citation count
 https://api.openalex.org/institutions?filter=country_code:US,type:education&sort=-cited_by_count&per_page=20
 ```
 
-## Get journal metrics
+## Get journal metrics <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Top journals by work count
@@ -99,7 +99,7 @@ https://api.openalex.org/sources?filter=type:journal&sort=-works_count&per_page=
 https://api.openalex.org/sources?filter=type:journal,is_oa:true&sort=-works_count
 ```
 
-## Batch fetch multiple IDs
+## Batch fetch multiple IDs <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 Use the OR operator (`|`) to fetch up to 100 IDs at once:
 
@@ -111,21 +111,21 @@ https://api.openalex.org/works?filter=doi:https://doi.org/10.1234/a|https://doi.
 https://api.openalex.org/authors?filter=orcid:0000-0001-2345-6789|0000-0002-3456-7890&per_page=100
 ```
 
-## Random sample
+## Random sample <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # 100 random works from 2024
 https://api.openalex.org/works?filter=publication_year:2024&sample=100&per_page=100&seed=42
 ```
 
-## Combine filters
+## Combine filters <Tooltip headline="Under 1¢" tip="Search call at $1 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ```bash
 # Highly cited OA articles about cancer from 2023
 https://api.openalex.org/works?search=cancer&filter=publication_year:2023,type:article,open_access.is_oa:true,cited_by_count:>50&sort=-cited_by_count
 ```
 
-## Python example
+## Python example <Tooltip headline="~$2.12 for this query" tip="211K results ÷ 100 per page = ~2,116 Search-tier calls at $1/1,000"><Icon icon="dollar-sign" size={16} color="#DAA520" /></Tooltip>
 
 ```python
 import requests
@@ -156,7 +156,7 @@ def get_works(filter_str, per_page=100):
 works = get_works("publication_year:2024,default.search:artificial intelligence")
 ```
 
-## Find funded works
+## Find funded works <Tooltip headline="Under 1¢" tip="1 Search + 3 List+Filter calls"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 Discover research funded by a specific organization or grant.
 
@@ -174,7 +174,7 @@ https://api.openalex.org/works?filter=awards.funder_id:F4320306076,awards.funder
 https://api.openalex.org/works?filter=awards.funder_id:F4320306076,publication_year:2024,open_access.is_oa:true&sort=-cited_by_count
 ```
 
-## Explore publisher hierarchy
+## Explore publisher hierarchy <Tooltip headline="Under 1¢" tip="1 Search + 1 Get (free) + 2 List+Filter calls"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 Navigate the parent-subsidiary structure of publishers.
 
@@ -193,7 +193,7 @@ https://api.openalex.org/publishers?filter=parent_publisher:P4310319965&sort=-wo
 https://api.openalex.org/publishers?filter=hierarchy_level:0&sort=-works_count&per_page=20
 ```
 
-## Explore citation links
+## Explore citation links <Tooltip headline="Under 1¢" tip="1 Get (free) + 3 List+Filter calls"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 Trace the citation network around a single work using its `referenced_works`, `cited_by_api_url`, and `related_works` fields.
 
@@ -218,7 +218,7 @@ https://api.openalex.org/works?filter=cites:W2741809807&sort=-publication_date
 https://api.openalex.org/works?filter=openalex:W2052533833|W1982351946&per_page=100
 ```
 
-## Build a text corpus
+## Build a text corpus <Tooltip headline="$0.01 per file" tip="1 Search call + content downloads at $0.01/file"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 Assemble a collection of full-text PDFs for analysis or AI synthesis.
 

@@ -3,15 +3,13 @@ title: Authentication & Pricing
 description: API keys, pricing tiers, and usage limits
 ---
 
+OpenAlex data is and will remain free — the [full dataset](/download/overview) is available for bulk download at no cost. Running the API, however, costs money, and [paid plans](https://openalex.org/pricing) allow us to keep it running sustainably. This follows the [POSI](https://openscholarlyinfrastructure.org/) principle of *"revenue generated from services, not data."*
+
 The OpenAlex API uses usage-based pricing on a freemium model. Different types of usage have different costs per request. A free API key is required.
 
 ## Getting an API Key
 
-API keys are free. Here's how to get one:
-
-1. Create a free account at [openalex.org](https://openalex.org)
-2. Go to [openalex.org/settings/api](https://openalex.org/settings/api) to get your key
-3. Add `api_key=YOUR_KEY` to your API calls
+Create a free account at [openalex.org](https://openalex.org) and grab your key from [openalex.org/settings/api](https://openalex.org/settings/api). Then add `api_key=YOUR_KEY` to your API calls:
 
 ```bash
 curl "https://api.openalex.org/works?api_key=YOUR_KEY"

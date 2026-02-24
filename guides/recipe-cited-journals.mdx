@@ -3,7 +3,7 @@ title: Which Journals Does Your Institution Cite?
 description: Map the journals your researchers reference most by walking their citation lists
 ---
 
-There's no single API call that answers "which journals does institution X cite most?" — the `referenced_works` field on each work contains outgoing citations as raw IDs, not journal names. But with cursor paging and batching, you can build the full picture. We'll use the Santa Fe Institute (496 works in 2024) as the example.
+There's no single API call that answers "which journals does institution X cite most?" — the `referenced_works` field on each work contains outgoing citations as raw IDs, not journal names. But with cursor paging and batching, you can build the full picture. We'll use the Santa Fe Institute (496 works in 2024) as the example. <Tooltip headline="~2¢" tip="~155 List+Filter calls (5 pages + ~150 batch lookups) at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
 
 ## The approach
 
