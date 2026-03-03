@@ -360,8 +360,14 @@
     { "source": "/download-all-data/upload-to-your-database/:path*", "destination": "/download/overview" },
 
     { "source": "/additional-help/:path*", "destination": "/" },
+    { "source": "/additional-help", "destination": "/" },
     { "source": "/known-issues", "destination": "/guides/deprecations" },
-    { "source": "/guides/resolve-ids", "destination": "/guides/key-concepts#resolve-ids" }
+    { "source": "/guides/resolve-ids", "destination": "/guides/key-concepts#resolve-ids" },
+
+    { "source": "/website", "destination": "/" },
+    { "source": "/license", "destination": "/" },
+    { "source": "/api-entities", "destination": "/guides/key-concepts" },
+    { "source": "/how-to-use-the-api", "destination": "/api-reference/introduction" }
   ],
   "footer": {
     "socials": {
