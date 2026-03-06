@@ -125,6 +125,6 @@ ISSN: /sources/issn:2167-8359
 
 ## Links
 
-Docs: https://docs.openalex.org
+Docs: https://developers.openalex.org
 API Key: https://openalex.org/settings/api
-OpenAPI Spec: https://docs.openalex.org/api-reference/openapi.json
+OpenAPI Spec: https://developers.openalex.org/api-reference/openapi.json
