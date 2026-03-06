@@ -118,10 +118,10 @@ This will find relevant papers even if they use terms like "AI-driven medical di
 For many works, you can download the full-text PDF or structured XML:
 
 * Download PDF for a work\
-  [`https://content.openalex.org/works/W2741809807.pdf`](https://content.openalex.org/works/W2741809807.pdf)
+  [`https://content.openalex.org/works/W3038568908.pdf`](https://content.openalex.org/works/W3038568908.pdf)
 
 * Download TEI XML (parsed text with structure)\
-  [`https://content.openalex.org/works/W2741809807.tei.xml`](https://content.openalex.org/works/W2741809807.tei.xml)
+  [`https://content.openalex.org/works/W3038568908.tei.xml`](https://content.openalex.org/works/W3038568908.tei.xml)
 
 Not all works have content available—check the `has_content` field on a work to see what's downloadable.
 

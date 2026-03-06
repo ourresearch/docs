@@ -308,13 +308,13 @@ corresponding_institution_ids: ["https://openalex.org/I4210123613"]
 _String:_ A URL for downloading full-text content (PDF or TEI XML) for this work. Only present when [`has_content.pdf`](./#has_content) or `has_content.grobid_xml` is `true`.
 
 ```json
-content_url: "https://content.openalex.org/works/W2741809807"
+content_url: "https://content.openalex.org/works/W3038568908"
 ```
 
 Append `.pdf` or `.grobid-xml` to download specific formats, and include your API key:
 
 ```
-https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY
+https://content.openalex.org/works/W3038568908.pdf?api_key=YOUR_KEY
 ```
 
 See [Get content](../../../how-to-use-the-api/get-content.md) for details.

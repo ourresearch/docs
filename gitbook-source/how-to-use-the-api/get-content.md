@@ -26,12 +26,12 @@ Let's say you have an OpenAlex work ID and you want to download its full-text PD
 https://content.openalex.org/works/{work_id}.pdf?api_key=YOUR_KEY
 ```
 
-Replace `{work_id}` with any OpenAlex work ID (like `W2741809807`), and you'll download the PDF. Use `.grobid-xml` instead of `.pdf` to get the TEI XML version. If you don't specify an extension, it'll default to `.pdf`.
+Replace `{work_id}` with any OpenAlex work ID (like `W3038568908`), and you'll download the PDF. Use `.grobid-xml` instead of `.pdf` to get the TEI XML version. If you don't specify an extension, it'll default to `.pdf`.
 
 Examples:
 
-* PDF: [`https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY`](https://content.openalex.org/works/W2741809807.pdf?api_key=YOUR_KEY)
-* TEI XML: [`https://content.openalex.org/works/W2741809807.grobid-xml?api_key=YOUR_KEY`](https://content.openalex.org/works/W2741809807.grobid-xml?api_key=YOUR_KEY)
+* PDF: [`https://content.openalex.org/works/W3038568908.pdf?api_key=YOUR_KEY`](https://content.openalex.org/works/W3038568908.pdf?api_key=YOUR_KEY)
+* TEI XML: [`https://content.openalex.org/works/W3038568908.grobid-xml?api_key=YOUR_KEY`](https://content.openalex.org/works/W3038568908.grobid-xml?api_key=YOUR_KEY)
 
 ### Multiple works
 
@@ -80,8 +80,8 @@ If you already have a [work object](../api-entities/works/work-object/) from the
 
 ```json
 {
-  "id": "https://openalex.org/W2741809807",
-  "content_url": "https://content.openalex.org/works/W2741809807",
+  "id": "https://openalex.org/W3038568908",
+  "content_url": "https://content.openalex.org/works/W3038568908",
   ...
 }
 ```
