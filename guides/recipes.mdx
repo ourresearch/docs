@@ -234,11 +234,11 @@ https://api.openalex.org/works?search=CRISPR&filter=has_content.pdf:true,publica
 curl -L "https://content.openalex.org/works/W3038568908.pdf?api_key=YOUR_KEY" -o W3038568908.pdf
 
 # Step 3: For bulk downloads, use the CLI tool
-pip install openalex-content-downloader
+pip install openalex-official
 
-openalex-content download \
+openalex download \
   --api-key YOUR_KEY \
-  --output ./pdfs \
+  --output ./results \
   --filter "default.search:CRISPR,has_content.pdf:true,publication_year:2023-2024"
 ```
 

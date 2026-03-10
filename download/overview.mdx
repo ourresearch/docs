@@ -40,7 +40,10 @@ The official command-line tool for downloading filtered subsets of OpenAlex data
 
 ```bash
 pip install openalex-official
-openalex download --api-key YOUR_KEY --filter "publication_year:2024" --output ./data
+openalex download \
+  --api-key YOUR_KEY \
+  --filter "publication_year:2024" \
+  --output ./results
 ```
 
 **Best for:** Downloading specific subsets without the full snapshot

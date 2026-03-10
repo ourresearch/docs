@@ -17,7 +17,7 @@ pip install openalex-official
 ```bash
 openalex download \
   --api-key YOUR_KEY \
-  --output ./frogs \
+  --output ./results \
   --filter "topics.id:T10325"
 ```
 
@@ -28,7 +28,7 @@ This saves a JSON file for each work with the complete metadata from OpenAlex.
 ```bash
 openalex download \
   --api-key YOUR_KEY \
-  --output ./frogs \
+  --output ./results \
   --filter "topics.id:T10325" \
   --content pdf
 ```
@@ -38,7 +38,7 @@ openalex download \
 ```bash
 openalex download \
   --api-key YOUR_KEY \
-  --output ./frogs \
+  --output ./results \
   --filter "topics.id:T10325" \
   --content pdf,xml
 ```
@@ -48,7 +48,7 @@ openalex download \
 ```bash
 openalex download \
   --api-key YOUR_KEY \
-  --output ./my-papers \
+  --output ./results \
   --ids "10.1038/nature12373,10.1126/science.1234567"
 ```
 
@@ -57,7 +57,7 @@ openalex download \
 ```bash
 cat work_ids.txt | openalex download \
   --api-key YOUR_KEY \
-  --output ./corpus \
+  --output ./results \
   --stdin
 ```
 
