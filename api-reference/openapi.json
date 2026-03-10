@@ -3194,7 +3194,7 @@
           "abstract_inverted_index": {
             "type": "object",
             "nullable": true,
-            "description": "The abstract as an inverted index (word positions). OpenAlex doesn't include plaintext abstracts due to legal constraints."
+            "description": "The abstract as an inverted index (word positions). OpenAlex doesn't include plaintext abstracts due to legal constraints. Use the `has_abstract` filter to get works with or without abstracts."
           },
           "referenced_works": {
             "type": "array",
