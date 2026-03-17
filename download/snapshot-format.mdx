@@ -98,35 +98,6 @@ To update a snapshot copy that you created or updated on date `X`, insert or upd
 
 You never need to re-download a partition you already have. Anything that changed has moved to a newer partition.
 
-## Merged entities
-
-Alongside the entity type folders, you'll find a [`merged_ids`](https://openalex.s3.amazonaws.com/browse.html#data/merged_ids/) folder. This contains the IDs of entities that have been merged, along with the IDs they were merged into.
-
-Merging is a way of deleting an entity while preserving its ID. In practice, you can just delete the entity. You don't need to track the merge date or target.
-
-```
-/data/merged_ids/
-├── authors
-│   └── 2024-01-07.csv.gz
-├── institutions
-│   └── 2024-01-01.csv.gz
-├── sources
-│   └── 2024-01-03.csv.gz
-└── works
-    └── 2024-01-06.csv.gz
-```
-
-Each CSV file lists IDs that were merged on that date:
-
-```csv
-merge_date,id,merge_into_id
-2024-01-07,A2257618939,A2208157607
-```
-
-When processing this file, delete `A2257618939`. The effects of merging (like crediting the target author with works) are already reflected in the affected entities.
-
-Like the `updated_date` partitions, you only need to download `merged_ids` files that are new to you.
-
 ## The manifest file
 
 Each entity type has a `manifest` file that lists all data files. When we start writing a new `updated_date` partition, we delete the manifest. When we finish, we recreate it with the new files included. So if the manifest is present, all data files are complete.
