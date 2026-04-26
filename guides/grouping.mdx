@@ -82,6 +82,22 @@ https://api.openalex.org/works?group_by=authorships.countries:include_unknown
 ```
 </CodeGroup>
 
+### How "unknown" is keyed
+
+The bucket's `key` depends on the field type:
+
+| Field type | Example | Unknown `key` |
+|------------|---------|---------------|
+| String / ID | `primary_location.license`, `type` | `"unknown"` |
+| Numeric (range) | `apc_paid.value`, `cited_by_count` | `-111` (sentinel) |
+| Boolean | `is_oa` | returned as the `false` bucket |
+
+Numeric fields use the sentinel `-111` because the aggregation bucket can't mix a string key like `"unknown"` into a numeric series. Treat any `-111` (or `-111.0`) bucket key as "unknown."
+
+### What counts as "unknown"
+
+A work is counted in the unknown bucket when the underlying field is missing or empty. For fields nested inside an array — for example `authorships.institutions.type` — the work is also counted as unknown when the array is present but empty (e.g. an authorship with no institutions). If you reproduce `group_by` counts in code by iterating the JSON, treat empty lists the same way to match the API's totals.
+
 ## Combining with filters
 
 Group by and filter work together:
