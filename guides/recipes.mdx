@@ -1,5 +1,5 @@
 ---
-title: Basic Operations
+title: Quick Recipes
 description: Common API patterns and use cases
 ---
 
@@ -47,6 +47,15 @@ https://api.openalex.org/works?filter=cites:W2741809807&sort=-publication_date
 ```bash
 # Other authors who published with a specific author
 https://api.openalex.org/authors?filter=x_concepts.id:C41008148&sort=-works_count
+```
+
+## Find internationally co-authored works <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
+
+Use `countries_distinct_count` to find works with authors from multiple countries — the standard scientometric definition of international collaboration.
+
+```bash
+# Indian articles co-authored with at least one non-Indian institution
+https://api.openalex.org/works?filter=institutions.country_code:IN,countries_distinct_count:>1,type:article
 ```
 
 ## Get publication trends <Tooltip headline="Under 1¢" tip="List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
