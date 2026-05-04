@@ -5,6 +5,10 @@ description: Download incremental updates to keep your local data current
 
 Changefiles let you download only what's changed since your last snapshot, so you can keep a local copy of OpenAlex up to date without re-downloading the full dataset. Each day's changefile contains every entity that was created or modified on that date. The API keeps the last 60 days of changefiles available.
 
+<Warning>
+**Daily changefiles require a paid plan.** The free public snapshot is refreshed monthly. The `/changefiles` API and the daily incremental files documented on this page are only available to subscribers on a [paid plan](https://openalex.org/pricing). Need daily updates? Contact [sales@openalex.org](mailto:sales@openalex.org).
+</Warning>
+
 ## List Available Dates
 
 The `/changefiles` endpoint returns all available changefile dates:

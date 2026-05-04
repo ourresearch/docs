@@ -1271,7 +1271,7 @@
       "get": {
         "operationId": "listChangefiles",
         "summary": "List changefile dates",
-        "description": "List all available changefile dates. Each date has downloadable files containing every entity record that was created or modified on that day. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles).",
+        "description": "List all available changefile dates. Each date has downloadable files containing every entity record that was created or modified on that day. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles). **Requires a paid plan** — contact sales@openalex.org or see [pricing](https://openalex.org/pricing).",
         "tags": [
           "Changefiles"
         ],
@@ -1330,7 +1330,7 @@
       "get": {
         "operationId": "getChangefile",
         "summary": "Get changefile for a date",
-        "description": "Get details for a specific date's changefile, including which entity types changed, how many records, and download links in JSONL and Parquet formats. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles).",
+        "description": "Get details for a specific date's changefile, including which entity types changed, how many records, and download links in JSONL and Parquet formats. For a full guide on using changefiles to keep your local data current, see [Download Changefiles](/download/changefiles). **Requires a paid plan** — contact sales@openalex.org or see [pricing](https://openalex.org/pricing).",
         "tags": [
           "Changefiles"
         ],
