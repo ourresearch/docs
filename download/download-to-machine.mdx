@@ -1,12 +1,12 @@
 ---
-title: Download to your machine
-description: Get the OpenAlex snapshot files onto your local machine using the AWS CLI
+title: "Download to your machine"
+description: "Get the OpenAlex snapshot files onto your local machine using the AWS CLI"
 ---
 
 The OpenAlex snapshot is hosted on [Amazon S3](https://aws.amazon.com/s3/) and is **free to download**. You don't need an AWS account.
 
 <Info>
-Many thanks to the [AWS Open Data program](https://aws.amazon.com/opendata/), which covers the data-transfer fees (about $70 per download) so users don't have to.
+  Many thanks to the [AWS Open Data program](https://aws.amazon.com/opendata/), which covers the data-transfer fees (about \$70 per download) so users don't have to.
 </Info>
 
 ## Prerequisites
@@ -24,11 +24,11 @@ aws s3 sync "s3://openalex" "openalex-snapshot" --no-sign-request
 ```
 
 <Warning>
-If you're downloading into a folder that already has a previous snapshot, use the `--delete` flag to remove outdated files. Otherwise you'll get duplicate entities that have moved between partitions.
+  If you're downloading into a folder that already has a previous snapshot, use the `--delete` flag to remove outdated files. Otherwise you'll get duplicate entities that have moved between partitions.
 
-```bash
-aws s3 sync "s3://openalex" "openalex-snapshot" --no-sign-request --delete
-```
+  ```bash
+  aws s3 sync "s3://openalex" "openalex-snapshot" --no-sign-request --delete
+  ```
 </Warning>
 
 ## Check the current size
@@ -43,7 +43,7 @@ aws s3 ls --summarize --human-readable --no-sign-request --recursive "s3://opena
 
 After downloading, you'll have a structure like this:
 
-```
+```text
 openalex-snapshot/
 ├── LICENSE.txt
 ├── RELEASE_NOTES.txt
@@ -92,3 +92,23 @@ If you don't want to download files locally, some services can read directly fro
 
 For these approaches, the [snapshot data format](/download/snapshot-format) documentation should have enough detail to get started.
 
+## Download with an enterprise API key
+
+The free public snapshot updates quarterly. Enterprise customers get a monthly snapshot using the steps below.
+
+1. Add this to ~/.aws/config (replace YOUR\_KEY with your OpenAlex API key):
+
+`[profile openalex]`\
+`credential_process = curl -sf -X POST "https://api.openalex.org/snapshots/credentials?api_key=YOUR_KEY"`
+
+The AWS CLI will fetch and refresh credentials automatically.
+
+2. Browse and download
+
+`aws s3 ls s3://openalex-snapshots/full/ --profile openalex`
+
+`aws s3 sync s3://openalex-snapshots/full/2026-04-29/jsonl/ ./openalex-snapshot-jsonl --profile openalex`
+
+`aws s3 sync s3://openalex-snapshots/full/2026-04-29/parquet/ ./openalex-snapshot-parquet --profile openalex`
+
+The latest snapshot includes parquet format, which will be added to the free quarterly snapshot beginning June 2026. If you're interested in monthly snapshots, contact [sales@openalex.org](mailto:sales@openalex.org). 
