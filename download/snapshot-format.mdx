@@ -55,7 +55,7 @@ The structure of each entity type matches the API response format:
 ## Keeping your snapshot up to date
 
 <Warning>
-The free public snapshot is refreshed **monthly**. To keep your local copy in sync on a **daily** basis, use the [Changefiles API](/download/changefiles), which is available to [paid plan](https://openalex.org/pricing) subscribers. Need daily updates? Contact [sales@openalex.org](mailto:sales@openalex.org).
+The free public snapshot is refreshed **quarterly**. **Monthly snapshots** and **daily change files** (via the [Changefiles API](/download/changefiles)) require a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
 </Warning>
 
 The `updated_date` partitions make incremental updates straightforward. Unlike dated snapshots that each contain the full dataset, each partition contains only the records that **last changed** on that date.
