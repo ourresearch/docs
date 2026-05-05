@@ -48,6 +48,7 @@
               "guides/get",
               "guides/filtering",
               "guides/searching",
+              "guides/semantic-search",
               "guides/sort",
               "guides/page-through-results",
               "guides/grouping",
