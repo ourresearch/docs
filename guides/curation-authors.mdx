@@ -1,0 +1,144 @@
+---
+title: Author Curation
+description: Curate your profile to claim works, remove works, or change your name
+---
+
+OpenAlex assigns [authors](/api-reference/authors) to works automatically, but sometimes we get things wrong.
+Author curation lets you fix that: sign in, tell us what's wrong, and we'll make the change.
+
+<Note>
+The pipeline behind curation is up and running, but the website for submitting curations isn't built yet.
+</Note>
+
+## What you can curate
+
+Four corrections are available. The first two move [works](/api-reference/works) between author profiles; the last two adjust author names.
+
+| Action          | Says                                                          | Result on the next refresh                                                          |
+| --------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `claim work`         | "The raw author name Joe Smith on work W4404012345 is me, author A5023888391."              | Work W4404012345's authorship with name Joe Smith is assigned to author A5023888391, regardless of the previous ID.   |
+| `remove from work`        | "Work W4407654321 lists my author ID A5023888391 as an author, but that's not me."                              | The author ID A5023888391 on work W4407654321 is set to null and the work is removed from the author profile. |
+| `modify display_name`  | "My author profile has the name J Smith but I want it to say John Smith"                          | Profile's `display_name` becomes John Smith. All works with that profile are updated to show the new name.                                                  |
+| `modify full_name`     | "The best way to match works to my profile is to use the full_name John W. Smith" | Subsequent matching favors works whose parsed full name is John W. Smith.              |
+
+## Who can curate
+
+Curation actions are recorded against the signed-in OpenAlex user account that submits them. Every curation row carries that `user_id`, so the audit trail of "who claimed what" is preserved in the source database even though it is not surfaced on the public API.
+
+## When changes appear
+
+Curations apply on the next end-to-end refresh of the pipeline, which runs once per day. So changes should appear within 24 hours.
+
+- A work-level curation (`claim` or `remove`) flows through the works pipeline. The curated work is updated in the search index, so the change becomes visible on `GET /works/{id}` and in filtered queries on the next sync.
+- An author-level curation (`display_name` or `full_name`) flows through the authors pipeline and becomes visible on `GET /authors/{id}` on the next sync.
+
+## How it flows under the hood
+
+The pipeline has four steps. The first two live in the OpenAlex users API (Heroku Postgres); the last two live in the OpenAlex data warehouse (Databricks / Delta).
+
+<Steps>
+  <Step title="Save the request to public.curations">
+    Each curation is one row in the `public.curations` postgres table in the OpenAlex users API. The grammar is the same for every curation — `(entity, entity_id).property action value` — only the `property` string and `action` verb change.
+
+    **Claim a work** — "The authorship printed as `Smith, J.` on work W4404012345 is me, author A5023888391."
+
+    | Column      | Value                                                  |
+    | ----------- | ------------------------------------------------------ |
+    | `entity`    | `works`                                                |
+    | `entity_id` | `https://openalex.org/W4404012345`                     |
+    | `property`  | `authorships[raw_author_name="Smith, J."].author.id`   |
+    | `action`    | `replace`                                              |
+    | `value`     | `https://openalex.org/A5023888391`                     |
+
+    The `property` string anchors the claim to a specific raw author name. Inside the brackets, the raw author name is wrapped in double quotes; apostrophes inside the name are not escaped. The downstream view extracts the name from `property` with this regex, where the capture group is the raw author name:
+
+    ```
+    ^authorships\[raw_author_name="([^"]+)"\]\.author\.id$
+    ```
+
+    **Remove from work** — "Work W4404012345 lists author A5023888391, but that's not me."
+
+    | Column      | Value                                  |
+    | ----------- | -------------------------------------- |
+    | `entity`    | `works`                                |
+    | `entity_id` | `https://openalex.org/W4404012345`     |
+    | `property`  | `authorships.author.id`                |
+    | `action`    | `remove`                               |
+    | `value`     | `https://openalex.org/A5023888391`     |
+
+    The `property` here has no `raw_author_name` anchor — the removal is non-positional and sticky. Every cycle, that author ID is cleared from every authorship on that work, even if the matcher tries to re-attach it.
+
+    The two profile-level corrections target the author entity directly.
+
+    **Modify display_name** — "My author profile A5023888391 should be displayed as `John Smith`, not `J Smith`."
+
+    | Column      | Value                                  |
+    | ----------- | -------------------------------------- |
+    | `entity`    | `authors`                              |
+    | `entity_id` | `https://openalex.org/A5023888391`     |
+    | `property`  | `display_name`                         |
+    | `action`    | `replace`                              |
+    | `value`     | `John Smith`                           |
+
+    The author's works will be re-synced so the updated name is reflected in the API.
+
+    **Modify full_name** — "Match works to my profile A5023888391 using the full name `John W. Smith`."
+
+    | Column      | Value                                  |
+    | ----------- | -------------------------------------- |
+    | `entity`    | `authors`                              |
+    | `entity_id` | `https://openalex.org/A5023888391`     |
+    | `property`  | `full_name`                            |
+    | `action`    | `replace`                              |
+    | `value`     | `John W. Smith`                        |
+
+    `full_name` feeds the matcher (not the displayed profile), so `value` should be one of the author's existing raw author names from a work already on their profile.
+  </Step>
+
+  <Step title="Split into views by curation type">
+    Four views in the users-api Postgres database split `public.curations` into one view per curation type:
+
+    - `work_author_claim_curations`
+    - `work_author_remove_curations`
+    - `author_display_name_curations`
+    - `author_full_name_curations`
+  </Step>
+
+  <Step title="Sync nightly to Delta tables">
+    A nightly Databricks job copies each view into a Delta table in the OpenAlex data warehouse:
+
+    - `openalex.works.work_author_claim_curations`
+    - `openalex.works.work_author_remove_curations`
+    - `openalex.authors.author_names_curations` (one row per author, both name fields joined)
+  </Step>
+
+  <Step title="Apply curations to entity state">
+    Each pipeline run applies the curations to the live entity tables.
+
+    **Work curations** are applied during the works pipeline, between the `MatchAuthors` and `UpdateWorkAuthorships` steps. They modify `openalex.works.work_authors`:
+
+    - A **claim** overwrites the `author_id` at the matching `(work_id, raw_author_name)`.
+    - A **remove** sets the `author_id` to NULL at `(work_id, author_id)`.
+
+    Both run every cycle, so a removed author stays removed even if the matcher tries to re-attach it. Every curated `work_id` is queued in `openalex.works.curated_work_ids_pending_sync` so the work re-exports to the search index on the next sync.
+
+    **Author name curations** are applied during the authors pipeline. They modify `openalex.authors.authors`:
+
+    - A **display_name** change overwrites the profile's `display_name`, then queues every work that lists the author in `curated_work_ids_pending_sync` so the new name appears in the API.
+    - A **full_name** change overwrites the profile's matching `full_name`.
+  </Step>
+</Steps>
+
+## Where to look in the data
+
+If you want to spot-check a curation end to end:
+
+| Question                                      | Where to look                                                                                            |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Was the curation recorded?                    | `public.curations` row, by `id` or `user_id`. Or the matching typed view.                                |
+| Did the sync pick it up?                      | `openalex.works.work_author_{claim,remove}_curations` or `openalex.authors.author_names_curations`.      |
+| Did the apply land it?                        | `openalex.works.work_authors.author_id` at the curated `(work_id, raw_author_name)` or `(work_id, author_id)`; or `openalex.authors.authors.display_name`. |
+| Will the work re-emit to ES?                  | `openalex.works.curated_work_ids_pending_sync` should contain the affected `work_id` after the apply. `UpdateWorkAuthorships` drains the queue at the end of its run. |
+| Is the change visible on the public API yet?  | `GET /works/{id}` for work curations; `GET /authors/{id}` for name curations.                            |
+
+A round trip from UI click to public API takes one full pipeline cycle. If the curation is recorded in `public.curations` but not yet visible in the Delta target, the next scheduled sync will pick it up; if it is in the Delta target but not yet on `work_authors`, the next apply will land it.
