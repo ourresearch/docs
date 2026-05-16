@@ -55,6 +55,34 @@ https://api.openalex.org/works?search=(elmo AND "sesame street") NOT (cookie OR 
 Words not separated by boolean operators are treated as `AND`.
 </Note>
 
+## Large Boolean queries
+
+Because the query travels in the request URL, the whole request URL is limited to about **4 KB** (roughly 4,000 characters). A very long `search=` value — typically a Boolean query with many `OR` terms, common in systematic reviews — can exceed this and return a `400` error:
+
+```json
+{
+  "error": "Request URL too long",
+  "message": "Your request URL is 4612 bytes, over the 4094-byte limit (roughly 4 KB, mostly the 'search' value). Split a large Boolean query into smaller chunks, request each separately, and combine the returned IDs client-side."
+}
+```
+
+This is a fixed limit, not a usage/credit cost — splitting the query does not lose any results. To run a query larger than ~4 KB, split the `OR` list into chunks, request each chunk separately, and take the union of the returned IDs client-side. The result is exactly the same set of works:
+
+```text
+# Instead of one query that is too long:
+search=(termA OR termB OR ... OR termZ) AND climate
+
+# Split the OR list and union the IDs from each request:
+search=(termA OR ... OR termM) AND climate
+search=(termN OR ... OR termZ) AND climate
+```
+
+Keep each chunk's full request URL under ~4 KB. Combining results is exact because `(X AND (a OR b OR c OR d))` equals `(X AND (a OR b)) ∪ (X AND (c OR d))`. Putting `api_key` and `mailto` in request headers instead of the URL frees a little extra room, but for a large Boolean query you will still need to split it.
+
+<Tip>
+Each chunked request is billed independently, just like any other request. Splitting is only needed to stay under the URL length limit — it is not a way to reduce cost.
+</Tip>
+
 ## Phrase and proximity search
 
 ### Phrase matching
