@@ -47,10 +47,10 @@ Requests are JWT-protected. Pass the token either as an `Authorization: Bearer <
 }
 ```
 
-The `property` string anchors the claim to a specific `raw_author_name` from the authorships list in the work. Inside the brackets, the raw author name is wrapped in double quotes; apostrophes inside the name are not escaped. The downstream view extracts the name from `property` with this regex, where the capture group is the raw author name:
+The `property` string anchors the claim to a specific `raw_author_name` from the authorships list in the work. Inside the brackets, the raw author name is wrapped in double quotes and sent byte-for-byte — apostrophes and inner double quotes are not escaped (so a byline like `George "Vern" Yocum` goes in verbatim). The downstream view extracts the name from `property` with this regex, where the capture group is the raw author name:
 
 ```
-^authorships\[raw_author_name="([^"]+)"\]\.author\.id$
+^authorships\[raw_author_name="(.+)"\]\.author\.id$
 ```
 
 ### Remove from work
