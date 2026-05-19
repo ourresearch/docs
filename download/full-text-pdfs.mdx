@@ -122,9 +122,11 @@ See the [pricing page](https://openalex.org/pricing) for details, or [contact us
 
 At typical network speeds, expect **1–2 weeks** to download the full archive.
 
-## File naming
+The archive is production-ready but still early, and we add and clean files continuously, so treat it as a living dataset you re-sync periodically rather than a frozen snapshot. As a sensible default, validate each file on ingest (check the leading `%PDF` magic bytes and skip implausibly small objects) so your pipeline is robust to any in-flight changes.
 
-Files are named by UUID, not work ID:
+## Mapping work IDs to files
+
+Files in the archive bucket are named by UUID, not work ID:
 
 ```
 openalex-pdfs/
@@ -138,7 +140,19 @@ openalex-grobid-xml/
 └── ...
 ```
 
-To map work IDs to file UUIDs, use the [snapshot data](/download/snapshot-format). The `locations` array in each work contains `pdf_url` fields that include the UUID.
+You don't need to reconstruct the UUID join yourself. Every work object exposes an authoritative mapping through two fields:
+
+```json
+"has_content":  { "pdf": true, "grobid_xml": true },
+"content_urls": { "pdf": "https://content.openalex.org/works/W1775749144.pdf",
+                  "grobid_xml": "https://content.openalex.org/works/W1775749144.grobid-xml" }
+```
+
+`https://content.openalex.org/works/{work_id}.pdf` is an addressable endpoint that resolves the work ID to the underlying archive object server-side. Filter your candidate set with `has_content.pdf:true` (available in the [snapshot](/download/snapshot-format) and the API; `content_urls` is API-only), then fetch each work by ID.
+
+<Warning>
+Do **not** map work IDs to archive objects via `locations[].pdf_url`. That field is the *original publisher* URL, not the archive object — keying off it produces a lossy, inferred match. Use `content_urls` / the content endpoint instead.
+</Warning>
 
 ## Licensing
 
