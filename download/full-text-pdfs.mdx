@@ -154,6 +154,14 @@ You don't need to reconstruct the UUID join yourself. Every work object exposes 
 Do **not** map work IDs to archive objects via `locations[].pdf_url`. That field is the *original publisher* URL, not the archive object — keying off it produces a lossy, inferred match. Use `content_urls` / the content endpoint instead.
 </Warning>
 
+## TEI XML quality and limitations
+
+GROBID ([project](https://github.com/kermitt2/grobid), [docs](https://grobid.readthedocs.io/)) is the state of the art for converting scholarly PDFs to structured TEI XML. But PDF parsing is genuinely hard, and a meaningful share of files will contain errors — missing or duplicated references, occasional self-references (the paper's own DOI picked up from its header or footer), wrong or partial header metadata, and the odd truncated section. You can see how GROBID performs field-by-field in [the project's own benchmarks](https://grobid.readthedocs.io/en/latest/Benchmarking/).
+
+We pass GROBID's output through unchanged, including any errors it made. You can catch some with simple guard clauses — for example, **drop any reference whose DOI matches the work's own DOI**, and **cross-check GROBID's header metadata against the OpenAlex Work record** (which draws on Crossref and other sources independently of GROBID).
+
+A lot of people today actually want Markdown rather than XML for LLM and RAG pipelines. We don't have Markdown parses yet, though they're on the roadmap. In the meantime you can roll your own by downloading the PDFs we provide and running them through one of the newer PDF→Markdown tools like [Marker](https://github.com/datalab-to/marker), [Docling](https://github.com/docling-project/docling), or [MinerU](https://github.com/opendatalab/MinerU).
+
 ## Licensing
 
 The PDFs retain their original copyright. OpenAlex does not grant any additional rights to the content.
