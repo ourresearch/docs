@@ -1,0 +1,263 @@
+---
+title: Collections
+description: Save named lists of OpenAlex entities and filter searches against them
+---
+
+A **collection** is a private, named list of OpenAlex entities of one type — for
+example, "Papers I'm tracking for this grant", "Authors at my consortium", or
+"Journals I publish in". Collections give you a single ID you can drop into the
+[`filter` parameter](/guides/filtering) anywhere in the API, instead of pasting
+hundreds of OpenAlex IDs into every request.
+
+<Note>
+Collections are private to the user who creates them. Manage them via
+authenticated requests against `user.openalex.org` (JWT required), and use the
+`collection:` filter against `api.openalex.org` with either your OpenAlex API
+key or a JWT — you can only filter on collections you own.
+</Note>
+
+## Concepts
+
+| Property                         | Value                                                     |
+| -------------------------------- | --------------------------------------------------------- |
+| One entity type per collection   | `works`, `authors`, `sources`, `institutions`, `topics`, `sdgs`, `funders`, `publishers`, `keywords`, or `concepts` |
+| Max entities per collection      | 1,000                                                     |
+| Max collections per user         | 100                                                       |
+| Display-name length              | 1–30 characters; case-insensitive unique per user         |
+| Description length               | 0–500 characters                                          |
+| ID shape                         | `col_` followed by 10 alphanumeric characters             |
+
+A collection holds entities of a single type. To track works *and* the authors
+of those works, create two collections.
+
+## Creating a collection
+
+The easiest way to create a collection is in the OpenAlex web UI at
+[openalex.org](https://openalex.org):
+
+1. Run a search.
+2. Tick the rows you want to save (or use the master checkbox to select the
+   whole page).
+3. Click the folder icon in the results toolbar → **Create a new collection**.
+
+You can also paste a list of IDs or DOIs straight into the create-collection
+wizard at `https://openalex.org/settings/collections`.
+
+To create one programmatically, `POST` to `/me/collections`:
+
+```bash
+POST https://user.openalex.org/me/collections
+Authorization: Bearer <jwt>
+Content-Type: application/json
+
+{
+  "display_name": "My altmetrics papers",
+  "entity_type": "works",
+  "description": "Papers I'm tracking for the altmetrics review",
+  "entity_ids": [
+    "https://openalex.org/W2755968057",
+    "https://openalex.org/W4404012345"
+  ]
+}
+```
+
+`entity_ids` is optional — you can create an empty collection and add entities
+later. IDs may be supplied in full-URL form (`https://openalex.org/W123…`) or
+short form (`W123…`); the API normalizes them. Every ID must match the
+collection's `entity_type` — adding `A123…` to a `works` collection returns a
+`400` naming the offending ID.
+
+A successful create returns `201` with the saved collection:
+
+```json
+{
+  "id": "col_beNWUTw6qY",
+  "user_id": "user-TSamuHxDbnhn",
+  "entity_type": "works",
+  "display_name": "My altmetrics papers",
+  "description": "Papers I'm tracking for the altmetrics review",
+  "entity_count": 2,
+  "created_at": "2026-05-26T14:00:00",
+  "updated_at": "2026-05-26T14:00:00"
+}
+```
+
+## Filtering search results by collection
+
+Once a collection exists, drop its ID into any search on the matching entity
+type using the `collection:` filter:
+
+```bash
+# Every work in the col_beNWUTw6qY collection
+GET https://api.openalex.org/works?filter=collection:col_beNWUTw6qY
+Authorization: Bearer <jwt>
+```
+
+This works on every entity type the collection system supports —
+`/works`, `/authors`, `/sources`, `/institutions`, `/topics`, `/sdgs`,
+`/funders`, `/publishers`, `/keywords`, `/concepts` — as long as the collection
+and the endpoint match. Filtering an `authors` collection on `/works` returns
+a `400`:
+
+```
+collection col_beNWUTw6qY is type 'authors', not valid for /works
+```
+
+The collection ID resolves to the underlying entity IDs at query time, so the
+filter combines normally with other filters and with sorting, grouping,
+selecting, and pagination:
+
+```bash
+# Open-access papers in this collection, newest first
+GET https://api.openalex.org/works?filter=collection:col_beNWUTw6qY,is_oa:true&sort=publication_date:desc
+```
+
+### Negation
+
+Prepend `!` to exclude the entities in the collection instead of including them:
+
+```bash
+GET https://api.openalex.org/works?filter=collection:!col_beNWUTw6qY
+```
+
+### Limits
+
+- **One `collection:` filter per request.** Repeated or `|`-OR'd collection
+  values return a `400`. To combine collections, snapshot the resolved IDs
+  client-side and pass them via the `openalex:` filter.
+- **Per-request entity-list ceiling: 10,000.** With the per-collection cap of
+  1,000 entities, a single collection is always within budget.
+- **Authentication required.** Pass either your OpenAlex API key or a JWT in
+  the `Authorization: Bearer …` header. Anonymous requests return `401`;
+  requests by a user who doesn't own the collection return `403`.
+
+## Managing collections
+
+All endpoints below live on `user.openalex.org` and require a `Bearer` JWT.
+Anonymous requests return `401`; requests for a collection owned by another
+user return `403` (admins bypass this).
+
+### List your collections
+
+```bash
+GET https://user.openalex.org/me/collections
+```
+
+Supports `?page=` and `?per_page=` (max 100). Pass `?entity_id=W2755968057` to
+filter to collections that contain a specific entity — used by the
+collection-chip strip on entity pages in the OpenAlex UI.
+
+Response:
+
+```json
+{
+  "meta": {
+    "page": 1, "per_page": 25, "total_count": 3, "total_pages": 1
+  },
+  "results": [
+    {
+      "id": "col_beNWUTw6qY",
+      "user_id": "user-TSamuHxDbnhn",
+      "entity_type": "works",
+      "display_name": "My altmetrics papers",
+      "description": "Papers I'm tracking for the altmetrics review",
+      "entity_count": 4,
+      "created_at": "2026-05-20T16:00:00",
+      "updated_at": "2026-05-26T14:00:00"
+    }
+  ]
+}
+```
+
+### Get a single collection
+
+```bash
+GET https://user.openalex.org/collections/{collection_id}
+```
+
+Returns the same shape as one row in `results` above. The collection's
+entities are paged separately to keep response sizes bounded:
+
+```bash
+GET https://user.openalex.org/collections/{collection_id}/entities?per_page=200
+```
+
+Returns the collection metadata plus the page of `entity_ids` (max
+`per_page=200`).
+
+### Update name, description, or entity type
+
+```bash
+PATCH https://user.openalex.org/me/collections/{collection_id}
+Content-Type: application/json
+
+{ "display_name": "Renamed", "description": "Updated notes" }
+```
+
+`entity_type` can be changed only while the collection is empty.
+
+### Delete a collection
+
+```bash
+DELETE https://user.openalex.org/me/collections/{collection_id}
+```
+
+Returns `{"deleted_collection_id": "col_…"}`. All `collection_entities` rows
+cascade-delete.
+
+### Add or remove entities
+
+```bash
+# Bulk add
+POST https://user.openalex.org/me/collections/{collection_id}/entities
+Content-Type: application/json
+
+{ "entity_ids": ["W123…", "W456…"] }
+```
+
+Returns `{ "added": N, "already_present": M, "rejected_wrong_type": 0 }`.
+Wrong-type IDs (e.g. an `A…` in a `works` collection) fast-fail with `400`
+naming the first offender, so `rejected_wrong_type` is always `0` on
+success — it's preserved in the response shape for backward compatibility.
+
+```bash
+# Bulk remove
+DELETE https://user.openalex.org/me/collections/{collection_id}/entities
+Content-Type: application/json
+
+{ "entity_ids": ["W123…"] }
+```
+
+```bash
+# Single remove via URL
+DELETE https://user.openalex.org/me/collections/{collection_id}/entities/W123…
+```
+
+## Admin endpoints
+
+OpenAlex admins can list, read, edit, or delete any user's collection:
+
+| Method   | Path                                                | Notes                          |
+| -------- | --------------------------------------------------- | ------------------------------ |
+| `GET`    | `/admin/collections?q=&owner_id=&entity_type=`      | Cross-user search, paged       |
+| `GET`    | `/admin/collections/{collection_id}`                | Read any collection            |
+| `PATCH`  | `/admin/collections/{collection_id}`                | Same body as the user PATCH    |
+| `DELETE` | `/admin/collections/{collection_id}`                | Hard-delete with cascade       |
+
+Non-admin callers get `403`.
+
+## Validation rules
+
+Collections are validated before they hit the database. The most common 400s:
+
+| Code                       | Cause                                                                   |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `entity_type_invalid`      | `entity_type` missing or not one of the 10 supported types              |
+| `display_name_invalid`     | Empty after trim, contains control characters, URL-shaped, or profane   |
+| `display_name_too_long`    | More than 30 characters                                                 |
+| `display_name_duplicate`   | You already have a collection with this name (case-insensitive)         |
+| `description_invalid`      | Not a string, or contains control characters, or URL-shaped             |
+| `entity_id_invalid`        | An ID doesn't look like any OpenAlex ID shape                           |
+| `entity_id_wrong_type`     | An ID's type doesn't match the collection's `entity_type`               |
+| `collection_full`          | Adding entities would exceed the 1,000-entity cap                       |
+| `too_many_collections`     | You already own 100 collections                                         |

@@ -76,6 +76,12 @@
             ]
           },
           {
+            "group": "Collections",
+            "pages": [
+              "guides/collections"
+            ]
+          },
+          {
             "group": "For AI Agents",
             "pages": [
               "guides/llm-quick-reference",

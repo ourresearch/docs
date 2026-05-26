@@ -111,6 +111,23 @@ https://api.openalex.org/works?filter=institutions.country_code:fr|primary_locat
 ```
 </Warning>
 
+## Filter by saved collection
+
+The `collection:` filter narrows results to the entities you've saved in one
+of your [collections](/guides/collections). It's available on every entity
+type collections support — `/works`, `/authors`, `/sources`, `/institutions`,
+`/topics`, `/sdgs`, `/funders`, `/publishers`, `/keywords`, `/concepts` —
+and requires a `Bearer` API key or JWT for the user who owns the collection.
+
+```bash
+GET https://api.openalex.org/works?filter=collection:col_beNWUTw6qY
+Authorization: Bearer <jwt>
+```
+
+Negation with `!` is supported, and `collection:` combines with any other
+filter. One `collection:` filter is allowed per request — see the
+[Collections guide](/guides/collections) for the full set of caps and behaviors.
+
 ## Available filters by entity
 
 Each entity type has its own set of filterable fields. See the API reference for complete filter lists:
