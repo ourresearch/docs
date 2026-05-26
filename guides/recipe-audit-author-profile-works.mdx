@@ -75,21 +75,17 @@ Then apply a byline-match gate: a work qualifies as an addition candidate only i
 ```python
 import unicodedata, re
 
-def _normalize(name):
+def name_tokens(name):
+    """Normalize a byline into tokens. Always treats 'Last, First' as the
+    convention — non-standard comma formats will fail to match, which is
+    deliberate (the alternative is heuristic guessing that masks real bugs)."""
     s = unicodedata.normalize("NFD", name or "")
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
-    return re.sub(r"[^a-z, ]", "", s.lower())
-
-def candidate_tokenizations(name):
-    """Yield possible token orderings for a byline. Bylines often look like
-    'Last, First' but sometimes are 'First, Last' with a stray comma — try both."""
-    s = _normalize(name)
+    s = re.sub(r"[^a-z, ]", "", s.lower())
     if "," in s:
         last, _, rest = s.partition(",")
-        yield [t for t in f"{rest.strip()} {last.strip()}".split() if t]   # flipped
-        yield [t for t in s.replace(",", " ").split() if t]                # as-written
-    else:
-        yield [t for t in s.split() if t]
+        s = f"{rest.strip()} {last.strip()}"
+    return [t for t in s.split() if t]
 
 def given_match(a, b):
     if a == b:
@@ -97,12 +93,10 @@ def given_match(a, b):
     return (len(a) == 1 and b.startswith(a)) or (len(b) == 1 and a.startswith(b))
 
 def byline_matches_seed(raw_name, seed_tokens):
-    for cand in candidate_tokenizations(raw_name):
-        if not cand or cand[-1] != seed_tokens[-1]:
-            continue
-        if len(seed_tokens) == 1 or given_match(seed_tokens[0], cand[0]):
-            return True
-    return False
+    cand = name_tokens(raw_name)
+    if not cand or cand[-1] != seed_tokens[-1]:
+        return False
+    return len(seed_tokens) == 1 or given_match(seed_tokens[0], cand[0])
 
 def matched_authorship(work, seed_tokens):
     """Return the authorship on `work` matching the seed on surname + given-compat, else None."""
@@ -139,7 +133,7 @@ def is_removal_candidate(work, author_short_id, seed_tokens):
 ```
 
 <Warning>
-**False-positive classes worth knowing before you remove anything:** married/maiden-name changes, transliteration variants of non-Latin names (e.g. Chinese pinyin vs Wade-Giles), single-name authors, and authors who publish under a pseudonym. A surname mismatch is a *signal*, not a verdict — always corroborate via ORCID, co-authors, or institution before removing.
+**False-positive classes worth knowing before you remove anything:** married/maiden-name changes, transliteration variants of non-Latin names (e.g. Chinese pinyin vs Wade-Giles), single-name authors, authors who publish under a pseudonym, and the occasional non-standard byline format (a byline written as `"First, Last"` with a stray comma flips wrong under the `Last, First` convention). A surname mismatch is a *signal*, not a verdict — always corroborate via ORCID, co-authors, or institution before removing.
 </Warning>
 
 ## Scoring candidates: what's actually informative
@@ -164,28 +158,14 @@ API = "https://api.openalex.org"
 HEADERS = {"User-Agent": "your-tool/1.0 (mailto:you@example.org)"}
 SELECT = "id,display_name,publication_year,cited_by_count,authorships,primary_topic"
 
-def _normalize(name):
+def name_tokens(name):
     s = unicodedata.normalize("NFD", name or "")
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
-    return re.sub(r"[^a-z, ]", "", s.lower())
-
-def name_tokens(name):
-    """Tokenize a name with the conventional 'Last, First' comma-flip."""
-    s = _normalize(name)
+    s = re.sub(r"[^a-z, ]", "", s.lower())
     if "," in s:
         last, _, rest = s.partition(",")
         s = f"{rest.strip()} {last.strip()}"
     return [t for t in s.split() if t]
-
-def candidate_tokenizations(name):
-    """Yield both 'Last, First' (flipped) and 'as-written' orderings for bylines with commas."""
-    s = _normalize(name)
-    if "," in s:
-        last, _, rest = s.partition(",")
-        yield [t for t in f"{rest.strip()} {last.strip()}".split() if t]
-        yield [t for t in s.replace(",", " ").split() if t]
-    else:
-        yield [t for t in s.split() if t]
 
 def build_ladder_value(tokens, step):
     if not tokens:
@@ -211,11 +191,10 @@ def given_match(a, b):
     return a == b or (len(a) == 1 and b.startswith(a)) or (len(b) == 1 and a.startswith(b))
 
 def byline_matches_seed(raw_name, seed):
-    for cand in candidate_tokenizations(raw_name):
-        if cand and cand[-1] == seed[-1]:
-            if len(seed) == 1 or given_match(seed[0], cand[0]):
-                return True
-    return False
+    cand = name_tokens(raw_name)
+    if not cand or cand[-1] != seed[-1]:
+        return False
+    return len(seed) == 1 or given_match(seed[0], cand[0])
 
 def matched_authorship(work, seed):
     for a in work.get("authorships", []):
