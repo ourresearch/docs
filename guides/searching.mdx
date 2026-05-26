@@ -171,4 +171,53 @@ The `default.search` filter is equivalent to the `search` query parameter. Varia
 
 These filter-based searches cost the same $1 per 1,000 requests. For autocomplete use cases, use the [autocomplete endpoint](/guides/autocomplete) instead.
 
+## Searching author bylines with `raw_author_name.search`
+
+`raw_author_name.search` finds works where someone appears by a specific name-as-published — exactly the string in the byline of the paper. It's the one filter-based search that does *not* have a `search` parameter equivalent, so it stays the right tool for matching a person to their works.
+
+<Warning>
+**It matches across all author names on the work, not within a single byline.** Each unquoted token can match a different author. A search for `raw_author_name.search:john smith` returns a work whose authors are `John Doe` and `Alice Smith` — neither person is named "John Smith," but the tokens appear somewhere in the byline list.
+</Warning>
+
+To scope a search to a single person (one byline), wrap the name in double quotes — the query becomes a phrase match against one `raw_author_name` at a time:
+
+```bash
+# Work-scoped: "john" and "smith" appear in *any* bylines (93,304 hits)
+https://api.openalex.org/works?filter=raw_author_name.search:john smith
+
+# Byline-scoped: works with an author named "John Smith" (2,727 hits)
+https://api.openalex.org/works?filter=raw_author_name.search:"john smith"
+```
+
+### Allow middle names and initials with proximity (`~N`)
+
+Append `~N` to a quoted name to allow up to N intervening tokens. This catches middle names and middle initials without dropping the byline scope:
+
+```bash
+# "Jane Smith" only — 1,661 hits
+https://api.openalex.org/works?filter=raw_author_name.search:"jane smith"
+
+# Also matches "Jane M Smith" — 3,779 hits
+https://api.openalex.org/works?filter=raw_author_name.search:"jane smith"~1
+
+# Also matches "Jane Marie Smith" — 4,571 hits
+https://api.openalex.org/works?filter=raw_author_name.search:"jane smith"~2
+```
+
+Wider slop also picks up co-author noise on common names — start narrow and widen only when you need more recall.
+
+### Handle name variants with `OR`
+
+The filter value supports Lucene `OR` between quoted phrases. Use one OR'd query (not multiple `raw_author_name.search:` clauses — those `AND` together and return nothing) to combine name forms:
+
+```bash
+# Comma-reversed byline ("Priem, Jason" → "Priem Jason")
+https://api.openalex.org/works?filter=raw_author_name.search:"jason priem" OR "priem jason"
+
+# First-initial form
+https://api.openalex.org/works?filter=raw_author_name.search:"j priem" OR "priem j"
+```
+
+For a step-by-step walkthrough that uses these patterns to find works missing from an author profile, see the [Find Missing Works for an Author Profile recipe](/guides/recipe-find-missing-author-works).
+
 {/* Redeploy trigger 2026-05-17 — auto-deploy webhook missed 319f1d5 (#191.3) */}

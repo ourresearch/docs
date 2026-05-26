@@ -1,0 +1,223 @@
+---
+title: Find Missing Works for an Author Profile
+description: Surface works that should belong to an author's OpenAlex profile but are currently attributed elsewhere (or not at all)
+---
+
+OpenAlex's author entity resolution is good but imperfect. An author's profile (`A1234...`) will be missing some of their works — typically because the byline used a name variant (initial, middle name, romanization) that the resolver didn't link to this profile. This recipe finds those candidates by searching the byline directly, then filters down to the works that look like real matches. <Tooltip headline="Under 1¢ per profile" tip="~5–10 List+Filter calls per profile at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
+
+<Tip>
+This is a good task to hand to an LLM agent. The same recipe powers the "Add works" dialog on author profiles in the OpenAlex web UI.
+</Tip>
+
+The technique uses [`raw_author_name.search`](/guides/searching#searching-author-bylines-with-raw_author_name-search), which matches the byline string on each work directly (rather than the resolved `author.id`). That lets you find works the resolver missed.
+
+## Step 1: Get the profile's display name
+
+Fetch the author and pull `display_name`. That string is your query seed.
+
+```bash
+https://api.openalex.org/authors/A5023888391?select=id,display_name,display_name_alternatives,works_count
+```
+
+```json
+{
+  "id": "https://openalex.org/A5023888391",
+  "display_name": "Jason R Priem",
+  "display_name_alternatives": ["Jason Priem", "Jason, Priem", "Priem, Jason", "..."],
+  "works_count": 67
+}
+```
+
+`display_name_alternatives` can also be used as extra seeds, but vet them first — the field is collected from upstream byline metadata and sometimes includes unrelated names (cross-author confusion the resolver hasn't sorted out yet). Surname + given-token compatibility with the primary `display_name` is a reasonable filter.
+
+## Step 2: Generate byline variants
+
+Normalize the seed (lowercase, strip diacritics, drop punctuation, split on whitespace) into tokens, then generate quoted phrase variants:
+
+| Variant | Example for `Jason Priem` | When to add |
+|---|---|---|
+| Typed | `"jason priem"` | Always |
+| Comma-reversed | `"priem jason"` | ≥2 tokens |
+| First-initial | `"j priem"`, `"priem j"` | First token >1 char |
+| Slop `~1` on all of the above | — | If recall is still too low |
+| Slop `~2` on all of the above | — | If recall is still too low |
+
+For an author with middle tokens (e.g. `Jane M Smith`), also drop the middle tokens to generate `"jane smith"` / `"smith jane"` — otherwise the slop=0 form misses the no-middle-initial papers entirely.
+
+## Step 3: Search with a progressive ladder
+
+Fire the variants as one OR'd `raw_author_name.search` value. Combine OR'd phrases with `OR`, not multiple filter clauses (those `AND` together).
+
+The OpenAlex web UI uses a 5-step "ladder" — start narrow, widen one step at a time, and stop as soon as `meta.count` clears a threshold (the dialog uses 100). Each rung trades precision for recall, so don't widen further than you need to.
+
+```bash
+# Step 1 — typed form only (narrowest). For seed "Jason R Priem":
+https://api.openalex.org/works?filter=raw_author_name.search:"jason r priem",type:!paratext&include_xpac=true
+# meta.count: 0    ← no byline uses the middle initial, so this finds nothing
+
+# Step 2 — comma-reversed + drop-middles forms
+https://api.openalex.org/works?filter=raw_author_name.search:"jason r priem" OR "priem jason r" OR "jason priem" OR "priem jason",type:!paratext&include_xpac=true
+# meta.count: 110  ← stops here (≥100)
+
+# Step 3 — would add the first-initial form (only fires if step 2 still under threshold)
+# "jason r priem" OR "priem jason r" OR "jason priem" OR "priem jason" OR "j priem" OR "priem j"
+```
+
+Two non-obvious query params worth knowing:
+
+- **`include_xpac=true`** — without this, the API silently drops [XPAC](/guides/key-concepts#xpac-expansion-pack) works, about 22% of byline-match candidates.
+- **`type:!paratext`** — excludes issue covers, errata, and similar where bylines are conflated.
+
+## Step 4: Drop works already on the profile
+
+Filter out works where some authorship already points to the target author id. Doing this client-side (rather than via `authorships.author.id:!A5023888391` in the filter) lets you also surface *duplicate* attributions — the same paper attached to a different `J. Priem` author id — which a curator usually wants to see.
+
+```python
+def already_on_profile(work, author_short_id):
+    target = author_short_id.upper()
+    for a in work.get("authorships", []):
+        aid = (a.get("author", {}).get("id") or "").rsplit("/", 1)[-1].upper()
+        if aid == target:
+            return True
+    return False
+```
+
+## Step 5: Filter with a byline-match gate
+
+Even with quoted-phrase scoping, wider ladder steps return false positives. For example, step 3's `"j priem"` matches works whose byline reads "Richard J. Priem" — a different person who happens to share the surname and first initial. Filter the candidate list by requiring at least one authorship on the work whose `raw_author_name` matches the seed on **surname AND (full first-given OR first-initial)**:
+
+```python
+import unicodedata, re
+
+def name_tokens(name):
+    s = unicodedata.normalize("NFD", name or "")
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = re.sub(r"[^a-z, ]", "", s.lower())
+    if "," in s:
+        last, _, rest = s.partition(",")
+        s = f"{rest.strip()} {last.strip()}"
+    return [t for t in s.split() if t]
+
+def given_match(a, b):
+    if a == b:
+        return True
+    return (len(a) == 1 and b.startswith(a)) or (len(b) == 1 and a.startswith(b))
+
+def has_matching_authorship(work, seed_tokens):
+    for a in work.get("authorships", []):
+        cand = name_tokens(a.get("raw_author_name") or "")
+        if not cand:
+            continue
+        if cand[-1] != seed_tokens[-1]:       # surname must match exactly
+            continue
+        if len(seed_tokens) == 1:
+            return True
+        if given_match(seed_tokens[0], cand[0]):
+            return True
+    return False
+```
+
+## Scoring candidates: what's actually informative
+
+The gate above keeps recall high. Ranking the survivors by confidence is where the recipe earns its keep — and a few signals perform very differently than they look. The notes below come from an internal 1,400-author gold-standard evaluation of OpenAlex's resolver:
+
+- **`authorships[].author.orcid` matching the target's ORCID is essentially ground truth** — but only ~30% of works in recent years carry a `raw_orcid` from the publisher, so this gates fewer candidates than expected. When present, take it.
+- **Name rarity dominates everything else.** The same surname-plus-given-initial match means very different things for "J. Smith" and for a rare name. If you have access to a name-frequency estimate, weight by it — a rare-name candidate with no other signals is far more likely to be correct than a common-name candidate with two weak signals.
+- **First-initial-only matches are noisier than they look.** In our overmerge analysis, ~17% of false-merges were "D. Sutcliffe" wrongly attributed to "David L. Sutcliffe" (or similar) — different people who share surname + first initial. Treat initial-only candidates as the weakest tier; require corroboration.
+- **3+ shared co-authors within the same name block is a high-confidence merge signal** even without ORCID. Pairwise co-author overlap (1–2 shared) is much weaker.
+- **CJK names are harder.** Expect a higher false-positive rate on East Asian names — same-script collisions are common, and the byline-match gate above is a romanization match, which loses information. Lean harder on ORCID / institution / co-author signals for these.
+- **Most legitimately-missing works live on tiny "splinter" entities** (1–2 works each), not on other large profiles. Candidates currently attributed to an `author.id` with very few works are usually safe merges; candidates currently attributed to a large *other* profile deserve scrutiny.
+
+## Full Python script
+
+<Tooltip headline="~$0.005 per profile" tip="~5 List+Filter calls at $0.10 per 1,000"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
+
+```python
+import requests, unicodedata, re
+
+API = "https://api.openalex.org"
+HEADERS = {"User-Agent": "your-tool/1.0 (mailto:you@example.org)"}
+
+def name_tokens(name):
+    s = unicodedata.normalize("NFD", name or "")
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    s = re.sub(r"[^a-z, ]", "", s.lower())
+    if "," in s:
+        last, _, rest = s.partition(",")
+        s = f"{rest.strip()} {last.strip()}"
+    return [t for t in s.split() if t]
+
+def build_ladder_value(tokens, step):
+    if not tokens:
+        return None
+    seen, phrases = set(), []
+    def push(p):
+        k = p.lower()
+        if k not in seen:
+            seen.add(k); phrases.append(p)
+    push(" ".join(tokens))
+    if step >= 2 and len(tokens) >= 2:
+        push(" ".join([tokens[-1]] + tokens[:-1]))
+        if len(tokens) >= 3:
+            push(f"{tokens[0]} {tokens[-1]}")
+            push(f"{tokens[-1]} {tokens[0]}")
+    if step >= 3 and len(tokens) >= 2 and len(tokens[0]) > 1:
+        push(f"{tokens[0][0]} {tokens[-1]}")
+        push(f"{tokens[-1]} {tokens[0][0]}")
+    suffix = {4: "~1", 5: "~2"}.get(step, "")
+    return " OR ".join(f'"{p}"{suffix}' for p in phrases)
+
+def given_match(a, b):
+    return a == b or (len(a) == 1 and b.startswith(a)) or (len(b) == 1 and a.startswith(b))
+
+def has_matching_authorship(work, seed):
+    for a in work.get("authorships", []):
+        cand = name_tokens(a.get("raw_author_name") or "")
+        if cand and cand[-1] == seed[-1]:
+            if len(seed) == 1 or given_match(seed[0], cand[0]):
+                return True
+    return False
+
+def already_on_profile(work, author_short_id):
+    target = author_short_id.upper()
+    for a in work.get("authorships", []):
+        aid = (a.get("author", {}).get("id") or "").rsplit("/", 1)[-1].upper()
+        if aid == target:
+            return True
+    return False
+
+def find_missing_works(author_short_id, threshold=100, max_step=5):
+    author = requests.get(f"{API}/authors/{author_short_id}", headers=HEADERS).json()
+    seed = name_tokens(author["display_name"])
+    select = "id,display_name,publication_year,cited_by_count,authorships,primary_topic"
+    chosen_url, count = None, 0
+    for step in range(1, max_step + 1):
+        value = build_ladder_value(seed, step)
+        if value is None:
+            return []
+        base = (
+            f"{API}/works"
+            f"?filter=raw_author_name.search:{requests.utils.quote(value)},type:!paratext"
+            f"&include_xpac=true&select={select}"
+        )
+        count = requests.get(f"{base}&per_page=1", headers=HEADERS).json()["meta"]["count"]
+        chosen_url = base
+        if count >= threshold:
+            break
+    works, cursor = [], "*"
+    while cursor:
+        page = requests.get(f"{chosen_url}&per_page=200&cursor={cursor}", headers=HEADERS).json()
+        works.extend(page["results"])
+        cursor = page["meta"].get("next_cursor")
+    return [
+        w for w in works
+        if not already_on_profile(w, author_short_id)
+        and has_matching_authorship(w, seed)
+    ]
+
+candidates = find_missing_works("A5023888391")
+for w in candidates[:10]:
+    print(f"{w['cited_by_count']:>6}  {w['publication_year']}  {w['display_name'][:70]}")
+```
+
+The output is a list of works whose bylines look like the target author but which the resolver currently attributes to a different (or no) author entity — i.e. candidates for adding to the profile via [the curation API](/guides/curation-authors).
