@@ -131,6 +131,93 @@ GET https://api.openalex.org/works?filter=collection:!col_beNWUTw6qY
   the `Authorization: Bearer …` header. Anonymous requests return `401`;
   requests by a user who doesn't own the collection return `403`.
 
+## Filtering by a collection on a related entity
+
+The `collection:` filter above matches a collection against the endpoint of the
+*same* type — a `sources` collection on `/sources`, an `authors` collection on
+`/authors`. But collections are often most useful **across** types: filtering
+one kind of entity by a collection of a *different* kind.
+
+Any filter field whose value is an OpenAlex ID also accepts a `col_…`
+collection of the matching type. OpenAlex resolves the collection to its member
+IDs at query time and matches that field against them — so the collection ID
+behaves exactly like a value for that field.
+
+**Example — the library-subscription workflow.** A librarian builds a `sources`
+collection of the ~1,000 journal IDs in their Elsevier (or Wiley, Springer, …)
+package, then filters *works* by it through the `primary_location.source.id`
+field:
+
+```bash
+# Every work published in a journal in your subscription collection
+GET https://api.openalex.org/works?filter=primary_location.source.id:col_beNWUTw6qY
+Authorization: Bearer <your-api-key>
+```
+
+Because the collection resolves to ordinary field values, it composes with every
+other filter, plus sorting, grouping, selecting, and pagination. For example,
+"open-access works from 2024 in my subscribed journals, grouped by author
+institution":
+
+```bash
+GET https://api.openalex.org/works?filter=primary_location.source.id:col_beNWUTw6qY,is_oa:true,publication_year:2024&group_by=authorships.institutions.id
+Authorization: Bearer <your-api-key>
+```
+
+The same pattern works for any ID-valued filter field, on any endpoint:
+
+| Filter clause                                        | Collection type | Meaning                                       |
+| ---------------------------------------------------- | --------------- | --------------------------------------------- |
+| `/works?filter=primary_location.source.id:col_…`     | `sources`       | Works published in these journals/sources     |
+| `/works?filter=authorships.author.id:col_…`          | `authors`       | Works by any of these authors                 |
+| `/works?filter=authorships.institutions.id:col_…`    | `institutions`  | Works affiliated with these institutions      |
+| `/works?filter=primary_topic.id:col_…`               | `topics`        | Works on these topics                         |
+| `/works?filter=funders.id:col_…`                     | `funders`       | Works funded by these funders                 |
+
+This covers the ID-valued fields on `/works`, `/authors`, `/sources`, and
+`/institutions` — including author and institution fields such as
+`last_known_institutions.id` and `affiliations.institution.id`.
+
+### Type matching
+
+The collection's type must match the type the filter field expects. A `sources`
+collection works on `primary_location.source.id` but not on
+`authorships.author.id`; a mismatch returns a `400` naming both sides:
+
+```
+collection col_beNWUTw6qY is type 'sources', not valid for the `authorships.author.id` filter (expects 'authors').
+```
+
+A field that doesn't take an entity ID (for example a date or boolean field)
+can't take a collection at all:
+
+```
+The `publication_year` filter does not support cross-type collection references (col_...). Use a same-type `collection:` filter or a literal value list.
+```
+
+### Negation
+
+Prepend `!` to the collection ID to exclude its members, just like any other
+filter value:
+
+```bash
+# Works NOT published in your subscribed journals
+GET https://api.openalex.org/works?filter=primary_location.source.id:!col_beNWUTw6qY
+Authorization: Bearer <your-api-key>
+```
+
+### Limits
+
+- **One collection per filter field.** You can't OR two collections onto the
+  same field (`field:col_a|col_b`) or repeat the field with a second collection
+  — either returns a `400`. Use one collection per field; different fields in
+  the same request can each carry their own collection.
+- **Don't mix a collection with literal IDs in one clause.**
+  `primary_location.source.id:col_…|S12345` returns a `400`. Pass the collection
+  alone, or pass literal IDs alone.
+- The per-collection cap of 1,000 entities still applies, and a single request
+  resolves to at most 10,000 entity IDs across all of its collection filters.
+
 ## Managing collections
 
 All endpoints below live on `user.openalex.org` and require a `Bearer` JWT.
