@@ -11,9 +11,10 @@ hundreds of OpenAlex IDs into every request.
 
 <Note>
 Collections are private to the user who creates them. Manage them via
-authenticated requests against `user.openalex.org` (JWT required), and use the
-`collection:` filter against `api.openalex.org` with either your OpenAlex API
-key or a JWT — you can only filter on collections you own.
+authenticated requests against `user.openalex.org`, and use the `collection:`
+filter against `api.openalex.org` — both authenticated with your OpenAlex API
+key in the `Authorization: Bearer` header. You can only filter on collections
+you own.
 </Note>
 
 ## Concepts
@@ -47,7 +48,7 @@ To create one programmatically, `POST` to `/me/collections`:
 
 ```bash
 POST https://user.openalex.org/me/collections
-Authorization: Bearer <jwt>
+Authorization: Bearer <your-api-key>
 Content-Type: application/json
 
 {
@@ -90,7 +91,7 @@ type using the `collection:` filter:
 ```bash
 # Every work in the col_beNWUTw6qY collection
 GET https://api.openalex.org/works?filter=collection:col_beNWUTw6qY
-Authorization: Bearer <jwt>
+Authorization: Bearer <your-api-key>
 ```
 
 This works on every entity type the collection system supports —
@@ -127,8 +128,8 @@ GET https://api.openalex.org/works?filter=collection:!col_beNWUTw6qY
   client-side and pass them via the `openalex:` filter.
 - **Per-request entity-list ceiling: 10,000.** With the per-collection cap of
   1,000 entities, a single collection is always within budget.
-- **Authentication required.** Pass either your OpenAlex API key or a JWT in
-  the `Authorization: Bearer …` header. Anonymous requests return `401`;
+- **Authentication required.** Pass your OpenAlex API key in the
+  `Authorization: Bearer …` header. Anonymous requests return `401`;
   requests by a user who doesn't own the collection return `403`.
 
 ## Filtering by a collection on a related entity
@@ -220,7 +221,7 @@ Authorization: Bearer <your-api-key>
 
 ## Managing collections
 
-All endpoints below live on `user.openalex.org` and require a `Bearer` JWT.
+All endpoints below live on `user.openalex.org` and require your OpenAlex API key in the `Authorization: Bearer` header.
 Anonymous requests return `401`; requests for a collection owned by another
 user return `403` (admins bypass this).
 
