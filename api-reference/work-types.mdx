@@ -32,4 +32,14 @@ Work types classify the form of a scholarly document. Each work has exactly one 
 
 Use these values with the `type` filter on works: `filter=type:article`
 
-See the [Works guide](/api-reference/works) for details on how work types are assigned.
+## How types are assigned
+
+Every work gets exactly one `type`. OpenAlex assigns it by mapping the type reported by the work's source — Crossref's `type`, DataCite's `resourceType`, PubMed's publication type, etc. — onto the OpenAlex vocabulary above, then applying a set of internal heuristics (for example, titles like "Index", "Cover Picture", or a bare journal name are classified as `paratext`). Approved [curations](/api-reference/works) can override the assigned type for an individual work.
+
+## Paratext
+
+`paratext` covers material that is part of a publication but not the scholarly content itself — front matter, back matter, indexes, covers, mastheads, and advertisements. Filter for it with `filter=type:paratext`.
+
+<Warning>
+The separate boolean field **`is_paratext` is deprecated**. It is now derived directly from `type` (it is `true` exactly when `type` is `paratext`) and carries no additional information. Use `filter=type:paratext` instead of `filter=is_paratext:true`. `is_paratext` remains available for backward compatibility but may be removed in a future release.
+</Warning>
