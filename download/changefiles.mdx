@@ -6,15 +6,22 @@ description: Download incremental updates to keep your local data current
 Changefiles let you download only what's changed since your last snapshot, so you can keep a local copy of OpenAlex up to date without re-downloading the full dataset. Each day's changefile contains every entity that was created or modified on that date. The API keeps the last 60 days of changefiles available.
 
 <Warning>
-**Daily changefiles require a paid plan.** The free public snapshot is refreshed **quarterly**. **Monthly snapshots** and the **daily changefiles** documented on this page (the `/changefiles` API) are only available to subscribers on a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
+**Downloading daily changefiles requires a paid plan.** The free public snapshot is refreshed **quarterly**. **Monthly snapshots** and the **daily changefiles** documented on this page (the `/changefiles` API) are only available to subscribers on a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
 </Warning>
+
+## Access and pricing
+
+There are two distinct things here, with two different access levels:
+
+- **Browsing the changefile list** — the `/changefiles` and `/changefiles/{date}` endpoints below just tell you which dates and files are available. They are **free, unlimited, and require no API key.** Browse them as much as you like to see what's there before you subscribe.
+- **Downloading the actual data files** — the `content.openalex.org/...` URLs returned in those listings deliver the data, and require an **API key on a paid plan** (Premium, Institutional, or Partner). There's no per-file charge; changefile downloads are included with your plan. See [pricing](https://openalex.org/pricing) or contact [sales@openalex.org](mailto:sales@openalex.org).
 
 ## List Available Dates
 
-The `/changefiles` endpoint returns all available changefile dates:
+The `/changefiles` endpoint returns all available changefile dates. This is free and needs no API key:
 
 ```bash
-curl "https://api.openalex.org/changefiles?api_key=YOUR_KEY"
+curl "https://api.openalex.org/changefiles"
 ```
 
 ```json
@@ -25,15 +32,15 @@ curl "https://api.openalex.org/changefiles?api_key=YOUR_KEY"
   "results": [
     {
       "date": "2026-02-20",
-      "url": "https://api.openalex.org/changefiles/2026-02-20?api_key=YOUR_KEY"
+      "url": "https://api.openalex.org/changefiles/2026-02-20"
     },
     {
       "date": "2026-02-19",
-      "url": "https://api.openalex.org/changefiles/2026-02-19?api_key=YOUR_KEY"
+      "url": "https://api.openalex.org/changefiles/2026-02-19"
     },
     {
       "date": "2026-02-18",
-      "url": "https://api.openalex.org/changefiles/2026-02-18?api_key=YOUR_KEY"
+      "url": "https://api.openalex.org/changefiles/2026-02-18"
     }
   ]
 }
@@ -41,10 +48,10 @@ curl "https://api.openalex.org/changefiles?api_key=YOUR_KEY"
 
 ## Get a Day's Changes
 
-Follow a date's URL to see which entities changed or were created - and how many of each - and download links in both [JSONL](https://jsonlines.org/) and Parquet:
+Follow a date's URL to see which entities changed or were created - and how many of each - and download links in both [JSONL](https://jsonlines.org/) and Parquet. This listing is also free and needs no API key:
 
 ```bash
-curl "https://api.openalex.org/changefiles/2026-02-19?api_key=YOUR_KEY"
+curl "https://api.openalex.org/changefiles/2026-02-19"
 ```
 
 ```json
