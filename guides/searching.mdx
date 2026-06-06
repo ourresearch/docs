@@ -167,7 +167,7 @@ https://api.openalex.org/authors?filter=display_name.search:einstein
 https://api.openalex.org/works?filter=title.search:cubist
 ```
 
-The `default.search` filter is equivalent to the `search` query parameter. Variants like `.search.exact` (unstemmed) and `.search.no_stem` also exist for some fields.
+The `fulltext.search` filter searches a work's title, abstract, and full text together — the same fields as the `search` query parameter. (The older `default.search` filter is a deprecated alias of `fulltext.search`: it still works and behaves identically, but `fulltext.search` is preferred.) Variants like `.search.exact` (unstemmed) and `.search.no_stem` also exist for some fields.
 
 These filter-based searches cost the same $1 per 1,000 requests. For autocomplete use cases, use the [autocomplete endpoint](/guides/autocomplete) instead.
 

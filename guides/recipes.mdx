@@ -164,7 +164,7 @@ def get_works(filter_str, per_page=100):
     return all_works
 
 # Get all 2024 works about AI
-works = get_works("publication_year:2024,default.search:artificial intelligence")
+works = get_works("publication_year:2024,fulltext.search:artificial intelligence")
 ```
 
 ## Find funded works <Tooltip headline="Under 1¢" tip="1 Search + 3 List+Filter calls"><Icon icon="coins" size={16} color="#DAA520" /></Tooltip>
@@ -250,7 +250,7 @@ pip install openalex-official
 openalex download \
   --api-key YOUR_KEY \
   --output ./results \
-  --filter "default.search:CRISPR,has_content.pdf:true,publication_year:2023-2024"
+  --filter "fulltext.search:CRISPR,has_content.pdf:true,publication_year:2023-2024"
 ```
 
 Download programmatically in Python:
