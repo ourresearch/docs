@@ -150,7 +150,7 @@ fwci > 2
 **Human-Readable**:
 ```
 year >= 2020
-citations <= 100
+citation count <= 100
 FWCI > 2
 ```
 
@@ -164,7 +164,7 @@ display_name.search contains "climate"
 
 **Human-Readable**:
 ```
-title & abstract contains "machine learning"
+title/abstract contains "machine learning"
 title contains "climate"
 ```
 
@@ -269,7 +269,7 @@ Works where institution is Harvard University [I136199984] and (institution is S
 
 Display names can be used:
 ```
-Works where it's Open Access; sort by citations desc
+Works where it's Open Access; sort by citation count desc
 Works where year >= 2024; sort by FWCI desc
 ```
 
@@ -288,7 +288,7 @@ The following mappings are used to convert between technical column_ids and disp
 | column_id | displayName |
 |-----------|-------------|
 | `publication_year` | year |
-| `cited_by_count` | citations |
+| `cited_by_count` | citation count |
 | `fwci` | FWCI |
 | `type` | type |
 | `open_access.is_oa` | Open Access |
@@ -298,8 +298,8 @@ The following mappings are used to convert between technical column_ids and disp
 | `primary_location.source.id` | source |
 | `primary_topic.id` | topic |
 | `grants.funder` | funder |
-| `sustainable_development_goals.id` | Sustainable Development Goals |
-| `title_and_abstract.search` | title & abstract |
+| `sustainable_development_goals.id` | SDG |
+| `title_and_abstract.search` | title/abstract |
 | `display_name.search` | title |
 | `language` | language |
 | `is_retracted` | retracted |
@@ -367,7 +367,7 @@ Works where (type is article [article] or type is book [book])
 
 **OQL**:
 ```
-Works where title & abstract contains "machine learning" and year >= 2020; sample 100
+Works where title/abstract contains "machine learning" and year >= 2020; sample 100
 ```
 
 **OQO**:
@@ -481,7 +481,7 @@ An OQL statement may omit the `where` clause if there are no filters:
 
 ```
 Works
-Works; sort by citations desc
+Works; sort by citation count desc
 Works; sample 100
 ```
 

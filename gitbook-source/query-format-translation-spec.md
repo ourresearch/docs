@@ -248,7 +248,7 @@ has a DOI                         → has_doi:true
 year ≥ 2024                       → publication_year:2024-
 year ≤ 2020                       → publication_year:-2020
 year is 2020–2024                 → publication_year:2020-2024
-citations = 100                   → cited_by_count:100
+citation count = 100              → cited_by_count:100
 ```
 
 #### Select Entity (with bracketed IDs)
@@ -262,7 +262,7 @@ SDG is Climate Action [13]        → sustainable_development_goals.id:13
 #### Search
 ```
 title includes "machine learning" → display_name.search:machine learning
-title & abstract includes "climate" → title_and_abstract.search:climate
+title/abstract includes "climate" → title_and_abstract.search:climate
 ```
 
 #### Multiple Values (OR)
@@ -639,7 +639,7 @@ OQL_PARSING_TESTS = [
     ("works where year ≥ 2024",
      {"entity": "works", "filters": [{"column_id": "publication_year", "value": "2024", "operator": ">="}]}),
     
-    ("works where citations is 100–500",
+    ("works where citation count is 100–500",
      {"entity": "works", "filters": [
          {"column_id": "cited_by_count", "value": "100", "operator": ">="},
          {"column_id": "cited_by_count", "value": "500", "operator": "<="}
