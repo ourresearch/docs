@@ -119,9 +119,15 @@ Use `*` to match zero or more characters and `?` to match exactly one character:
 
 The search term must have at least 3 characters before the wildcard. Leading wildcards (e.g., `*ology`) are not supported.
 
+Wildcards require the **exact (unstemmed)** search — use `search.exact` (or the `default.search.exact` filter), not the default `search`. The default `search` is stemmed, which strips the literal text before the wildcard at index time, so a wildcard there would return wrong results; OpenAlex rejects it with a `400` rather than return misleading matches.
+
 ```bash
-https://api.openalex.org/works?search=machin*
+https://api.openalex.org/works?search.exact=machin*
 ```
+
+<Tip>
+To combine stemmed and truncated terms in one query — common in systematic-review search strategies — use the filter form so each term keeps its own matching: a stemmed `fulltext.search` filter alongside a wildcard `fulltext.search.exact` filter, e.g. `?filter=fulltext.search:treatment,fulltext.search.exact:psoriat*`.
+</Tip>
 
 ### Fuzzy search
 
