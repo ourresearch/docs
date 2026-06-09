@@ -30,6 +30,10 @@ Use `per_page=100` to load many results per query--it makes your query budget go
 | [Content download](/download/full-text-pdfs) | Cached PDF via content API | **$10** |
 | [Text/Aboutness](/guides/deprecations) *(deprecated)* | Topic classification | **$10** |
 
+<Note>
+The [openalex.org](https://openalex.org) website runs on this same API, so browsing it draws from the same budget. Viewing a single record's page (one work, author, source, etc.) is free, but a search or a results page loads several billable calls (the list of results plus its facets/charts). Your $1/day free budget covers a lot of normal browsing, and a prepaid balance covers anything beyond it.
+</Note>
+
 ### Common Activity Costs
 
 | Activity | Endpoint | Calls | Results | Cost |
@@ -54,6 +58,8 @@ Your free API key gives you $1 of free usage every day. With that, you can do a 
 ### Increased Limits
 
 Need more than $1/day? [Paid plans](https://openalex.org/pricing) give you higher daily allowances and prepaid usage.
+
+Your daily budget refills every day at midnight UTC. A **prepaid balance** is a separate pool that automatically kicks in once your daily budget is spent for the day—buying prepaid credit doesn't change your daily budget, it just covers usage beyond it (and doesn't expire daily).
 
 ## Keeping Tabs on Costs
 
