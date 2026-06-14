@@ -125,6 +125,8 @@ Wildcards require the **exact (unstemmed)** search — use `search.exact` (or th
 https://api.openalex.org/works?search.exact=machin*
 ```
 
+Quotes around a **single** word make no difference: `search.exact="machin*"` behaves exactly like `search.exact=machin*` (a one-word "phrase" is just the word). Wildcards also work inside a multi-word quoted phrase, where they match as an adjacent phrase — see [Phrase matching](#phrase-matching) (e.g. `search.exact="smart* phone"`).
+
 <Tip>
 To combine stemmed and truncated terms in one query — common in systematic-review search strategies — use the filter form so each term keeps its own matching: a stemmed `fulltext.search` filter alongside a wildcard `fulltext.search.exact` filter, e.g. `?filter=fulltext.search:treatment,fulltext.search.exact:psoriat*`.
 </Tip>
