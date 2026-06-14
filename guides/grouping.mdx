@@ -112,10 +112,18 @@ https://api.openalex.org/works?filter=author.id:A5023888391&group_by=open_access
 
 ## Paging
 
-Maximum 200 groups per page. Use [cursor paging](/guides/page-through-results#cursor-paging) for more.
+A grouped response returns at most 200 groups per page. To page through more, use [cursor paging](/guides/page-through-results#cursor-paging): start with `cursor=*` and follow `meta.next_cursor` until it's `null`, exactly as you would for a list of results.
+
+```bash
+# First page of groups
+https://api.openalex.org/works?group_by=authorships.author.id&per_page=200&cursor=*
+
+# Next page: use the next_cursor value from the previous response
+https://api.openalex.org/works?group_by=authorships.author.id&per_page=200&cursor=<next_cursor>
+```
 
 <Note>
-When paging through groups, results are sorted by `key` (not by `count`).
+Basic `page`-based paging (`page=2`, …) is **not** supported with `group_by` — use cursor paging. When paging through groups, results are sorted by `key` (not by `count`).
 </Note>
 
 ## Meta properties

@@ -52,6 +52,10 @@ https://api.openalex.org/works?filter=publication_year:2020&per_page=100&cursor=
 
 Repeat until `next_cursor` is `null` and `results` is empty.
 
+<Note>
+**Cursor paging also works with `group_by`.** To page through more than 200 groups, follow `next_cursor` exactly as shown above. Basic `page`-based paging (`page=2`, …) is *not* supported for grouped results — you must use cursor paging. See [Group](/guides/grouping#paging).
+</Note>
+
 <Warning>
 **Don't use cursor paging to download the entire dataset.**
 
