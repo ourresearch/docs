@@ -108,6 +108,13 @@ Append `~N` to a quoted phrase to find the words within N positions of each othe
 https://api.openalex.org/works?search="climate change"~5
 ```
 
+This works for phrases of any length, not just two words. `N` is the total number of position moves allowed to line up all the terms — a single budget shared across the whole phrase, letting the words be reordered or spread apart as long as the total displacement stays within `N`. Widening `N` returns more matches:
+
+```bash
+# the three words near each other, in any order
+https://api.openalex.org/works?search="climate change policy"~10
+```
+
 ## Wildcards and fuzzy search
 
 ### Wildcards
