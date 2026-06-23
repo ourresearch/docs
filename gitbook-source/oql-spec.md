@@ -257,6 +257,14 @@ Works where institution is Harvard University [I136199984] and (institution is S
 
 **Note**: Nested boolean cannot always be expressed in URL format.
 
+### 5.4 Operator Precedence
+
+When `and` and `or` are mixed at one level without parentheses, OQL resolves them
+by the standard precedence **`NOT` > `AND` > `OR`** — the same precedence boolean
+algebra, Web of Science, and Scopus use. So `a and b or c` means `(a and b) or c`.
+The canonical form OQL emits always re-adds the parentheses, so the grouping is
+never left implicit.
+
 ---
 
 ## 6. Sort and Sample
