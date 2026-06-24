@@ -126,7 +126,7 @@ The archive is production-ready but still early, and we add and clean files cont
 
 ## Mapping work IDs to files
 
-Files in the archive bucket are named by UUID, not work ID:
+Files in the archive bucket are named by UUID, not work ID. A work's PDF and its TEI XML are stored as **separate objects with different UUIDs** — the file names alone won't tell you which PDF and which XML belong to the same work:
 
 ```
 openalex-pdfs/
@@ -135,12 +135,58 @@ openalex-pdfs/
 └── ...
 
 openalex-grobid-xml/
-├── 3a07228e-de2a-4c37-955d-b1411a498328.xml.gz
-├── 7b12f4a1-8c9d-4e5f-a2b3-c4d5e6f7a8b9.xml.gz
+├── 5e6ea859-62f6-40ab-9f7e-6472aab3a19d.xml.gz
+├── 523b7cb3-17f3-4e2f-b81c-867fd8802182.xml.gz
 └── ...
 ```
 
-You don't need to reconstruct the UUID join yourself. Every work object exposes an authoritative mapping through two fields:
+### The manifest (for archive sync)
+
+If you've synced the bucket, use the **manifest** we publish in the `openalex-pdfs` bucket itself:
+
+```
+s3://openalex-pdfs/_manifest/content_index/
+```
+
+It's a set of Parquet files, regenerated in full once a day, that maps every work to its file UUIDs. A normal `aws s3 sync` of the bucket pulls the manifest down alongside the content (into a local `_manifest/content_index/` folder), so you typically already have it.
+
+| Column | Example | Object |
+|--------|---------|--------|
+| `openalex_id` | `W2741809807` | the OpenAlex work ID |
+| `pdf_uuid` | `3a07228e-de2a-4c37-955d-b1411a498328` | `openalex-pdfs/{pdf_uuid}.pdf` |
+| `grobid_xml_id` | `5e6ea859-62f6-40ab-9f7e-6472aab3a19d` | `openalex-grobid-xml/{grobid_xml_id}.xml.gz` |
+| `updated_date` | `2026-06-20` | when this work's content last changed |
+
+UUIDs are stored without their file extension — append `.pdf` and `.xml.gz` to build the object keys. A work may have a PDF but no XML (GROBID can't parse every PDF), so `grobid_xml_id` is sometimes empty.
+
+Query it directly with any Parquet reader — no need to load it into a database:
+
+```python
+import duckdb
+
+# Look up one work
+duckdb.sql("""
+  SELECT * FROM '_manifest/content_index/*.parquet'
+  WHERE openalex_id = 'W2741809807'
+""")
+```
+
+The join is then entirely local, with no API calls:
+
+1. Join `openalex_id` to your [works snapshot](/download/snapshot-format) to attach metadata.
+2. Join `pdf_uuid` / `grobid_xml_id` to your synced files to attach the PDF and TEI XML.
+
+Because the manifest is a full daily replacement, re-pull the `_manifest/` prefix whenever you re-sync the archive.
+
+### The content endpoint (for per-work fetches)
+
+If you're fetching files one at a time through the [content API](/download/full-text-pdfs#option-1-api-up-to-10k-files) rather than syncing the bucket, you don't deal with UUIDs at all — the endpoint resolves the work ID to the underlying object server-side:
+
+```
+https://content.openalex.org/works/{work_id}.pdf
+```
+
+Work objects from the API expose this directly via `has_content` and `content_urls`:
 
 ```json
 "has_content":  { "pdf": true, "grobid_xml": true },
@@ -148,10 +194,10 @@ You don't need to reconstruct the UUID join yourself. Every work object exposes 
                   "grobid_xml": "https://content.openalex.org/works/W1775749144.grobid-xml" }
 ```
 
-`https://content.openalex.org/works/{work_id}.pdf` is an addressable endpoint that resolves the work ID to the underlying archive object server-side. Filter your candidate set with `has_content.pdf:true` (available in the [snapshot](/download/snapshot-format) and the API; `content_urls` is API-only), then fetch each work by ID.
+Filter your candidate set with `has_content.pdf:true` (available in the [snapshot](/download/snapshot-format) and the API; `content_urls` is API-only), then fetch each work by ID. This is convenient for small-to-medium sets, but at archive scale prefer the manifest above — the join is offline and costs nothing.
 
 <Warning>
-Do **not** map work IDs to archive objects via `locations[].pdf_url`. That field is the *original publisher* URL, not the archive object — keying off it produces a lossy, inferred match. Use `content_urls` / the content endpoint instead.
+Do **not** map work IDs to archive objects via `locations[].pdf_url`. That field is the *original publisher* URL, not the archive object — keying off it produces a lossy, inferred match. Use the manifest or the content endpoint instead.
 </Warning>
 
 ## TEI XML quality and limitations
