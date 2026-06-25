@@ -115,6 +115,14 @@ This works for phrases of any length, not just two words. `N` is the total numbe
 https://api.openalex.org/works?search="climate change policy"~10
 ```
 
+To require two **separate** phrases near each other — rather than loosening one phrase — join two quoted operands with `~N`. Each operand keeps its own words adjacent, and the two operands must appear within `N` words of each other, in either order:
+
+```bash
+# "machine learning" and "neural network" within 5 words of each other,
+# each phrase kept intact
+https://api.openalex.org/works?search="machine learning"~5~"neural network"
+```
+
 ## Wildcards and fuzzy search
 
 ### Wildcards
