@@ -26,11 +26,11 @@ OpenAlex offers multiple ways to access data beyond the REST API. Choose the app
 
 ### OpenAlex Snapshot
 
-The complete OpenAlex database as gzip-compressed JSON Lines files. The free public snapshot is updated quarterly; [paid plans](https://openalex.org/pricing) get monthly snapshots and daily change files. Includes works, authors, sources, institutions, topics, publishers, funders, and more.
+The complete OpenAlex database, available in two formats: gzip-compressed [JSON Lines](https://jsonlines.org/) and [Apache Parquet](https://parquet.apache.org/). The free public snapshot is updated quarterly; [paid plans](https://openalex.org/pricing) get daily-refreshed snapshots and daily change files. Includes works, authors, sources, institutions, topics, publishers, funders, awards, and more.
 
 **Best for:** Full database replication, data warehousing, comprehensive analysis
 
-**Size:** ~330 GB compressed, ~1.6 TB decompressed
+**Size:** The JSON Lines snapshot is ~330 GB compressed (~1.6 TB decompressed). Parquet is provided alongside it as a separate copy of the same data, so downloading both roughly doubles the transfer.
 
 [Learn more about the snapshot format](/download/snapshot-format)
 

@@ -3,37 +3,74 @@ title: Snapshot data format
 description: Where the OpenAlex data lives and how it's structured
 ---
 
-All OpenAlex data is stored in [Amazon S3](https://aws.amazon.com/s3/) in the [`openalex`](https://openalex.s3.amazonaws.com/browse.html) bucket. The data files are gzip-compressed [JSON Lines](https://jsonlines.org/) — one entity per line.
+All OpenAlex data is stored in [Amazon S3](https://aws.amazon.com/s3/) in the [`openalex`](https://openalex.s3.amazonaws.com/browse.html) bucket, under the `data/` prefix.
+
+## Two formats
+
+The snapshot is published in two formats, each a complete copy of the same data:
+
+| Format | Compression | One record per | Prefix |
+|--------|-------------|----------------|--------|
+| [JSON Lines](https://jsonlines.org/) | gzip (`.gz`) | line | `/data/jsonl/` |
+| [Apache Parquet](https://parquet.apache.org/) | snappy (`.parquet`) | row | `/data/parquet/` |
+
+<Info>
+Parquet is rolling out to the free public snapshot with the **June 2026 quarterly** release. Enterprise API-key users already receive both formats in the daily staging snapshot (see [Download to your machine](/download/download-to-machine#download-with-an-enterprise-api-key)).
+</Info>
 
 ## Bucket structure
 
-The bucket contains one prefix (folder) for each entity type:
-
-| Entity | S3 prefix | Browse |
-|--------|-----------|--------|
-| Works | `/data/works/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/works/) |
-| Authors | `/data/authors/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/authors/) |
-| Sources | `/data/sources/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/sources/) |
-| Institutions | `/data/institutions/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/institutions/) |
-| Topics | `/data/topics/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/topics/) |
-| Domains | `/data/domains/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/domains/) |
-| Fields | `/data/fields/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/fields/) |
-| Subfields | `/data/subfields/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/subfields/) |
-| Publishers | `/data/publishers/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/publishers/) |
-| Funders | `/data/funders/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/funders/) |
-| Concepts | `/data/concepts/` | [Browse](https://openalex.s3.amazonaws.com/browse.html#data/concepts/) |
-
-Records are partitioned by `updated_date`. Within each entity type, files are further prefixed by date. For example, an Author with `updated_date` of `2024-01-15` lives under:
+Under each format prefix there is one folder per entity type, plus a combined `manifest.json`:
 
 ```
-/data/authors/updated_date=2024-01-15/
+s3://openalex/data/
+├── jsonl/
+│   ├── manifest.json          # all entities, this format
+│   ├── works/
+│   │   ├── manifest.json       # works only
+│   │   └── updated_date=2026-06-24/
+│   │       ├── part_0000.gz
+│   │       └── part_0001.gz
+│   ├── authors/
+│   └── ...
+└── parquet/
+    ├── manifest.json
+    ├── works/
+    │   ├── manifest.json
+    │   └── updated_date=2026-06-24/
+    │       ├── part_0000.parquet
+    │       └── part_0001.parquet
+    └── ...
 ```
 
-Each partition contains multiple gzip files, each under 2 GB.
+The entity folders under each format are:
+
+| Core entities | Topic hierarchy | Lookup / aggregation entities |
+|---------------|-----------------|-------------------------------|
+| `works` | `topics` | `keywords`, `concepts` |
+| `authors` | `subfields` | `continents`, `countries` |
+| `institutions` | `fields` | `institution-types`, `source-types`, `work-types` |
+| `sources` | `domains` | `languages`, `licenses`, `sdgs` |
+| `publishers`, `funders`, `awards` | | |
+
+You can browse the bucket at [openalex.s3.amazonaws.com/browse.html](https://openalex.s3.amazonaws.com/browse.html#data/).
+
+<Note>
+Pre-2026 snapshots used a flat `data/{entity}/` layout (JSON Lines only) with no `jsonl/`/`parquet/` split. That older layout, along with the `merged_ids/` directory, is preserved under the `legacy-data/` prefix.
+</Note>
+
+Records are partitioned by `updated_date`. For example, a Work with `updated_date` of `2026-06-24` lives under:
+
+```
+/data/jsonl/works/updated_date=2026-06-24/      # JSON Lines
+/data/parquet/works/updated_date=2026-06-24/    # Parquet
+```
+
+Each partition holds one or more part files (`part_0000.*`, `part_0001.*`, …) of up to 400,000 records each.
 
 ## Size
 
-The gzip-compressed snapshot is approximately **330 GB** and decompresses to about **1.6 TB**.
+The gzip-compressed JSON Lines snapshot is approximately **330 GB** and decompresses to about **1.6 TB**. The Parquet copy is provided alongside it, so downloading both formats roughly doubles the transfer. If you only need one format, [download a single format prefix](/download/download-to-machine#download-a-single-format-or-entity-type).
 
 ## Entity schemas
 
@@ -55,7 +92,7 @@ The structure of each entity type matches the API response format:
 ## Keeping your snapshot up to date
 
 <Warning>
-The free public snapshot is refreshed **quarterly**. **Monthly snapshots** and **daily change files** (via the [Changefiles API](/download/changefiles)) require a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
+The free public snapshot is refreshed **quarterly**. A **daily-refreshed snapshot** and **daily change files** (via the [Changefiles API](/download/changefiles)) require a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
 </Warning>
 
 The `updated_date` partitions make incremental updates straightforward. Unlike dated snapshots that each contain the full dataset, each partition contains only the records that **last changed** on that date.
@@ -65,18 +102,18 @@ The `updated_date` partitions make incremental updates straightforward. Unlike d
 Imagine launching OpenAlex with 1,000 Authors, all created on 2024-01-01:
 
 ```
-/data/authors/
-├── manifest
+/data/jsonl/authors/
+├── manifest.json
 └── updated_date=2024-01-01 [1000 Authors]
-    ├── 0000_part_00.gz
+    ├── part_0000.gz
     └── ...
 ```
 
 If we update 50 of those Authors on 2024-01-15, they **move out of** the old partition and **into** the new one:
 
 ```
-/data/authors/
-├── manifest
+/data/jsonl/authors/
+├── manifest.json
 ├── updated_date=2024-01-01 [950 Authors]
 │   └── ...
 └── updated_date=2024-01-15 [50 Authors]
@@ -86,15 +123,15 @@ If we update 50 of those Authors on 2024-01-15, they **move out of** the old par
 If we also discover 50 new Authors, they go into the same new partition:
 
 ```
-/data/authors/
-├── manifest
+/data/jsonl/authors/
+├── manifest.json
 ├── updated_date=2024-01-01 [950 Authors]
 │   └── ...
 └── updated_date=2024-01-15 [100 Authors]
     └── ...
 ```
 
-So if you made your snapshot copy on 2024-01-01, you only need to download `updated_date=2024-01-15` to get everything that changed or was added since then.
+So if you made your snapshot copy on 2024-01-01, you only need to download `updated_date=2024-01-15` to get everything that changed or was added since then. The Parquet copy under `/data/parquet/authors/` is partitioned exactly the same way.
 
 <Tip>
 To update a snapshot copy that you created or updated on date `X`, insert or update the records in partitions where `updated_date` > `X`.
@@ -102,20 +139,40 @@ To update a snapshot copy that you created or updated on date `X`, insert or upd
 
 You never need to re-download a partition you already have. Anything that changed has moved to a newer partition.
 
-## The manifest file
+## The manifest files
 
-Each entity type has a `manifest` file that lists all data files. When we start writing a new `updated_date` partition, we delete the manifest. When we finish, we recreate it with the new files included. So if the manifest is present, all data files are complete.
+Every format has a combined `manifest.json` listing all data files across all entities (`/data/{format}/manifest.json`), and every entity has its own `manifest.json` (`/data/{format}/{entity}/manifest.json`). The manifest is written last, after all data files are uploaded, so if it's present the data for that format is complete.
 
-The file uses [Redshift manifest](https://docs.aws.amazon.com/redshift/latest/dg/loading-data-files-using-manifest.html) format. To use it for incremental updates:
+A per-entity manifest looks like this:
+
+```json
+{
+  "date": "2026-06-25",
+  "format": "jsonl",
+  "entity": "works",
+  "record_count": 264000000,
+  "content_length": 350000000000,
+  "files": [
+    {
+      "url": "s3://openalex/data/jsonl/works/updated_date=2026-06-24/part_0000.gz",
+      "meta": { "content_length": 936733, "record_count": 499 }
+    }
+  ]
+}
+```
+
+The combined manifest has the same shape but nests one entry per entity under an `entities` array, with a top-level `meta` carrying the totals.
+
+To use a manifest for incremental updates:
 
 <Steps>
   <Step title="Download the manifest">
     ```bash
-    aws s3 cp s3://openalex/data/authors/manifest ./manifest --no-sign-request
+    aws s3 cp s3://openalex/data/jsonl/works/manifest.json ./manifest.json --no-sign-request
     ```
   </Step>
   <Step title="Check for new partitions">
-    Get the file list from the `url` property of each item in the `entries` list. Identify any `updated_date` partitions you haven't seen before.
+    Get the file list from the `url` property of each item in the `files` list. Identify any `updated_date` partitions you haven't seen before.
   </Step>
   <Step title="Download new partitions">
     Download objects with new `updated_date` values.
@@ -124,7 +181,7 @@ The file uses [Redshift manifest](https://docs.aws.amazon.com/redshift/latest/dg
     Download the manifest again. If it hasn't changed since step 1, no records moved between partitions during your download.
   </Step>
   <Step title="Load the data">
-    Decompress the files and parse one JSON entity per line. Insert or update into your database using each entity's ID as the primary key.
+    Read each file (decompress and parse one JSON entity per line for JSON Lines; read columns directly for Parquet). Insert or update into your database using each entity's ID as the primary key.
   </Step>
 </Steps>
 
