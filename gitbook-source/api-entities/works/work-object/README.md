@@ -838,7 +838,7 @@ Works that are hosted primarily on a preprint, or that are identified speicifica
 
 Works that represent stuff that is _about_ the venue (such as a journal)—rather than a scholarly work properly speaking—have type `paratext`. These include things like front-covers, back-covers, tables of contents, and the journal itself (e.g., `https://openalex.org/W4232230324`).
 
-We also have types for `letter` , `editorial` , `erratum` (corrections), `libguides` , `supplementary-materials` , and `review` (currently, articles that come from journals that exclusively publish review articles). Coverage is low on these but will improve.
+We assign exactly one of 25 work types to every work. Beyond `article`, `preprint`, and `paratext` described above, these include `book`, `book-chapter`, `review`, `dataset`, `dissertation`, `letter`, `editorial`, `erratum` (corrections), `libguides`, `supplementary-materials`, and others, plus newly added types such as `conference-paper`, `conference-abstract`, `data-paper`, `software`, `software-paper`, and `book-review` that are still rolling out (coverage on these is currently low or zero but improving). See the full list with definitions in the [Work Types Overview](https://developers.openalex.org/api-reference/work-types).
 
 Other work types follow the Crossref "type" controlled vocabulary—see [`type_crossref`](./#type_crossref).
 
