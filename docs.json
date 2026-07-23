@@ -279,6 +279,13 @@
                   "api-reference/licenses",
                   "GET /licenses"
                 ]
+              },
+              {
+                "group": "Indexes",
+                "pages": [
+                  "api-reference/indexes",
+                  "GET /indexes"
+                ]
               }
             ]
           }

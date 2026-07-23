@@ -113,6 +113,10 @@
     {
       "name": "Licenses",
       "description": "Open access licenses (CC BY, CC BY-SA, etc.)"
+    },
+    {
+      "name": "Indexes",
+      "description": "Bibliographic indexes that list works (Crossref, PubMed, DataCite, DOAJ, arXiv)"
     }
   ],
   "paths": {
@@ -2850,6 +2854,73 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LicensesListResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/indexes": {
+      "get": {
+        "operationId": "listIndexes",
+        "summary": "List indexes",
+        "description": "Get a list of bibliographic indexes (crossref, pubmed, datacite, doaj, arxiv).",
+        "tags": [
+          "Indexes"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filter indexes. Examples: `id:doaj`, `works_count:>100000`",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sort by: `works_count`, `cited_by_count`. Prefix with `-` for descending.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/search"
+          },
+          {
+            "$ref": "#/components/parameters/per_page"
+          },
+          {
+            "$ref": "#/components/parameters/page"
+          },
+          {
+            "$ref": "#/components/parameters/cursor"
+          },
+          {
+            "$ref": "#/components/parameters/sample"
+          },
+          {
+            "$ref": "#/components/parameters/select"
+          },
+          {
+            "$ref": "#/components/parameters/group_by"
+          },
+          {
+            "$ref": "#/components/parameters/api_key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexesListResponse"
                 }
               }
             }
@@ -5983,6 +6054,53 @@
                 "deprecated": true,
                 "description": "Deprecated. Use endpoint_costs_usd instead."
               }
+            }
+          }
+        }
+      },
+      "Index": {
+        "type": "object",
+        "description": "A bibliographic index or registry that lists works",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "https://openalex.org/indexes/doaj"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "works_count": {
+            "type": "integer"
+          },
+          "cited_by_count": {
+            "type": "integer"
+          },
+          "works_api_url": {
+            "type": "string"
+          },
+          "created_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "updated_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "IndexesListResponse": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Index"
             }
           }
         }
