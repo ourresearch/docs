@@ -14,10 +14,6 @@ The snapshot is published in two formats, each a complete copy of the same data:
 | [JSON Lines](https://jsonlines.org/) | gzip (`.gz`) | line | `/data/jsonl/` |
 | [Apache Parquet](https://parquet.apache.org/) | snappy (`.parquet`) | row | `/data/parquet/` |
 
-<Info>
-Parquet is rolling out to the free public snapshot with the **June 2026 quarterly** release. Enterprise API-key users already receive both formats in the daily staging snapshot (see [Download to your machine](/download/download-to-machine#download-with-an-enterprise-api-key)).
-</Info>
-
 ## Bucket structure
 
 Under each format prefix there is one folder per entity type, plus a combined `manifest.json`:
@@ -92,7 +88,7 @@ The structure of each entity type matches the API response format:
 ## Keeping your snapshot up to date
 
 <Warning>
-The free public snapshot is refreshed **quarterly**. A **daily-refreshed snapshot** and **daily change files** (via the [Changefiles API](/download/changefiles)) require a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
+The free public snapshot is refreshed **quarterly**. A **daily-refreshed snapshot** requires a [paid plan](https://openalex.org/pricing). Contact [sales@openalex.org](mailto:sales@openalex.org).
 </Warning>
 
 The `updated_date` partitions make incremental updates straightforward. Unlike dated snapshots that each contain the full dataset, each partition contains only the records that **last changed** on that date.

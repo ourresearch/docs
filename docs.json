@@ -106,9 +106,7 @@
             "openapi": "api-reference/openapi.json",
             "pages": [
               "GET /autocomplete/{entity_type}",
-              "GET /rate-limit",
-              "GET /changefiles",
-              "GET /changefiles/{date}"
+              "GET /rate-limit"
             ]
           },
           {
@@ -301,8 +299,7 @@
               "download/snapshot-format",
               "download/download-to-machine",
               "download/openalex-cli",
-              "download/full-text-pdfs",
-              "download/changefiles"
+              "download/full-text-pdfs"
             ]
           }
         ]
