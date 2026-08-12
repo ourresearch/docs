@@ -1,18 +1,13 @@
-# OpenAlex API Documentation
+# RETIRED — OpenAlex docs have moved
 
-Source for the OpenAlex developer docs at [developers.openalex.org](https://developers.openalex.org). Built with [Mintlify](https://mintlify.com).
+**This repo is retired (2026-08-11).** The OpenAlex developer docs now live at
+**[help.openalex.org](https://help.openalex.org)**, built from
+[`ourresearch/openalex-help`](https://github.com/ourresearch/openalex-help).
 
-## Development
+`developers.openalex.org` redirects every old page to its new home
+(Cloudflare zone redirect + the help site's `_redirects` map), so inbound
+links keep working. The Mintlify content here is preserved for history only —
+do not edit; changes will never deploy anywhere.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview changes locally:
-
-```
-npm i -g mintlify
-mintlify dev
-```
-
-Then open [http://localhost:3000](http://localhost:3000).
-
-## Deploying
-
-Changes pushed to `main` are automatically deployed to production via the Mintlify GitHub app.
+Migration record: oxjobs #354 / #750 (`scripts/mintlify-dispositions.tsv` in
+the openalex-help repo maps every page here to its disposition).
